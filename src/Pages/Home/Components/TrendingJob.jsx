@@ -24,7 +24,8 @@ import Chatbot from './Chatbot';
 const JobCard = ({ job }) => (
     <Card
         sx={{
-            width: {md:"330px",lg:"320px"},
+            minWidth: { md: "330px", lg: "320px", xs: "304px" },
+          
             borderRadius: 3,
             boxShadow: 3,
             p: 2,
@@ -193,18 +194,18 @@ const TrendingJob = () => {
             sx={{
                 minHeight: '600px',
                 background: 'linear-gradient(to bottom, #ffffff 0%, #0862DC 100%)',
-                padding: {xs:"30px 0px",md:"30px"},
-                position:"relative"
+                padding: { xs: "30px 0px", md: "30px" },
+                position: "relative"
             }}
         >
             <Box sx={{}}>
-               <Chatbot/>
+                <Chatbot />
             </Box>
             <Container maxWidth="lg">
                 <Typography
                     sx={{
                         textAlign: "center",
-                        fontSize: {md:"48px",xs:"24px"},
+                        fontSize: { md: "48px", xs: "24px" },
                         lineHeight: "138%",
                         fontWeight: "600",
                         paddingBottom: "20px",
@@ -225,12 +226,12 @@ const TrendingJob = () => {
                                     label="Search for Global Jobs"
                                     value="1"
                                     sx={{
-                                        fontSize: {md:"26px",xs:"14px"},
+                                        fontSize: { md: "26px", xs: "14px" },
                                         fontWeight: "400",
                                         textTransform: "capitalize",
                                         color: "#000",
                                         borderRadius: "29px",
-                                        px: {md:3},
+                                        px: { md: 3 },
                                         py: 1,
                                         '&.Mui-selected': {
                                             backgroundColor: "#FF8014",
@@ -242,14 +243,14 @@ const TrendingJob = () => {
                                     label="Search for NHS Jobs"
                                     value="2"
                                     sx={{
-                                        fontSize: {md:"26px",xs:"14px"},
+                                        fontSize: { md: "26px", xs: "14px" },
                                         fontWeight: "400",
                                         textTransform: "capitalize",
                                         color: "#000",
                                         borderRadius: "29px",
                                         px: 3,
                                         py: 1,
-                                        ml: {md:"30px",xs:"0px"},
+                                        ml: { md: "30px", xs: "0px" },
                                         '&.Mui-selected': {
                                             backgroundColor: "#FF8014",
                                             color: "#fff",
@@ -260,7 +261,7 @@ const TrendingJob = () => {
                         </Box>
 
                         {/* === TAB ONE === */}
-                        <TabPanel value="1">
+                        <TabPanel value="1" sx={{ px: 0, py: 2 }}>
                             <Grid container spacing={3} justifyContent="center">
                                 {jobData.map((job) => (
                                     <Grid
@@ -269,7 +270,7 @@ const TrendingJob = () => {
                                         xs={12}
                                         sm={6}
                                         md={4}
-                                        
+
                                         display="flex"
                                         justifyContent="space-between"
                                     >
@@ -280,7 +281,7 @@ const TrendingJob = () => {
                         </TabPanel>
 
                         {/* === TAB TWO === */}
-                        <TabPanel value="2">
+                        <TabPanel value="2" sx={{ px: 0, py: 2 }}>
                             <Typography variant="h6" align="center">
                                 No NHS jobs available right now.
                             </Typography>

@@ -273,8 +273,8 @@ const Chatbot = () => {
                     onClick={toggleChat}
                     sx={{
                         position: "fixed",
-                        bottom: { xs: "145px", sm: "24px", md: "32px" },
-                        right: { xs: "80px", sm: "24px", md: "32px" },
+                        bottom: { xs: "125px", sm: "24px", md: "32px" },
+                        right: { xs: "40px", sm: "24px", md: "32px" },
                         cursor: "pointer",
                         zIndex: 9999,
                         width: { xs: 50, sm: 70, md: 80 },

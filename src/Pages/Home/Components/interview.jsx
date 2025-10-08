@@ -411,7 +411,7 @@ const Interview = () => {
                                         </Box>
 
                                         {/* === TAB ONE === */}
-                                        <TabPanel value="1">
+                                        <TabPanel value="1" sx={{ px: 0, py: 2 }}>
                                             <Grid container spacing={2} justifyContent="space-between">
                                                 {jobData.map((job) => (
                                                     <Grid
@@ -430,13 +430,13 @@ const Interview = () => {
                                         </TabPanel>
 
                                         {/* === TAB TWO === */}
-                                        <TabPanel value="2">
+                                        <TabPanel value="2" sx={{ px: 0, py: 2 }}>
                                             <Typography variant="h6" align="center">
                                                 No NHS jobs available right now.
                                             </Typography>
                                         </TabPanel>
                                         {/* === TAB Three === */}
-                                        <TabPanel value="3">
+                                        <TabPanel value="3" sx={{ px: 0, py: 2 }}>
                                             <Grid container spacing={2} justifyContent="space-between">
                                                 {jobData.map((job) => (
                                                     <Grid

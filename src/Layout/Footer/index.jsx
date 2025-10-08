@@ -7,7 +7,7 @@ const Footer = () => {
             <Box sx={{ minHeight: "200px", bgcolor: "#122D80", padding: "50px 0px" }}>
                 <Container maxWidth='lg'>
                     <Grid container spacing={2}>
-                        <Grid size={{ xs: 12, sm: 6, md: 4.5 }} >
+                        <Grid size={{ xs: 12, sm: 6, md: 4.5 }} sx={{mb:{xs:"15px",md:"30px"}}} >
                             <Box sx={{ minWidth: "100%" }}>
                                 <Typography sx={{ fontSize: {sm:"36px",xs:"26px"}, fontWeight: "600", textWrap: "nowrap", letterSpacing: "0%", lineHeight: "138%",color:"#fff" }}>
                                     We are here to help
@@ -56,9 +56,9 @@ const Footer = () => {
                                 </Stack>
                             </Box>
                         </Grid>
-                        <Grid size={{ xs: 12, sm: 6, md: 2.2 }} >
+                        <Grid size={{ xs: 12, sm: 6, md: 2.2 }} sx={{mb:{xs:"15px",md:"0px"}}} >
                             <Box sx={{ minWidth: "100%",display:"flex",flexDirection:"column",alignItems:"flex-start" }}>
-                                <Typography sx={{ fontSize:  {sm:"34px",md:"24px"}, fontWeight: "600", textWrap: "nowrap", letterSpacing: "0%", lineHeight: "138%",display:"flex",justifyContent:"center",alignItems:"center",color:"#fff" }}>
+                                <Typography sx={{ fontSize:  {sm:"34px",xs:"24px"}, fontWeight: "600", textWrap: "nowrap", letterSpacing: "0%", lineHeight: "138%",display:"flex",justifyContent:"center",alignItems:"center",color:"#fff" }}>
                                     Quick Links
                                 </Typography>
                                 <ul style={{padding:"0px",margin:"0px",paddingTop:"5px"}}>
@@ -71,9 +71,9 @@ const Footer = () => {
                                
                             </Box>
                         </Grid>
-                        <Grid size={{ xs: 12, sm: 6, md: 2.2 }} >
+                        <Grid size={{ xs: 12, sm: 6, md: 2.2 }} sx={{mb:{xs:"15px",md:"0px"}}} >
                             <Box sx={{ minWidth: "100%",display:"flex",flexDirection:"column",alignItems:"flex-start" }}>
-                                <Typography sx={{ fontSize: {sm:"34px",md:"24px"}, fontWeight: "600", textWrap: "nowrap", letterSpacing: "0%", lineHeight: "138%",display:"flex",justifyContent:"center",alignItems:"center",color:"#fff" }}>
+                                <Typography sx={{ fontSize: {sm:"34px",md:"24px",xs:"24px"}, fontWeight: "600", textWrap: "nowrap", letterSpacing: "0%", lineHeight: "138%",display:"flex",justifyContent:"center",alignItems:"center",color:"#fff" }}>
                                     Employers
                                 </Typography>
                                 <ul style={{padding:"0px",margin:"0px",paddingTop:"5px"}}>
@@ -88,7 +88,7 @@ const Footer = () => {
                         </Grid>
                         <Grid size={{ xs: 12, sm: 6, md: 3 }} >
                              <Box sx={{ minWidth: "100%",display:"flex",flexDirection:"column",alignItems:"flex-start" }}>
-                                <Typography sx={{ fontSize: {sm:"34px",md:"24px"}, fontWeight: "600", textWrap: "nowrap", letterSpacing: "0%", lineHeight: "138%",display:"flex",justifyContent:"center",alignItems:"center",color:"#fff" }}>
+                                <Typography sx={{ fontSize: {sm:"34px",md:"24px",xs:"24px"}, fontWeight: "600", textWrap: "nowrap", letterSpacing: "0%", lineHeight: "138%",display:"flex",justifyContent:"center",alignItems:"center",color:"#fff" }}>
                                     Resources
                                 </Typography>
                                 <ul style={{padding:"0px",margin:"0px",paddingTop:"5px"}}>

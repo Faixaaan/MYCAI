@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Button, TextField, Typography, InputAdornment } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import bannerImg from '../../../Images/banner.png';
+import PhonebannerImg from '../../../Images/phoneBanner.png';
 
 const Banner = () => {
     return (
@@ -9,8 +10,11 @@ const Banner = () => {
             sx={{
                 position: 'relative',
                 width: '100%',
-                minHeight: '810px',
-                backgroundImage: `url(${bannerImg})`,
+                minHeight: {md:'810px',xs:"500px"},
+                backgroundImage: {
+                    xs: `url(${PhonebannerImg})`,
+                    md: `url(${bannerImg})`,      
+                },
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 display: 'flex',
@@ -22,15 +26,15 @@ const Banner = () => {
             <Box
                 sx={{
                     position: 'absolute', // allows free positioning over the banner
-                    top: '77%',  // adjust this to move vertically
-                    left: '70%', // adjust this to move horizontally
+                    top: {md:'77%',xs:"60%"},  // adjust this to move vertically
+                    left: {md:'70%',xs:"50%"}, // adjust this to move horizontally
                     transform: 'translate(-50%, -50%)', // center the box at the position
 
                     padding: 3,
                     borderRadius: 3,
                     maxHeight: "70px",
 
-                    width: '90%',
+                    width: {md:'90%',xs:"90%"},
                     maxWidth: 700,
                     textAlign: 'center',
                     zIndex: 2,
@@ -38,7 +42,7 @@ const Banner = () => {
             >
 
 
-                <Box sx={{ display: 'flex', alignItems: 'center', backgroundColor: "#0862DC", minHeight: "70px", padding: "0px 13px", borderRadius: "32px" }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', backgroundColor: "#0862DC", minHeight: {md:"70px",xs:"60px"}, padding: "0px 13px", borderRadius: "32px" }}>
                     <TextField
                         variant="outlined"
                         placeholder="AI enabled jobs"
@@ -50,7 +54,7 @@ const Banner = () => {
                                 </InputAdornment>
                             ),
                             sx: {
-                                height: 45,
+                                height: {md:45,xs:35},
                                 backgroundColor: "#fff",
                                 borderRadius: '30px',
                                 '& .MuiOutlinedInput-notchedOutline': {
@@ -71,19 +75,19 @@ const Banner = () => {
                         sx={{
                             ml: 2,
                             borderRadius: '30px',
-                            height: 45,
+                            height: {md:45, xs:35},
                             backgroundColor: "#fff",
                             color: "#3246C4",
-                            fontSize: "13px",
+                            fontSize: {md:"13px",xs:"11px"},
                             textTransform: "capitalize",
                             width: "118px",
                             whiteSpace: 'nowrap',       // Prevent text wrap
                             overflow: 'hidden',         // Hide overflow if any
-                            textOverflow: 'ellipsis',  
-                            lineHeight:"138%",
-                           
-                            fontWeight:"600"
-                    
+                            textOverflow: 'ellipsis',
+                            lineHeight: "138%",
+
+                            fontWeight: "600"
+
                         }}
                     >
                         Search Jobs
@@ -91,7 +95,7 @@ const Banner = () => {
 
                 </Box>
 
-                <Typography sx={{ mt: 2, fontWeight: 600,fontSize:"20px",lineHeight:"138%",letterSpacing:"0%",color:"#fff" }}>
+                <Typography sx={{ mt: 2, fontWeight: 600, fontSize: {md:"20px",xs:"15px"}, lineHeight: "138%", letterSpacing: "0%", color: "#fff" }}>
                     Search 119,044 new jobs - 3,408 added in the last 24 hours
                 </Typography>
             </Box>
