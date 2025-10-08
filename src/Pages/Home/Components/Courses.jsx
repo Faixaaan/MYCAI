@@ -20,7 +20,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 const EarningCard = ({ job }) => (
     <Card
         sx={{
-            width: { md: "440px", lg: "420px", xs: "280px" },
+            width: { md: "440px", lg: "420px", xs: "100%" }, // ✅ full width on mobile
             borderRadius: "18px",
             boxShadow: 3,
             p: 2,
@@ -143,10 +143,18 @@ const Courses = () => {
         slidesToScroll: 1,
         centerMode: true,
         centerPadding: "20px",
-        arrows: false, // ✅ hide arrows globally (both desktop + mobile)
+        arrows: false,
         responsive: [
             {
-                breakpoint: 600, // ✅ mobile only
+                breakpoint: 900, // ✅ tablet and smaller
+                settings: {
+                    slidesToShow: 2,
+                    centerMode: false,
+                    centerPadding: "0px",
+                },
+            },
+            {
+                breakpoint: 600, // ✅ phone only
                 settings: {
                     slidesToShow: 1,
                     slidesToScroll: 1,

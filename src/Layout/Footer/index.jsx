@@ -58,7 +58,7 @@ const Footer = () => {
                         </Grid>
                         <Grid size={{ xs: 12, sm: 6, md: 2.2 }} sx={{mb:{xs:"15px",md:"0px"}}} >
                             <Box sx={{ minWidth: "100%",display:"flex",flexDirection:"column",alignItems:"flex-start" }}>
-                                <Typography sx={{ fontSize:  {sm:"34px",xs:"24px"}, fontWeight: "600", textWrap: "nowrap", letterSpacing: "0%", lineHeight: "138%",display:"flex",justifyContent:"center",alignItems:"center",color:"#fff" }}>
+                                <Typography sx={{ fontSize:  {sm:"34px",xs:"24px",md:"24px"}, fontWeight: "600", textWrap: "nowrap", letterSpacing: "0%", lineHeight: "138%",display:"flex",justifyContent:"center",alignItems:"center",color:"#fff" }}>
                                     Quick Links
                                 </Typography>
                                 <ul style={{padding:"0px",margin:"0px",paddingTop:"5px"}}>
