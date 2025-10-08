@@ -66,15 +66,15 @@ const Chatbot = () => {
                 <Box 
                     sx={{ 
                         position: "fixed", 
-                        bottom: { xs: "110px", sm: "100px", md: "120px" }, 
-                        right: { xs: "100px", sm: "24px", md: "32px" }, 
+                        bottom: { xs: "160px", sm: "100px", md: "120px" }, 
+                        right: { xs: "50px", sm: "24px", md: "32px" }, 
                         zIndex: 9999 
                     }}
                 >
                     <Paper
                         elevation={16}
                         sx={{
-                            width: { xs: 270, sm: 340, md: 380 }, // responsive widths
+                            width: { xs: 280, sm: 340, md: 380 }, // responsive widths
                             height: { xs: 420, sm: 480, md: 520 }, // responsive heights
                             display: "flex",
                             flexDirection: "column",
@@ -274,7 +274,7 @@ const Chatbot = () => {
                     sx={{
                         position: "fixed",
                         bottom: { xs: "125px", sm: "24px", md: "32px" },
-                        right: { xs: "40px", sm: "24px", md: "32px" },
+                        right: { xs: "20px", sm: "24px", md: "32px" },
                         cursor: "pointer",
                         zIndex: 9999,
                         width: { xs: 50, sm: 70, md: 80 },

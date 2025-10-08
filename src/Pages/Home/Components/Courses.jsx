@@ -6,9 +6,7 @@ import {
     CardMedia,
     CardContent,
     CardActionArea,
-    Stack,
     Button,
-    Chip,
 } from "@mui/material";
 import React from "react";
 import Slider from "react-slick";
@@ -22,13 +20,13 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 const EarningCard = ({ job }) => (
     <Card
         sx={{
-            width: { md: "440px", lg: "420px",xs:"280px" }, // full width of the slide
+            width: { md: "440px", lg: "420px", xs: "280px" },
             borderRadius: "18px",
             boxShadow: 3,
             p: 2,
             background: "linear-gradient(to bottom right, #1B7CE5, #1B7CE5)",
             mx: "auto",
-            maxHeight: "350px"
+            maxHeight: "350px",
         }}
     >
         <CardActionArea
@@ -41,7 +39,7 @@ const EarningCard = ({ job }) => (
                 sx={{
                     width: "100%",
                     height: "142px",
-                    objectFit: "contain", // 👈 ensures full image is visible without cropping
+                    objectFit: "contain",
                     borderRadius: "33px",
                 }}
             />
@@ -56,12 +54,19 @@ const EarningCard = ({ job }) => (
                 }}
             >
                 <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                    <StarIcon sx={{ color: "#FFD700" }} /> <StarIcon sx={{ color: "#FFD700" }} /><StarIcon sx={{ color: "#FFD700" }} /> <StarIcon sx={{ color: "#FFD700" }} /> <StarIcon /> <Typography sx={{
-                        pl: "10px",
-                        fontSize: "16px",
-                        fontWeight: "400",
-                        color: "#fff",
-                    }}>
+                    <StarIcon sx={{ color: "#FFD700" }} />
+                    <StarIcon sx={{ color: "#FFD700" }} />
+                    <StarIcon sx={{ color: "#FFD700" }} />
+                    <StarIcon sx={{ color: "#FFD700" }} />
+                    <StarIcon />
+                    <Typography
+                        sx={{
+                            pl: "10px",
+                            fontSize: "16px",
+                            fontWeight: "400",
+                            color: "#fff",
+                        }}
+                    >
                         (2.0k)
                     </Typography>
                 </Box>
@@ -79,7 +84,6 @@ const EarningCard = ({ job }) => (
                     </Typography>
                     <ChevronRightIcon sx={{ color: "#fff" }} />
                 </Box>
-
             </CardContent>
         </CardActionArea>
 
@@ -92,21 +96,24 @@ const EarningCard = ({ job }) => (
                 width: "100%",
             }}
         >
-            <Box >
-                <Typography sx={{
-
-                    fontSize: "16px",
-                    fontWeight: "600",
-                    color: "#fff",
-                }}>
+            <Box>
+                <Typography
+                    sx={{
+                        fontSize: "16px",
+                        fontWeight: "600",
+                        color: "#fff",
+                    }}
+                >
                     Multimedia Courses with MCAI
                 </Typography>
-                <Typography sx={{
-                    pt: "10px",
-                    fontSize: "16px",
-                    fontWeight: "400",
-                    color: "#fff",
-                }}>
+                <Typography
+                    sx={{
+                        pt: "10px",
+                        fontSize: "16px",
+                        fontWeight: "400",
+                        color: "#fff",
+                    }}
+                >
                     Social Media Marketing
                 </Typography>
             </Box>
@@ -114,7 +121,6 @@ const EarningCard = ({ job }) => (
             <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                 <Typography
                     sx={{
-
                         fontSize: "24px",
                         fontWeight: "600",
                         color: "#F5DE5D",
@@ -122,11 +128,8 @@ const EarningCard = ({ job }) => (
                 >
                     $49,88
                 </Typography>
-
             </Box>
-
         </CardContent>
-
     </Card>
 );
 
@@ -139,11 +142,19 @@ const Courses = () => {
         slidesToShow: 2.5,
         slidesToScroll: 1,
         centerMode: true,
-        centerPadding: "20px", // spacing between slides
+        centerPadding: "20px",
+        arrows: false, // ✅ hide arrows globally (both desktop + mobile)
         responsive: [
-            { breakpoint: 1280, settings: { slidesToShow: 3, centerPadding: "15px" } },
-            { breakpoint: 1024, settings: { slidesToShow: 2, centerPadding: "15px" } },
-            { breakpoint: 600, settings: { slidesToShow: 1, centerPadding: "0px" } },
+            {
+                breakpoint: 600, // ✅ mobile only
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    centerMode: false,
+                    centerPadding: "0px",
+                    arrows: false,
+                },
+            },
         ],
     };
 
@@ -162,7 +173,7 @@ const Courses = () => {
                 <Typography
                     sx={{
                         textAlign: "center",
-                        fontSize: {md:"48px",xs:"24px"},
+                        fontSize: { md: "48px", xs: "24px" },
                         fontWeight: "600",
                         pb: "40px",
                     }}
@@ -170,6 +181,7 @@ const Courses = () => {
                     MCAI Courses
                 </Typography>
 
+                {/* FIRST SLIDER */}
                 <Box className="slider-container">
                     <Slider {...settings}>
                         {earningsData.map((job) => (
@@ -180,7 +192,8 @@ const Courses = () => {
                     </Slider>
                 </Box>
 
-                <Box className="slider-container" sx={{ padding: "30px 0px", }}>
+                {/* SECOND SLIDER */}
+                <Box className="slider-container" sx={{ padding: "30px 0px" }}>
                     <Slider {...settings}>
                         {earningsData.map((job) => (
                             <Box key={job.id} sx={{ px: 1 }}>
@@ -189,8 +202,26 @@ const Courses = () => {
                         ))}
                     </Slider>
                 </Box>
-                <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", pb: "15px" }}>
-                    <Button sx={{ padding: "10px 30px", border: "1px solid black", borderRadius: "16px", fontSize: "20px", fontWeight: "600", color: "#000000", textTransform: "capitalize" }}>
+
+                <Box
+                    sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        pb: "15px",
+                    }}
+                >
+                    <Button
+                        sx={{
+                            padding: "10px 30px",
+                            border: "1px solid black",
+                            borderRadius: "16px",
+                            fontSize: "20px",
+                            fontWeight: "600",
+                            color: "#000000",
+                            textTransform: "capitalize",
+                        }}
+                    >
                         View more courses
                     </Button>
                 </Box>
