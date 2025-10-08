@@ -3,8 +3,7 @@ import {
     Paper, 
     Typography, 
     TextField, 
-    Button, 
-    IconButton,
+     IconButton,
     Avatar,
     Fade
 } from "@mui/material";

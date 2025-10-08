@@ -1,17 +1,16 @@
 import {
     Box, Container, Grid, Typography, Chip,
     Button, Card,
-    Avatar, Stack, Tab,
+     Stack, Tab,
     CardMedia,
     CardContent,
     CardActionArea,
-    CardActions,
+    
 } from '@mui/material'
 import React from 'react'
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import { LocationOn, Business, BookmarkBorder } from "@mui/icons-material";
 import image1 from '../../../Images/Rectangle 43.png'
 import image2 from '../../../Images/Rectangle 45.png'
 import image3 from '../../../Images/Rectangle 47.png'
@@ -97,7 +96,7 @@ const JobCard = ({ job }) => (
 const EarningCard = ({ job }) => (
     <Card
         sx={{
-            width:  {md:"440px", lg:"300px"},
+            width:  {md:"440px", lg:"300px",sm:"265px"},
             borderRadius: "33px",
             boxShadow: 3,
             p: 2,
@@ -296,7 +295,7 @@ const Interview = () => {
                     <Box sx={{ minHeight: "450px", bgcolor: "#D9D9D9", borderRadius: "42px", padding: "25px" }}>
                         <Grid container spacing={2}>
                             <Grid size={{ sm: 12, md: 2.5 }}>
-                                <Box sx={{ minHeight: "100%", display: "flex", justifyContent: "center", alignItems: "flex-end", flexDirection: "column" }}>
+                                <Box sx={{ minHeight: "100%", display: "flex", justifyContent: "center", alignItems: {md:"flex-end",sm:"center"}, flexDirection: "column" }}>
                                     <Typography
                                         sx={{
 
@@ -324,9 +323,9 @@ const Interview = () => {
                                         impactful MCAI business
                                         strategies.
                                     </Typography>
-                                    <Box sx={{ width: "100%" }}>
-                                        <Button variant='contained' fullWidth sx={{
-                                            padding: "10px 0px", borderRadius: "10px", backgroundColor: "#0862DC", fontSize: "16px",
+                                    <Box sx={{ width: "100%",display:"flex",justifyContent:"center" }}>
+                                        <Button variant='contained'  sx={{
+                                            padding: {xs:"10px 0px",lg:"10px 0px",sm:"10px 20px"}, borderRadius: "10px", backgroundColor: "#0862DC", fontSize: "16px",
                                             lineHeight: "138%",
                                             fontWeight: "400",
                                             paddingBottom: "20px",
@@ -334,7 +333,7 @@ const Interview = () => {
                                             display: "flex",
                                             justifyContent: "center",
                                             alignItems: "center",
-
+                                             width: { xs: "100%", sm: "auto",lg:"100%" },
                                             fontFamily: "Roboto"
                                         }}>
                                             View all MCAI <DoubleArrowIcon sx={{ ml: "10px" }} />
