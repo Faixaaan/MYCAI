@@ -153,25 +153,25 @@ const TrendingJob = () => {
     const jobData = [
         {
             id: 1,
-            title: "Graphic Designer",
+            title: "Data Analyst",
             company: "CVAI",
             location: "London, United Kingdom",
         },
         {
             id: 2,
-            title: "Web Designer",
+            title: "Business Analyst",
             company: "CVAI",
             location: "London, United Kingdom",
         },
         {
             id: 3,
-            title: "Graphic Designer",
+            title: "Cyber Security",
             company: "CVAI",
             location: "London, United Kingdom",
         },
         {
             id: 4,
-            title: "Web Designer",
+            title: "Solution Architect",
             company: "CVAI",
             location: "London, United Kingdom",
         },
@@ -183,7 +183,7 @@ const TrendingJob = () => {
         },
         {
             id: 6,
-            title: "Web Designer",
+            title: "Full Stack Developer",
             company: "CVAI",
             location: "London, United Kingdom",
         },
@@ -211,7 +211,7 @@ const TrendingJob = () => {
                         paddingBottom: "20px",
                     }}
                 >
-                    Trending jobs by CVI
+                  CVI Your AI Jobs Finder
                 </Typography>
 
                 <Box sx={{ width: '100%', typography: 'body1' }}>
