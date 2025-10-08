@@ -65,7 +65,7 @@ const Chatbot = () => {
                 <Box 
                     sx={{ 
                         position: "fixed", 
-                        bottom: { xs: "160px", sm: "100px", md: "120px" }, 
+                        bottom: { xs: "120px", sm: "100px", md: "120px" }, 
                         right: { xs: "50px", sm: "24px", md: "32px" }, 
                         zIndex: 9999 
                     }}
@@ -272,7 +272,7 @@ const Chatbot = () => {
                     onClick={toggleChat}
                     sx={{
                         position: "fixed",
-                        bottom: { xs: "125px", sm: "24px", md: "32px" },
+                        bottom: { xs: "55px", sm: "24px", md: "32px" },
                         right: { xs: "20px", sm: "24px", md: "32px" },
                         cursor: "pointer",
                         zIndex: 9999,

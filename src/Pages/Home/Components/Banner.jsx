@@ -26,7 +26,7 @@ const Banner = () => {
             <Box
                 sx={{
                     position: 'absolute', // allows free positioning over the banner
-                    top: {md:'77%',xs:"60%"},  // adjust this to move vertically
+                    top: {md:'77%',xs:"77%"},  // adjust this to move vertically
                     left: {md:'70%',xs:"50%"}, // adjust this to move horizontally
                     transform: 'translate(-50%, -50%)', // center the box at the position
 
