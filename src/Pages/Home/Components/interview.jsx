@@ -23,7 +23,7 @@ import Diversity1Icon from '@mui/icons-material/Diversity1';
 const JobCard = ({ job }) => (
     <Card
         sx={{
-            width: {md:"440px", lg:"230px"},
+            width: {md:"440px", lg:"260px"},
             borderRadius: "33px",
             boxShadow: 3,
             p: 2,
@@ -97,7 +97,7 @@ const JobCard = ({ job }) => (
 const EarningCard = ({ job }) => (
     <Card
         sx={{
-            width:  {md:"440px", lg:"260px"},
+            width:  {md:"440px", lg:"300px"},
             borderRadius: "33px",
             boxShadow: 3,
             p: 2,

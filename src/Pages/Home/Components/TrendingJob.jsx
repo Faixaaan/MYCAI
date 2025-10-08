@@ -24,7 +24,7 @@ import Chatbot from './Chatbot';
 const JobCard = ({ job }) => (
     <Card
         sx={{
-            width: {md:"330px",lg:"280px"},
+            width: {md:"330px",lg:"320px"},
             borderRadius: 3,
             boxShadow: 3,
             p: 2,

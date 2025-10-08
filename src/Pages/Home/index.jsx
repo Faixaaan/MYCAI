@@ -10,7 +10,7 @@ const Home = () => {
     <>
      <Banner/>
      <TrendingJob/>
-     {/* <Resume/> */}
+     <Resume/>
      <Courses/>
      <Interview/>
      

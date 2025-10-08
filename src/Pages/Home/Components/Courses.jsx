@@ -22,7 +22,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 const EarningCard = ({ job }) => (
     <Card
         sx={{
-            width: { md: "440px", lg: "400px",xs:"280px" }, // full width of the slide
+            width: { md: "440px", lg: "420px",xs:"280px" }, // full width of the slide
             borderRadius: "18px",
             boxShadow: 3,
             p: 2,

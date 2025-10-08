@@ -58,29 +58,29 @@ const Footer = () => {
                         </Grid>
                         <Grid size={{ xs: 12, sm: 6, md: 2.2 }} >
                             <Box sx={{ minWidth: "100%",display:"flex",flexDirection:"column",alignItems:"flex-start" }}>
-                                <Typography sx={{ fontSize: {sm:"30px",md:"16px"}, fontWeight: "600", textWrap: "nowrap", letterSpacing: "0%", lineHeight: "138%",display:"flex",justifyContent:"center",alignItems:"center",color:"#fff" }}>
+                                <Typography sx={{ fontSize:  {sm:"34px",md:"24px"}, fontWeight: "600", textWrap: "nowrap", letterSpacing: "0%", lineHeight: "138%",display:"flex",justifyContent:"center",alignItems:"center",color:"#fff" }}>
                                     Quick Links
                                 </Typography>
                                 <ul style={{padding:"0px",margin:"0px",paddingTop:"5px"}}>
-                                    <li style={{listStyle:"none",paddingBottom:"10px"}}><a href="" style={{textDecoration:"none",fontSize:"20px",color:"#fff",fontWeight:"400"}}>My Jobs</a></li>
-                                    <li style={{listStyle:"none",paddingBottom:"10px"}}><a href="" style={{textDecoration:"none",fontSize:"20px",color:"#fff",fontWeight:"400"}}>My CV</a></li>
-                                    <li style={{listStyle:"none",paddingBottom:"10px"}}><a href="" style={{textDecoration:"none",fontSize:"20px",color:"#fff",fontWeight:"400"}}>My Courses</a></li>
-                                    <li style={{listStyle:"none",paddingBottom:"10px"}}><a href="" style={{textDecoration:"none",fontSize:"20px",color:"#fff",fontWeight:"400"}}>My Earning</a></li>
-                                    
+                                    <li style={{listStyle:"none",paddingBottom:"10px"}}><a href="" style={{textDecoration:"none",fontSize:"18px",color:"#fff",fontWeight:"400"}}>My Jobs</a></li>
+                                    <li style={{listStyle:"none",paddingBottom:"10px"}}><a href="" style={{textDecoration:"none",fontSize:"18px",color:"#fff",fontWeight:"400"}}>My CV</a></li>
+                                    <li style={{listStyle:"none",paddingBottom:"10px"}}><a href="" style={{textDecoration:"none",fontSize:"18px",color:"#fff",fontWeight:"400"}}>My Courses</a></li>
+                                    <li style={{listStyle:"none",paddingBottom:"10px"}}><a href="" style={{textDecoration:"none",fontSize:"18px",color:"#fff",fontWeight:"400"}}>My Earning</a></li>
+
                                 </ul>
                                
                             </Box>
                         </Grid>
                         <Grid size={{ xs: 12, sm: 6, md: 2.2 }} >
                             <Box sx={{ minWidth: "100%",display:"flex",flexDirection:"column",alignItems:"flex-start" }}>
-                                <Typography sx={{ fontSize:{sm:"30px",md:"16px"}, fontWeight: "600", textWrap: "nowrap", letterSpacing: "0%", lineHeight: "138%",display:"flex",justifyContent:"center",alignItems:"center",color:"#fff" }}>
+                                <Typography sx={{ fontSize: {sm:"34px",md:"24px"}, fontWeight: "600", textWrap: "nowrap", letterSpacing: "0%", lineHeight: "138%",display:"flex",justifyContent:"center",alignItems:"center",color:"#fff" }}>
                                     Employers
                                 </Typography>
                                 <ul style={{padding:"0px",margin:"0px",paddingTop:"5px"}}>
-                                    <li style={{listStyle:"none",paddingBottom:"10px"}}><a href="" style={{textDecoration:"none",fontSize:"20px",color:"#fff",fontWeight:"400"}}>Post a Job</a></li>
-                                    <li style={{listStyle:"none",paddingBottom:"10px"}}><a href="" style={{textDecoration:"none",fontSize:"20px",color:"#fff",fontWeight:"400"}}>Products</a></li>
-                                    <li style={{listStyle:"none",paddingBottom:"10px"}}><a href="" style={{textDecoration:"none",fontSize:"20px",color:"#fff",fontWeight:"400"}}>Subscription</a></li>
-                                    <li style={{listStyle:"none",paddingBottom:"10px"}}><a href="" style={{textDecoration:"none",fontSize:"20px",color:"#fff",fontWeight:"400"}}>Employer App</a></li>
+                                    <li style={{listStyle:"none",paddingBottom:"10px"}}><a href="" style={{textDecoration:"none",fontSize:"18px",color:"#fff",fontWeight:"400"}}>Post a Job</a></li>
+                                    <li style={{listStyle:"none",paddingBottom:"10px"}}><a href="" style={{textDecoration:"none",fontSize:"18px",color:"#fff",fontWeight:"400"}}>Products</a></li>
+                                    <li style={{listStyle:"none",paddingBottom:"10px"}}><a href="" style={{textDecoration:"none",fontSize:"18px",color:"#fff",fontWeight:"400"}}>Subscription</a></li>
+                                    <li style={{listStyle:"none",paddingBottom:"10px"}}><a href="" style={{textDecoration:"none",fontSize:"18px",color:"#fff",fontWeight:"400"}}>Employer App</a></li>
                                     
                                 </ul>
                                
@@ -88,15 +88,15 @@ const Footer = () => {
                         </Grid>
                         <Grid size={{ xs: 12, sm: 6, md: 3 }} >
                              <Box sx={{ minWidth: "100%",display:"flex",flexDirection:"column",alignItems:"flex-start" }}>
-                                <Typography sx={{ fontSize: {sm:"30px",md:"24px"}, fontWeight: "600", textWrap: "nowrap", letterSpacing: "0%", lineHeight: "138%",display:"flex",justifyContent:"center",alignItems:"center",color:"#fff" }}>
+                                <Typography sx={{ fontSize: {sm:"34px",md:"24px"}, fontWeight: "600", textWrap: "nowrap", letterSpacing: "0%", lineHeight: "138%",display:"flex",justifyContent:"center",alignItems:"center",color:"#fff" }}>
                                     Resources
                                 </Typography>
                                 <ul style={{padding:"0px",margin:"0px",paddingTop:"5px"}}>
-                                    <li style={{listStyle:"none",paddingBottom:"10px"}}><a href="" style={{textDecoration:"none",fontSize:"20px",color:"#fff",fontWeight:"400"}}>How to hire employes</a></li>
-                                    <li style={{listStyle:"none",paddingBottom:"10px"}}><a href="" style={{textDecoration:"none",fontSize:"20px",color:"#fff",fontWeight:"400"}}>How to write a job description</a></li>
-                                    <li style={{listStyle:"none",paddingBottom:"10px"}}><a href="" style={{textDecoration:"none",fontSize:"20px",color:"#fff",fontWeight:"400"}}>Guide to hiring with</a></li>
-                                    <li style={{listStyle:"none",paddingBottom:"10px"}}><a href="" style={{textDecoration:"none",fontSize:"20px",color:"#fff",fontWeight:"400"}}>Interview question guide</a></li>
-                                    
+                                    <li style={{listStyle:"none",paddingBottom:"10px"}}><a href="" style={{textDecoration:"none",fontSize:"18px",color:"#fff",fontWeight:"400"}}>How to hire employes</a></li>
+                                    <li style={{listStyle:"none",paddingBottom:"10px"}}><a href="" style={{textDecoration:"none",fontSize:"18px",color:"#fff",fontWeight:"400"}}>How to write a job description</a></li>
+                                    <li style={{listStyle:"none",paddingBottom:"10px"}}><a href="" style={{textDecoration:"none",fontSize:"18px",color:"#fff",fontWeight:"400"}}>Guide to hiring with</a></li>
+                                    <li style={{listStyle:"none",paddingBottom:"10px"}}><a href="" style={{textDecoration:"none",fontSize:"18px",color:"#fff",fontWeight:"400"}}>Interview question guide</a></li>
+
                                 </ul>
                                
                             </Box>
