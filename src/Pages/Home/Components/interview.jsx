@@ -160,7 +160,7 @@ const EarningCard = ({ job }) => (
                                 letterSpacing: "0%"
                             }}
                         >
-                            Easy Apply
+                            AI Apply
                         </Button>
                         <Button
                             variant="contained"
@@ -289,7 +289,7 @@ const Interview = () => {
                             paddingBottom: "40px",
                         }}
                     >
-                        Mock Interview by MCAI
+                        Mock Interview by CVI
                     </Typography>
 
                     <Box sx={{ minHeight: "450px", bgcolor: "#D9D9D9", borderRadius: "42px", padding: "25px" }}>

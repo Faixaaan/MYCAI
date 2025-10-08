@@ -98,7 +98,7 @@ const EarningCard = ({ job }) => (
     >
       <Box>
         <Typography sx={{ fontSize: {md:"16px",xs:"14px"}, fontWeight: "600", color: "#fff" }}>
-          Multimedia Courses with MCAI
+          Multimedia Courses with CVI
         </Typography>
         <Typography
           sx={{
@@ -160,7 +160,7 @@ const Courses = () => {
             pb: "40px",
           }}
         >
-          MCAI Courses
+          CVI Courses
         </Typography>
 
         {/* FIRST SLIDER */}

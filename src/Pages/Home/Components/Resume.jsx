@@ -47,7 +47,7 @@ const Resume = () => {
             mb: 4,
           }}
         >
-          MCAI: Your Resume, Smarter
+          CVI: Your Resume, Smarter
         </Typography>
 
         <Box className="slider-container">

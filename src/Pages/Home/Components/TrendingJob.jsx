@@ -118,7 +118,7 @@ const JobCard = ({ job }) => (
                     letterSpacing: "0%"
                 }}
             >
-                Ai Apply
+                AI Apply
             </Button>
             <Button
                 variant="contained"
@@ -154,37 +154,37 @@ const TrendingJob = () => {
         {
             id: 1,
             title: "Graphic Designer",
-            company: "CJAI",
+            company: "CVAI",
             location: "London, United Kingdom",
         },
         {
             id: 2,
             title: "Web Designer",
-            company: "CJAI",
+            company: "CVAI",
             location: "London, United Kingdom",
         },
         {
             id: 3,
             title: "Graphic Designer",
-            company: "CJAI",
+            company: "CVAI",
             location: "London, United Kingdom",
         },
         {
             id: 4,
             title: "Web Designer",
-            company: "CJAI",
+            company: "CVAI",
             location: "London, United Kingdom",
         },
         {
             id: 5,
             title: "Graphic Designer",
-            company: "CJAI",
+            company: "CVAI",
             location: "London, United Kingdom",
         },
         {
             id: 6,
             title: "Web Designer",
-            company: "CJAI",
+            company: "CVAI",
             location: "London, United Kingdom",
         },
     ];
@@ -211,7 +211,7 @@ const TrendingJob = () => {
                         paddingBottom: "20px",
                     }}
                 >
-                    Trending jobs by MCAI
+                    Trending jobs by CVI
                 </Typography>
 
                 <Box sx={{ width: '100%', typography: 'body1' }}>
