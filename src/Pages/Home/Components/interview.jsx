@@ -790,7 +790,7 @@ const Interview = () => {
 
                             }}
                         >
-                            See more jobs
+                            See more opportunities
                         </Typography>
                         <ChevronRightIcon sx={{ color: "#000" }} />
                     </Box>
