@@ -1,11 +1,11 @@
 import {
     Box, Container, Grid, Typography, Chip,
     Button, Card,
-     Stack, Tab,
+    Stack, Tab,
     CardMedia,
     CardContent,
     CardActionArea,
-    
+
 } from '@mui/material'
 import React from 'react'
 import TabContext from '@mui/lab/TabContext';
@@ -19,84 +19,22 @@ import '../Components/style.css'
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Diversity1Icon from '@mui/icons-material/Diversity1';
-const JobCard = ({ job }) => (
-    <Card
-        sx={{
-            width: {md:"440px", lg:"260px"},
-            borderRadius: "33px",
-            boxShadow: 3,
-            p: 2,
-            background: "linear-gradient(to bottom right, #f8fbff, #e9f0ff)",
-        }}
-    >
-        <CardActionArea sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
-            <CardMedia
-                component="img"
-                height="140"
-                image={job?.img}
-                alt="green iguana"
-                sx={{ borderRadius: "33px" }}
-            />
-            <CardContent sx={{ padding: "16px 5px", display: "flex", alignItems: "center" }}>
-                <Chip
-                    label="AI"
-                    size="small"
-                    sx={{
-                        backgroundColor: "#D9D9D9",
-                        color: "#fff",
-                        fontWeight: 400,
-                        borderRadius: "10px",
-                        fontSize: "16px",
-                        lineHeight: "138%",
-                        letterSpacing: "0%",
-                        padding: "20px 10px"
-                    }}
-                />
-                <Typography sx={{
-                    pl: "20px", fontSize: "16px",
-                    lineHeight: "138%",
-                    letterSpacing: "0%",
-                    fontWeight: "400",
-                    color: "#000"
-                }}>
-                    Artificial Intelligence
-                </Typography>
+import seoImage from '../../../Images/seo.png'
+import hubSpot from '../../../Images/hubstpot.png'
+import cross from '../../../Images/cross-platform.png'
+import socilaMedia from '../../../Images/socialmedia.png'
+import ThreeD from '../../../Images/3D.png'
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
-            </CardContent>
-        </CardActionArea>
+// const JobCard = ({ job }) => (
 
-        <CardContent sx={{ padding: "1px 5px", }}>
-            <Typography sx={{
-                fontSize: "16px",
-                lineHeight: "138%",
-                letterSpacing: "0%",
-                fontWeight: "400",
-                color: "#000",
-                pb: "10px"
-            }}>
-                Building AI Agent
-            </Typography>
-            <Typography sx={{
-                fontSize: "16px",
-                lineHeight: "138%",
-                letterSpacing: "0%",
-                fontWeight: "400",
-                color: "#0000007D"
-            }}>
-                Artificial Intelligence
-            </Typography>
-
-        </CardContent>
-
-
-
-    </Card>
-);
+// );
 
 const EarningCard = ({ job }) => (
     <Card
         sx={{
-            width:  {md:"440px", lg:"300px",sm:"265px"},
+            width: { md: "440px", lg: "300px", sm: "265px" },
             borderRadius: "33px",
             boxShadow: 3,
             p: 2,
@@ -111,13 +49,13 @@ const EarningCard = ({ job }) => (
                 alt="green iguana"
                 sx={{ borderRadius: "33px" }}
             />
-            <CardContent sx={{ padding: "16px 5px", display: "flex", alignItems: "center",justifyContent:"space-between" }}>
+            <CardContent sx={{ padding: "16px 5px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <Chip
-                    label="Upwork"
+                    label={job?.company}
                     size="small"
                     sx={{
-                        backgroundColor: "#D9D9D9",
-                        color: "#fff",
+                        backgroundColor: "#fff",
+                        color: "#000",
                         fontWeight: 400,
                         borderRadius: "10px",
                         fontSize: "16px",
@@ -133,11 +71,11 @@ const EarningCard = ({ job }) => (
                     fontWeight: "400",
                     color: "#000"
                 }}>
-                   UI/UX Designers
+                    {job?.title}
                 </Typography>
 
-                <Box sx={{ml:"30px"}}>
-                   <Diversity1Icon/>
+                <Box sx={{ ml: "30px" }}>
+                    <Diversity1Icon />
                 </Box>
 
             </CardContent>
@@ -145,41 +83,41 @@ const EarningCard = ({ job }) => (
 
         <CardContent sx={{ padding: "1px 5px", }}>
             <Stack direction="row" spacing={2} mt={3}>
-                        <Button
-                            variant="contained"
-                            sx={{
-                                maxWidth: "100px",
-                                flex: 1,
-                                backgroundColor: "#4b8bff",
-                                textTransform: "none",
-                                borderRadius: 2,
-                                "&:hover": { backgroundColor: "#3877ff" },
-                                fontSize: "12px",
-                                fontWeight: "400",
-                                lineHeight: "138%",
-                                letterSpacing: "0%"
-                            }}
-                        >
-                            AI Apply
-                        </Button>
-                        <Button
-                            variant="contained"
-                            sx={{
-                                flex: 1,
-                                maxWidth: "80px",
-                                backgroundColor: "#4b8bff",
-                                textTransform: "none",
-                                borderRadius: 2,
-                                "&:hover": { backgroundColor: "#3877ff" },
-                                fontSize: "12px",
-                                fontWeight: "400",
-                                lineHeight: "138%",
-                                letterSpacing: "0%"
-                            }}
-                        >
-                            Apply
-                        </Button>
-                    </Stack>
+                <Button
+                    variant="contained"
+                    sx={{
+                        maxWidth: "100px",
+                        flex: 1,
+                        backgroundColor: "#4b8bff",
+                        textTransform: "none",
+                        borderRadius: 2,
+                        "&:hover": { backgroundColor: "#3877ff" },
+                        fontSize: "12px",
+                        fontWeight: "400",
+                        lineHeight: "138%",
+                        letterSpacing: "0%"
+                    }}
+                >
+                    AI Apply
+                </Button>
+                <Button
+                    variant="contained"
+                    sx={{
+                        flex: 1,
+                        maxWidth: "80px",
+                        backgroundColor: "#4b8bff",
+                        textTransform: "none",
+                        borderRadius: 2,
+                        "&:hover": { backgroundColor: "#3877ff" },
+                        fontSize: "12px",
+                        fontWeight: "400",
+                        lineHeight: "138%",
+                        letterSpacing: "0%"
+                    }}
+                >
+                    Apply
+                </Button>
+            </Stack>
 
         </CardContent>
 
@@ -202,22 +140,22 @@ const Interview = () => {
         {
             img: image1,
             id: 1,
-            title: "Graphic Designer",
-            company: "CJAI",
+            title: "Artificial Intelligence",
+            company: "Certification",
             location: "London, United Kingdom",
         },
         {
             img: image2,
             id: 2,
-            title: "Web Designer",
-            company: "CJAI",
+            title: "Robotics Intelligence",
+            company: "Certification",
             location: "London, United Kingdom",
         },
         {
             img: image3,
             id: 3,
-            title: "Graphic Designer",
-            company: "CJAI",
+            title: "Cyber Security",
+            company: "Certification",
             location: "London, United Kingdom",
         },
 
@@ -228,46 +166,54 @@ const Interview = () => {
             img: UI,
             id: 1,
             title: "Graphic Designer",
-            company: "CJAI",
+            company: "Upwork",
             location: "London, United Kingdom",
         },
         {
-            img: UI,
+            img: ThreeD,
             id: 2,
-            title: "Web Designer",
-            company: "CJAI",
+            title: "3D Animation Jobs",
+            company: "Fiverr",
             location: "London, United Kingdom",
         },
         {
-            img: UI,
+            img: socilaMedia,
             id: 3,
-            title: "Graphic Designer",
-            company: "CJAI",
+            title: "Social Media Marketing",
+            company: "Upwork",
             location: "London, United Kingdom",
         },
         {
-            img: UI,
+            img: cross,
             id: 4,
-            title: "Graphic Designer",
-            company: "CJAI",
+            title: "Cross Platform App Development",
+            company: "Freelancer",
             location: "London, United Kingdom",
         },
         {
-            img: UI,
+            img: hubSpot,
             id: 5,
-            title: "Web Designer",
-            company: "CJAI",
+            title: "Hubspot Lead Automation",
+            company: "Fiverr",
             location: "London, United Kingdom",
         },
         {
-            img: UI,
+            img: seoImage,
             id: 6,
-            title: "Graphic Designer",
-            company: "CJAI",
+            title: "Laravel SEO Toolkit Integration",
+            company: "Upwork",
             location: "London, United Kingdom",
         },
 
     ];
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
     return (
         <>
@@ -275,7 +221,7 @@ const Interview = () => {
                 sx={{
                     minHeight: '600px',
                     background: '#D9D9D994',
-                    padding: {md:"30px",xs:"30px 0px"},
+                    padding: { md: "30px", xs: "30px 0px" },
                     pb: "50px"
                 }}
             >
@@ -283,7 +229,7 @@ const Interview = () => {
                     <Typography
                         sx={{
                             textAlign: "center",
-                            fontSize: {md:"48px",xs:"32px"},
+                            fontSize: { md: "48px", xs: "32px" },
                             lineHeight: "138%",
                             fontWeight: "600",
                             paddingBottom: "40px",
@@ -295,7 +241,7 @@ const Interview = () => {
                     <Box sx={{ minHeight: "450px", bgcolor: "#D9D9D9", borderRadius: "42px", padding: "25px" }}>
                         <Grid container spacing={2}>
                             <Grid size={{ sm: 12, md: 2.5 }}>
-                                <Box sx={{ minHeight: "100%", display: "flex", justifyContent: "center", alignItems: {md:"flex-end",sm:"center"}, flexDirection: "column" }}>
+                                <Box sx={{ minHeight: "100%", display: "flex", justifyContent: "center", alignItems: { md: "flex-end", sm: "center" }, flexDirection: "column" }}>
                                     <Typography
                                         sx={{
 
@@ -323,9 +269,9 @@ const Interview = () => {
                                         impactful MCAI business
                                         strategies.
                                     </Typography>
-                                    <Box sx={{ width: "100%",display:"flex",justifyContent:"center" }}>
-                                        <Button variant='contained'  sx={{
-                                            padding: {xs:"10px 0px",lg:"10px 0px",sm:"10px 20px"}, borderRadius: "10px", backgroundColor: "#0862DC", fontSize: "16px",
+                                    <Box sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
+                                        <Button variant='contained' sx={{
+                                            padding: { xs: "10px 0px", lg: "10px 0px", sm: "10px 20px" }, borderRadius: "10px", backgroundColor: "#0862DC", fontSize: "16px",
                                             lineHeight: "138%",
                                             fontWeight: "400",
                                             paddingBottom: "20px",
@@ -333,7 +279,7 @@ const Interview = () => {
                                             display: "flex",
                                             justifyContent: "center",
                                             alignItems: "center",
-                                             width: { xs: "100%", sm: "auto",lg:"100%" },
+                                            width: { xs: "100%", sm: "auto", lg: "100%" },
                                             fontFamily: "Roboto"
                                         }}>
                                             View all MCAI <DoubleArrowIcon sx={{ ml: "10px" }} />
@@ -341,7 +287,7 @@ const Interview = () => {
                                     </Box>
                                 </Box>
                             </Grid>
-                            <Grid size={{ sm: 12, md: 9.5 }} sx={{pt:{xs:"20px",md:"0px"}}}>
+                            <Grid size={{ sm: 12, md: 9.5 }} sx={{ pt: { xs: "20px", md: "0px" } }}>
                                 <Box sx={{}}>
                                     <TabContext value={value}>
                                         <Box sx={{ display: 'flex', justifyContent: 'flex-start', pb: "2", ml: 2.5 }}>
@@ -411,7 +357,7 @@ const Interview = () => {
 
                                         {/* === TAB ONE === */}
                                         <TabPanel value="1" sx={{ px: 0, py: 2 }}>
-                                            <Grid container spacing={2} justifyContent="space-between">
+                                            <Grid container spacing={1} justifyContent="space-between">
                                                 {jobData.map((job) => (
                                                     <Grid
                                                         key={job.id}
@@ -422,7 +368,113 @@ const Interview = () => {
                                                         display="flex"
                                                         justifyContent="space-between"
                                                     >
-                                                        <JobCard job={job} />
+                                                        <Card
+                                                            sx={{
+                                                                width: { md: "440px", lg: "270px" },
+                                                                borderRadius: "33px",
+                                                                boxShadow: 3,
+                                                                p: 2,
+                                                                background: "linear-gradient(to bottom right, #f8fbff, #e9f0ff)",
+                                                            }}
+                                                        >
+                                                            <CardActionArea sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+                                                                <CardMedia
+                                                                    component="img"
+                                                                    height="140"
+                                                                    image={job?.img}
+                                                                    alt="green iguana"
+                                                                    sx={{ borderRadius: "33px" }}
+                                                                />
+                                                                <CardContent sx={{ padding: "16px 5px", display: "flex", alignItems: "center" }}>
+                                                                    <Chip
+                                                                        label="AI"
+                                                                        size="small"
+                                                                        sx={{
+                                                                            backgroundColor: "#000",
+                                                                            color: "#fff",
+                                                                            fontWeight: 400,
+                                                                            borderRadius: "10px",
+                                                                            fontSize: "16px",
+                                                                            lineHeight: "138%",
+                                                                            letterSpacing: "0%",
+                                                                            padding: "20px 10px"
+                                                                        }}
+                                                                    />
+                                                                    <Typography sx={{
+                                                                        pl: "20px", fontSize: "16px",
+                                                                        lineHeight: "138%",
+                                                                        letterSpacing: "0%",
+                                                                        fontWeight: "400",
+                                                                        color: "#000"
+                                                                    }}>
+                                                                        {job?.title}
+                                                                    </Typography>
+
+                                                                </CardContent>
+                                                            </CardActionArea>
+                                                            <Box sx={{ display: "flex", justifyContent: "space-between",alignItems:"center" }}>
+                                                                <CardContent sx={{ padding: "1px 5px", }}>
+                                                                    <Typography sx={{
+                                                                        fontSize: "16px",
+                                                                        lineHeight: "138%",
+                                                                        letterSpacing: "0%",
+                                                                        fontWeight: "400",
+                                                                        color: "#000",
+                                                                        pb: "10px"
+                                                                    }}>
+                                                                        Building AI Agent
+                                                                    </Typography>
+                                                                    <Typography sx={{
+                                                                        fontSize: "16px",
+                                                                        lineHeight: "138%",
+                                                                        letterSpacing: "0%",
+                                                                        fontWeight: "400",
+                                                                        color: "#0000007D"
+                                                                    }}>
+                                                                        {job?.company}
+                                                                    </Typography>
+
+
+                                                                </CardContent>
+                                                                <CardContent sx={{ padding: "1px 5px", }}>
+
+
+                                                                    <div>
+                                                                        <Button
+                                                                            id="basic-button"
+                                                                            aria-controls={open ? 'basic-menu' : undefined}
+                                                                            aria-haspopup="true"
+                                                                            aria-expanded={open ? 'true' : undefined}
+                                                                            onClick={handleClick}
+                                                                            sx={{textTransform:"capitalize"}}
+                                                                            variant='contained'
+                                                                            size='small'
+                                                                        >
+                                                                            Subscription
+                                                                        </Button>
+                                                                        <Menu
+                                                                            id="basic-menu"
+                                                                            anchorEl={anchorEl}
+                                                                            open={open}
+                                                                            onClose={handleClose}
+                                                                            slotProps={{
+                                                                                list: {
+                                                                                    'aria-labelledby': 'basic-button',
+                                                                                },
+                                                                            }}
+                                                                        >
+                                                                            <MenuItem onClick={handleClose}>Regular</MenuItem>
+                                                                            <MenuItem onClick={handleClose}>Premium</MenuItem>
+                                                                          
+                                                                        </Menu>
+                                                                    </div>
+
+                                                                </CardContent>
+                                                            </Box>
+
+
+
+                                                        </Card>
                                                     </Grid>
                                                 ))}
                                             </Grid>
@@ -430,9 +482,127 @@ const Interview = () => {
 
                                         {/* === TAB TWO === */}
                                         <TabPanel value="2" sx={{ px: 0, py: 2 }}>
-                                            <Typography variant="h6" align="center">
-                                                No NHS jobs available right now.
-                                            </Typography>
+                                            <Grid container spacing={1} justifyContent="space-between">
+                                                {jobData.map((job) => (
+                                                    <Grid
+                                                        key={job.id}
+                                                        item
+                                                        xs={12}
+                                                        sm={6}
+                                                        md={3}
+                                                        display="flex"
+                                                        justifyContent="space-between"
+                                                    >
+                                                        <Card
+                                                            sx={{
+                                                                width: { md: "440px", lg: "270px" },
+                                                                borderRadius: "33px",
+                                                                boxShadow: 3,
+                                                                p: 2,
+                                                                background: "linear-gradient(to bottom right, #f8fbff, #e9f0ff)",
+                                                            }}
+                                                        >
+                                                            <CardActionArea sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+                                                                <CardMedia
+                                                                    component="img"
+                                                                    height="140"
+                                                                    image={job?.img}
+                                                                    alt="green iguana"
+                                                                    sx={{ borderRadius: "33px" }}
+                                                                />
+                                                                <CardContent sx={{ padding: "16px 5px", display: "flex", alignItems: "center" }}>
+                                                                    <Chip
+                                                                        label="AI"
+                                                                        size="small"
+                                                                        sx={{
+                                                                            backgroundColor: "#000",
+                                                                            color: "#fff",
+                                                                            fontWeight: 400,
+                                                                            borderRadius: "10px",
+                                                                            fontSize: "16px",
+                                                                            lineHeight: "138%",
+                                                                            letterSpacing: "0%",
+                                                                            padding: "20px 10px"
+                                                                        }}
+                                                                    />
+                                                                    <Typography sx={{
+                                                                        pl: "20px", fontSize: "16px",
+                                                                        lineHeight: "138%",
+                                                                        letterSpacing: "0%",
+                                                                        fontWeight: "400",
+                                                                        color: "#000"
+                                                                    }}>
+                                                                        {job?.title}
+                                                                    </Typography>
+
+                                                                </CardContent>
+                                                            </CardActionArea>
+                                                            <Box sx={{ display: "flex", justifyContent: "space-between",alignItems:"center" }}>
+                                                                <CardContent sx={{ padding: "1px 5px", }}>
+                                                                    <Typography sx={{
+                                                                        fontSize: "16px",
+                                                                        lineHeight: "138%",
+                                                                        letterSpacing: "0%",
+                                                                        fontWeight: "400",
+                                                                        color: "#000",
+                                                                        pb: "10px"
+                                                                    }}>
+                                                                        Building AI Agent
+                                                                    </Typography>
+                                                                    <Typography sx={{
+                                                                        fontSize: "16px",
+                                                                        lineHeight: "138%",
+                                                                        letterSpacing: "0%",
+                                                                        fontWeight: "400",
+                                                                        color: "#0000007D"
+                                                                    }}>
+                                                                        {job?.company}
+                                                                    </Typography>
+
+
+                                                                </CardContent>
+                                                                <CardContent sx={{ padding: "1px 5px", }}>
+
+
+                                                                    <div>
+                                                                        <Button
+                                                                            id="basic-button"
+                                                                            aria-controls={open ? 'basic-menu' : undefined}
+                                                                            aria-haspopup="true"
+                                                                            aria-expanded={open ? 'true' : undefined}
+                                                                            onClick={handleClick}
+                                                                            sx={{textTransform:"capitalize"}}
+                                                                            variant='contained'
+                                                                            size='small'
+                                                                        >
+                                                                            Subscription
+                                                                        </Button>
+                                                                        <Menu
+                                                                            id="basic-menu"
+                                                                            anchorEl={anchorEl}
+                                                                            open={open}
+                                                                            onClose={handleClose}
+                                                                            slotProps={{
+                                                                                list: {
+                                                                                    'aria-labelledby': 'basic-button',
+                                                                                },
+                                                                            }}
+                                                                        >
+                                                                            <MenuItem onClick={handleClose}>Regular</MenuItem>
+                                                                            <MenuItem onClick={handleClose}>Premium</MenuItem>
+                                                                          
+                                                                        </Menu>
+                                                                    </div>
+
+                                                                </CardContent>
+                                                            </Box>
+
+
+
+                                                        </Card>
+                                                    </Grid>
+                                                ))}
+                                            </Grid>
                                         </TabPanel>
                                         {/* === TAB Three === */}
                                         <TabPanel value="3" sx={{ px: 0, py: 2 }}>
@@ -447,7 +617,115 @@ const Interview = () => {
                                                         display="flex"
                                                         justifyContent="space-between"
                                                     >
-                                                        <JobCard job={job} />
+                                                        <Card
+                                                            sx={{
+                                                                width: { md: "440px", lg: "270px" },
+                                                                borderRadius: "33px",
+                                                                boxShadow: 3,
+                                                                p: 2,
+                                                                background: "linear-gradient(to bottom right, #f8fbff, #e9f0ff)",
+                                                            }}
+                                                        >
+                                                            <CardActionArea sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+                                                                <CardMedia
+                                                                    component="img"
+                                                                    height="140"
+                                                                    image={job?.img}
+                                                                    alt="green iguana"
+                                                                    sx={{ borderRadius: "33px" }}
+                                                                />
+                                                                <CardContent sx={{ padding: "16px 5px", display: "flex", alignItems: "center" }}>
+                                                                    <Chip
+                                                                        label="AI"
+                                                                        size="small"
+                                                                        sx={{
+                                                                            backgroundColor: "#000",
+                                                                            color: "#fff",
+                                                                            fontWeight: 400,
+                                                                            borderRadius: "10px",
+                                                                            fontSize: "16px",
+                                                                            lineHeight: "138%",
+                                                                            letterSpacing: "0%",
+                                                                            padding: "20px 10px"
+                                                                        }}
+                                                                    />
+                                                                    <Typography sx={{
+                                                                        pl: "20px", fontSize: "16px",
+                                                                        lineHeight: "138%",
+                                                                        letterSpacing: "0%",
+                                                                        fontWeight: "400",
+                                                                        color: "#000"
+                                                                    }}>
+                                                                        {job?.title}
+                                                                    </Typography>
+
+                                                                </CardContent>
+                                                            </CardActionArea>
+                                                            <Box sx={{ display: "flex", justifyContent: "space-between",alignItems:"center" }}>
+                                                                <CardContent sx={{ padding: "1px 5px", }}>
+                                                                    <Typography sx={{
+                                                                        fontSize: "16px",
+                                                                        lineHeight: "138%",
+                                                                        letterSpacing: "0%",
+                                                                        fontWeight: "400",
+                                                                        color: "#000",
+                                                                        pb: "10px"
+                                                                    }}>
+                                                                        Building AI Agent
+                                                                    </Typography>
+                                                                    <Typography sx={{
+                                                                        fontSize: "16px",
+                                                                        lineHeight: "138%",
+                                                                        letterSpacing: "0%",
+                                                                        fontWeight: "400",
+                                                                        color: "#0000007D"
+                                                                    }}>
+                                                                        {job?.company}
+                                                                    </Typography>
+
+
+                                                                </CardContent>
+                                                                <CardContent sx={{ padding: "1px 5px", }}>
+
+
+                                                                    <div>
+                                                                        <Button
+                                                                            id="basic-button"
+                                                                            aria-controls={open ? 'basic-menu' : undefined}
+                                                                            aria-haspopup="true"
+                                                                            aria-expanded={open ? 'true' : undefined}
+                                                                            onClick={handleClick}
+                                                                            sx={{textTransform:"capitalize"}}
+                                                                            variant='contained'
+                                                                            size='small'
+                                                                        >
+                                                                            Subscription
+                                                                        </Button>
+                                                                        <Menu
+                                                                            id="basic-menu"
+                                                                            anchorEl={anchorEl}
+                                                                            open={open}
+                                                                             disableScrollLock 
+                                                                              container={document.getElementById('card-root')} 
+                                                                            onClose={handleClose}
+                                                                            slotProps={{
+                                                                                list: {
+                                                                                    'aria-labelledby': 'basic-button',
+                                                                                },
+                                                                            }}
+                                                                        >
+                                                                            <MenuItem onClick={handleClose}>Regular</MenuItem>
+                                                                            <MenuItem onClick={handleClose}>Premium</MenuItem>
+                                                                          
+                                                                        </Menu>
+                                                                    </div>
+
+                                                                </CardContent>
+                                                            </Box>
+
+
+
+                                                        </Card>
                                                     </Grid>
                                                 ))}
                                             </Grid>
@@ -470,7 +748,7 @@ const Interview = () => {
                             My Earnings
                         </Typography>
 
-                        <Grid container spacing={3} justifyContent="space-around" sx={{ padding: {sm:"0px 50px", xs:"0px 20px"} }}>
+                        <Grid container spacing={3} justifyContent="space-around" sx={{ padding: { sm: "0px 50px", xs: "0px 20px" } }}>
                             {earningsData.map((job) => (
                                 <Grid
                                     key={job.id}
@@ -493,11 +771,11 @@ const Interview = () => {
                             justifyContent: "center",
                             alignItems: "center",
                             cursor: "pointer",
-                            borderBottom: "2px solid #000", 
+                            borderBottom: "2px solid #000",
                             width: "fit-content",           // keeps underline to content width
-                            mx: "auto",   
-                             pt:"30px"                 
-                            
+                            mx: "auto",
+                            pt: "30px"
+
                         }}
                     >
                         <Typography
@@ -509,10 +787,10 @@ const Interview = () => {
                                 fontWeight: "400",
                                 lineHeight: "138%",
                                 letterSpacing: "0%",
-                               
+
                             }}
                         >
-                            See more jobs 
+                            See more jobs
                         </Typography>
                         <ChevronRightIcon sx={{ color: "#000" }} />
                     </Box>

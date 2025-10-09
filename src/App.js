@@ -5,6 +5,7 @@ import Home from './Pages/Home';
 import Footer from './Layout/Footer';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import Jobs from './Pages/Jobs';
 
 
 
@@ -15,6 +16,7 @@ function App() {
         <Navbar/>
       <Routes>
         <Route path='/' element={<Home/>}/>
+        {/* <Route path='/my-jobs' element={<Jobs/>}/> */}
       </Routes>
       <Footer/>
       </BrowserRouter>

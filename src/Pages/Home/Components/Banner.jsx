@@ -1,8 +1,10 @@
 import React from 'react';
-import { Box, Button, TextField, Typography, InputAdornment } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
+import { Box, Button, TextField, Typography, InputAdornment, IconButton } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 import bannerImg from '../../../Images/banner.png';
 import PhonebannerImg from '../../../Images/phoneBanner.png';
+import SendIcon from "@mui/icons-material/Send";
+import MicIcon from "@mui/icons-material/Mic";
 
 const Banner = () => {
     return (
@@ -10,10 +12,10 @@ const Banner = () => {
             sx={{
                 position: 'relative',
                 width: '100%',
-                minHeight: {md:'810px',xs:"500px"},
+                minHeight: { md: '810px', xs: "500px" },
                 backgroundImage: {
                     xs: `url(${PhonebannerImg})`,
-                    md: `url(${bannerImg})`,      
+                    md: `url(${bannerImg})`,
                 },
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
@@ -26,15 +28,15 @@ const Banner = () => {
             <Box
                 sx={{
                     position: 'absolute', // allows free positioning over the banner
-                    top: {md:'77%',xs:"77%"},  // adjust this to move vertically
-                    left: {md:'70%',xs:"50%"}, // adjust this to move horizontally
+                    top: { md: '77%', xs: "77%" },  // adjust this to move vertically
+                    left: { md: '70%', xs: "50%" }, // adjust this to move horizontally
                     transform: 'translate(-50%, -50%)', // center the box at the position
 
                     padding: 3,
                     borderRadius: 3,
                     maxHeight: "70px",
 
-                    width: {md:'90%',xs:"90%"},
+                    width: { md: '70%', xs: "90%" },
                     maxWidth: 700,
                     textAlign: 'center',
                     zIndex: 2,
@@ -42,62 +44,90 @@ const Banner = () => {
             >
 
 
-                <Box sx={{ display: 'flex', alignItems: 'center', backgroundColor: "#0862DC", minHeight: {md:"70px",xs:"60px"}, padding: "0px 13px", borderRadius: "32px" }}>
+                <Box
+                    sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        minHeight: { md: "70px", xs: "60px" },
+                        padding: "0px 13px",
+                        borderRadius: "32px",
+                    }}
+                >
                     <TextField
                         variant="outlined"
-                        placeholder="AI enabled jobs"
+                        placeholder="Ask Anything...."
                         fullWidth
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
-                                    <SearchIcon color="action" />
+                                    {/* ➕ Icon with light background */}
+                                    <Box
+                                        sx={{
+                                            backgroundColor: "#F4F4F4",
+                                            borderRadius: "50%",
+                                            width: 34,
+                                            height: 34,
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "center",
+                                            mr: 1,
+                                        }}
+                                    >
+                                        <AddIcon sx={{ color: "#000", fontSize: 20,cursor:"pointer" }} />
+                                    </Box>
+                                </InputAdornment>
+                            ),
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    {/* 🎙️ Mic Icon */}
+                                    <IconButton
+                                        sx={{
+                                            color: "#000",
+                                            mr: 1,
+                                        }}
+                                    >
+                                        <MicIcon />
+                                    </IconButton>
+
+                                    {/* 🟣 Gradient Send Button */}
+                                    <IconButton
+                                        sx={{
+                                            background:
+                                                "linear-gradient(90deg, #A334FA 0%, #FF7A00 100%)",
+                                            color: "#fff",
+                                            borderRadius: "50%",
+                                            width: 36,
+                                            height: 36,
+                                            "&:hover": {
+                                                opacity: 0.9,
+                                            },
+                                            mr:2
+                                        }}
+                                    >
+                                        <SendIcon sx={{ fontSize: 20 }} />
+                                    </IconButton>
                                 </InputAdornment>
                             ),
                             sx: {
-                                height: {md:45,xs:35},
+                                height: { md: 55, xs: 55 },
                                 backgroundColor: "#fff",
-                                borderRadius: '30px',
-                                '& .MuiOutlinedInput-notchedOutline': {
-                                    border: 'none',
+                                borderRadius: "30px",
+                                "& .MuiOutlinedInput-notchedOutline": {
+                                    border: "none",
                                 },
+                                padding:"5px 20px"
                             },
                         }}
                         sx={{
-                            bgcolor: 'transparent',
-                            '& .MuiOutlinedInput-root': {
+                            bgcolor: "transparent",
+                            "& .MuiOutlinedInput-root": {
                                 paddingRight: 0,
                             },
                         }}
                     />
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        sx={{
-                            ml: 2,
-                            borderRadius: '30px',
-                            height: {md:45, xs:35},
-                            backgroundColor: "#fff",
-                            color: "#3246C4",
-                            fontSize: {md:"13px",xs:"11px"},
-                            textTransform: "capitalize",
-                            width: "118px",
-                            whiteSpace: 'nowrap',       // Prevent text wrap
-                            overflow: 'hidden',         // Hide overflow if any
-                            textOverflow: 'ellipsis',
-                            lineHeight: "138%",
-
-                            fontWeight: "600"
-
-                        }}
-                    >
-                        Search Jobs
-                    </Button>
-
                 </Box>
 
-                <Typography sx={{ mt: 2, fontWeight: 600, fontSize: {md:"20px",xs:"15px"}, lineHeight: "138%", letterSpacing: "0%", color: "#fff" }}>
-                    Search 119,044 new jobs - 3,408 added in the last 24 hours
-                </Typography>
+
             </Box>
         </Box>
     );

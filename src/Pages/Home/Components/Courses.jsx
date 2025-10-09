@@ -14,6 +14,11 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import UI from "../../../Images/Course.png";
+import Excel from '../../../Images/Aii.png'
+import IBM  from '../../../Images/IBM.png'
+import promptEngineer  from '../../../Images/prompt-engneer.png'
+import Excell  from '../../../Images/Excel.png'
+import Python  from '../../../Images/Python.png'
 import StarIcon from "@mui/icons-material/Star";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
@@ -98,7 +103,7 @@ const EarningCard = ({ job }) => (
     >
       <Box>
         <Typography sx={{ fontSize: {md:"16px",xs:"14px"}, fontWeight: "600", color: "#fff" }}>
-          Multimedia Courses with CVI
+          {job?.title}
         </Typography>
         <Typography
           sx={{
@@ -108,7 +113,7 @@ const EarningCard = ({ job }) => (
             color: "#fff",
           }}
         >
-          Social Media Marketing
+          {job?.subtitle}
         </Typography>
       </Box>
 
@@ -116,7 +121,7 @@ const EarningCard = ({ job }) => (
         <Typography
           sx={{ fontSize: {md:"24px",xs:"18px"}, fontWeight: "600", color: "#F5DE5D" }}
         >
-          $49.88
+          {job?.rate}
         </Typography>
       </Box>
     </CardContent>
@@ -141,12 +146,14 @@ const Courses = () => {
   };
 
   const earningsData = [
-    { img: UI, id: 1, title: "Graphic Designer" },
-    { img: UI, id: 2, title: "Web Designer" },
-    { img: UI, id: 3, title: "Graphic Designer" },
-    { img: UI, id: 4, title: "UI/UX Designer" },
-    { img: UI, id: 5, title: "Web Designer" },
-    { img: UI, id: 6, title: "Product Designer" },
+     { img: Excel, id: 2, title: "Navigating Generative AI",subtitle:"Beginner",rate:"$30,00" },
+    
+   
+    { img: IBM, id: 3, title: "IBM Data Sceience",subtitle:"Beginner",rate:"$20,68"},
+    { img: promptEngineer, id: 4, title: "Prompt Engineer", subtitle:"Beginner",rate:"$26,82"},
+    { img: UI, id: 1, title: "Multimedia Courses with CVI",subtitle:"Beginner",rate:"$41,88" },
+    { img: Excell, id: 5, title: "Excel Skills For Business", subtitle:"Beginner",rate:"$27,13" },
+    { img: Python, id: 6,  title: "Python for Everybody",subtitle:"Beginner",rate:"$24,88" },
   ];
 
   return (

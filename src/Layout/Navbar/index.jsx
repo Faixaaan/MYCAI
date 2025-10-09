@@ -1,8 +1,20 @@
-import { Box, Button, Container, Typography, IconButton, Drawer, List, ListItem, ListItemButton, ListItemText } from '@mui/material';
-import React, { useState, useEffect } from 'react';
-import '../Navbar/index.css';
-import NotificationAddIcon from '@mui/icons-material/NotificationAdd';
-import MenuIcon from '@mui/icons-material/Menu';
+import {
+  Box,
+  Button,
+  Container,
+  Typography,
+  IconButton,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+} from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { NavLink } from "react-router-dom";
+import "../Navbar/index.css";
+import NotificationAddIcon from "@mui/icons-material/NotificationAdd";
+import MenuIcon from "@mui/icons-material/Menu";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -17,17 +29,19 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Menu items with paths
   const menuItems = [
-    "My Jobs",
-    "My CV",
-    "My Courses / Certifications",
-    "My Mock Interview",
-    "My Earnings",
+    { label: "My Jobs", path: "/my-jobs" },
+    { label: "My CV", path: "/my-cv" },
+    { label: "My Courses / Certifications", path: "/my-courses" },
+    { label: "My Mock Interview", path: "/my-mock-interview" },
+    { label: "My Earnings", path: "/my-earnings" },
+    { label: "CVI Wallet", path: "/cvi-wallet" },
   ];
 
   return (
     <>
-      {/*  Fixed Navbar */}
+      {/* Fixed Navbar */}
       <Box
         sx={{
           position: "fixed",
@@ -45,16 +59,25 @@ const Navbar = () => {
         }}
       >
         <Container maxWidth="lg">
-          <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
             {/* Logo */}
             <Box>
               <Typography
+                component={NavLink}
+                to="/"
                 sx={{
                   color: "#FF8014",
                   fontSize: "24px",
                   fontWeight: "700",
                   fontFamily: "Montserrat",
                   lineHeight: "100%",
+                  textDecoration: "none",
                 }}
               >
                 MYCVI.AI
@@ -74,18 +97,19 @@ const Navbar = () => {
               >
                 {menuItems.map((item, index) => (
                   <li key={index} style={{ listStyle: "none", fontFamily: "Montserrat" }}>
-                    <a
-                      href="#"
-                      style={{
+                    <NavLink
+                      to={item.path}
+                      style={({ isActive }) => ({
                         textDecoration: "none",
                         padding: "0px 8px",
                         fontSize: "15px",
                         fontWeight: "500",
-                        color: "#0862DC",
-                      }}
+                        color: isActive ? "#FF8014" : "#0862DC",
+                        transition: "color 0.2s",
+                      })}
                     >
-                      {item}
-                    </a>
+                      {item.label}
+                    </NavLink>
                   </li>
                 ))}
               </ul>
@@ -95,6 +119,8 @@ const Navbar = () => {
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               <Button
                 variant="text"
+                component={NavLink}
+                to="/signin"
                 sx={{
                   border: "1px solid #FF8014",
                   borderRadius: "10px",
@@ -102,16 +128,17 @@ const Navbar = () => {
                   fontSize: "15px",
                   fontWeight: "500",
                   color: "#0862DC",
-                  padding: "10px 15px",
+                  padding: "5px 15px",
+                  textTransform: "none",
                   display: { xs: "none", sm: "inline-flex" },
                 }}
               >
                 Sign up / Sign in
               </Button>
+{/* 
+              <NotificationAddIcon sx={{ color: "#0862DC" }} /> */}
 
-              <NotificationAddIcon sx={{ color: "#0862DC" }} />
-
-              {/* Mobile Menu */}
+              {/* Mobile Menu Button */}
               <IconButton
                 onClick={() => setOpen(true)}
                 sx={{ display: { xs: "flex", md: "none" }, color: "#0862DC" }}
@@ -123,29 +150,49 @@ const Navbar = () => {
         </Container>
       </Box>
 
-      {/*  Add top margin so content doesn't hide behind navbar */}
+      {/* Add top margin so content doesn't hide behind navbar */}
       <Box sx={{ height: { sm: "87px", xs: "60px" } }} />
 
       {/* Drawer for Mobile/Tablet */}
-      <Drawer anchor="right" open={open} onClose={() => setOpen(false)} sx={{ zIndex: "1400" }}>
+      <Drawer
+        anchor="right"
+        open={open}
+        onClose={() => setOpen(false)}
+        sx={{ zIndex: "1400" }}
+      >
         <Box sx={{ width: 250, p: 2 }}>
           <Typography
+            component={NavLink}
+            to="/"
+            onClick={() => setOpen(false)}
             sx={{
               color: "#FF8014",
               fontSize: "22px",
               fontWeight: "700",
               fontFamily: "Montserrat",
               mb: 2,
+              textDecoration: "none",
+              display: "inline-block",
             }}
           >
             MYCVI.AI
           </Typography>
+
           <List>
             {menuItems.map((item, index) => (
               <ListItem key={index} disablePadding>
-                <ListItemButton onClick={() => setOpen(false)}>
+                <ListItemButton
+                  component={NavLink}
+                  to={item.path}
+                  onClick={() => setOpen(false)}
+                  sx={{
+                    "&.active .MuiListItemText-primary": {
+                      color: "#FF8014",
+                    },
+                  }}
+                >
                   <ListItemText
-                    primary={item}
+                    primary={item.label}
                     primaryTypographyProps={{
                       fontFamily: "Montserrat",
                       fontSize: "15px",
@@ -157,8 +204,12 @@ const Navbar = () => {
               </ListItem>
             ))}
           </List>
+
           <Button
             variant="outlined"
+            component={NavLink}
+            to="/signin"
+            onClick={() => setOpen(false)}
             sx={{
               mt: 2,
               border: "1px solid #FF8014",

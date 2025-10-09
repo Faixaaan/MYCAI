@@ -11,6 +11,8 @@ import {
     Stack,
     Grid,
     Tab,
+    TextField,
+    InputAdornment
 } from '@mui/material';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
@@ -19,13 +21,14 @@ import { LocationOn, Business, BookmarkBorder } from "@mui/icons-material";
 import BeenhereIcon from '@mui/icons-material/Beenhere';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Chatbot from './Chatbot';
+import SearchIcon from '@mui/icons-material/Search';
 
 // ----------- Job Card Component -----------
 const JobCard = ({ job }) => (
     <Card
         sx={{
             minWidth: { md: "330px", lg: "320px", xs: "304px" },
-          
+
             borderRadius: 3,
             boxShadow: 3,
             p: 2,
@@ -211,8 +214,73 @@ const TrendingJob = () => {
                         paddingBottom: "20px",
                     }}
                 >
-                  CVI Your AI Jobs Finder
+                    CVI Your AI Jobs Finder
                 </Typography>
+
+
+                <Box sx={{ display: "flex", justifyContent: "center" }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', backgroundColor: "#0862DC", minHeight: { md: "70px", xs: "60px" }, padding: "0px 13px", borderRadius: "32px", width: { md: "60%", xs: "100%" } }}>
+                        <TextField
+                            variant="outlined"
+                            placeholder="AI enabled jobs"
+                            fullWidth
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <SearchIcon color="action" />
+                                    </InputAdornment>
+                                ),
+                                sx: {
+                                    height: { md: 45, xs: 35 },
+                                    backgroundColor: "#fff",
+                                    borderRadius: '30px',
+                                    '& .MuiOutlinedInput-notchedOutline': {
+                                        border: 'none',
+                                    },
+
+                                },
+                            }}
+                            sx={{
+                                bgcolor: 'transparent',
+                                '& .MuiOutlinedInput-root': {
+                                    paddingRight: 0,
+                                },
+                            }}
+                        />
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            sx={{
+                                ml: 2,
+                                borderRadius: '30px',
+                                height: { md: 45, xs: 35 },
+                                backgroundColor: "#fff",
+                                color: "#3246C4",
+                                fontSize: { md: "13px", xs: "11px" },
+                                textTransform: "capitalize",
+                                width: "118px",
+                                whiteSpace: 'nowrap',       // Prevent text wrap
+                                overflow: 'hidden',         // Hide overflow if any
+                                textOverflow: 'ellipsis',
+                                lineHeight: "138%",
+
+                                fontWeight: "600"
+
+                            }}
+                        >
+                            Search Jobs
+                        </Button>
+
+                    </Box>
+                </Box>
+               
+                    <Typography sx={{ mt: 2, fontWeight: 600, fontSize: { md: "20px", xs: "15px" }, lineHeight: "138%", letterSpacing: "0%", color: "#000", textAlign: "center", mb: "30px", padding: "15px 20px", width: "100%" }}>
+                        Search 119,044 new jobs - 3,408 added in the last 24 hours
+                    </Typography>
+                
+
+
+
 
                 <Box sx={{ width: '100%', typography: 'body1' }}>
                     <TabContext value={value}>
@@ -312,7 +380,7 @@ const TrendingJob = () => {
                                 letterSpacing: "0%",
                             }}
                         >
-                            See more sectors
+                            See more Jobs
                         </Typography>
                         <ChevronRightIcon sx={{ color: "#fff" }} />
                     </Box>

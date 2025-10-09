@@ -70,6 +70,8 @@ const Footer = () => {
                                     <li style={{ listStyle: "none", paddingBottom: "10px" }}><a href="" style={{ textDecoration: "none", fontSize: "18px", color: "#fff", fontWeight: "400" }}>My CV</a></li>
                                     <li style={{ listStyle: "none", paddingBottom: "10px" }}><a href="" style={{ textDecoration: "none", fontSize: "18px", color: "#fff", fontWeight: "400" }}>My Courses</a></li>
                                     <li style={{ listStyle: "none", paddingBottom: "10px" }}><a href="" style={{ textDecoration: "none", fontSize: "18px", color: "#fff", fontWeight: "400" }}>My Earning</a></li>
+                                      <li style={{ listStyle: "none", paddingBottom: "10px" }}><a href="" style={{ textDecoration: "none", fontSize: "18px", color: "#fff", fontWeight: "400" }}>Refund Policy</a></li>
+                                      <li style={{ listStyle: "none", paddingBottom: "10px" }}><a href="" style={{ textDecoration: "none", fontSize: "18px", color: "#fff", fontWeight: "400" }}>Data Protection Policy</a></li>
 
                                 </ul>
 
