@@ -101,11 +101,13 @@ const Navbar = () => {
                       to={item.path}
                       style={({ isActive }) => ({
                         textDecoration: "none",
-                        padding: "0px 8px",
+                        padding: isActive? "8px 12px" : "0px 8px",
                         fontSize: "15px",
                         fontWeight: "500",
-                        color: isActive ? "#FF8014" : "#0862DC",
+                        color: isActive ? "#fff" : "#0862DC",
+                        backgroundColor:isActive ? "#FF8014" : "#fff",
                         transition: "color 0.2s",
+                      borderRadius:isActive?"10px":"0px"
                       })}
                     >
                       {item.label}
