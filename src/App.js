@@ -6,6 +6,7 @@ import Footer from './Layout/Footer';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Jobs from './Pages/Jobs';
+import Wallet from './Pages/Wallet';
 
 
 
@@ -17,6 +18,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home/>}/>
         {/* <Route path='/my-jobs' element={<Jobs/>}/> */}
+         <Route path='/cvi-wallet' element={<Wallet/>}/>
       </Routes>
       <Footer/>
       </BrowserRouter>
