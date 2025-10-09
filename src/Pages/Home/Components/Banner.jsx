@@ -28,7 +28,7 @@ const Banner = () => {
             <Box
                 sx={{
                     position: 'absolute', // allows free positioning over the banner
-                    top: { md: '77%', xs: "77%" },  // adjust this to move vertically
+                    top: { md: '77%', xs: "92%" },  // adjust this to move vertically
                     left: { md: '70%', xs: "50%" }, // adjust this to move horizontally
                     transform: 'translate(-50%, -50%)', // center the box at the position
 
@@ -48,14 +48,14 @@ const Banner = () => {
                     sx={{
                         display: "flex",
                         alignItems: "center",
-                        minHeight: { md: "70px", xs: "60px" },
+                        minHeight: { md: "70px", xs: "50px" },
                         padding: "0px 13px",
                         borderRadius: "32px",
                     }}
                 >
                     <TextField
                         variant="outlined"
-                        placeholder="Ask Anything...."
+                        placeholder="Chat CVI..."
                         fullWidth
                         InputProps={{
                             startAdornment: (
@@ -109,13 +109,13 @@ const Banner = () => {
                                 </InputAdornment>
                             ),
                             sx: {
-                                height: { md: 55, xs: 55 },
+                                height: { md: 55, xs: 45 },
                                 backgroundColor: "#fff",
                                 borderRadius: "30px",
                                 "& .MuiOutlinedInput-notchedOutline": {
                                     border: "none",
                                 },
-                                padding:"5px 20px"
+                                padding:{md:"5px 20px",xs:"3px 20px"}
                             },
                         }}
                         sx={{
