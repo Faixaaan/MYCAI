@@ -157,37 +157,37 @@ const TrendingJob = () => {
         {
             id: 1,
             title: "Data Analyst",
-            company: "CVAI",
+            company: "CVI",
             location: "London, United Kingdom",
         },
         {
             id: 2,
             title: "Business Analyst",
-            company: "CVAI",
+            company: "CVI",
             location: "London, United Kingdom",
         },
         {
             id: 3,
             title: "Cyber Security",
-            company: "CVAI",
+            company: "CVI",
             location: "London, United Kingdom",
         },
         {
             id: 4,
             title: "Solution Architect",
-            company: "CVAI",
+            company: "CVI",
             location: "London, United Kingdom",
         },
         {
             id: 5,
             title: "Graphic Designer",
-            company: "CVAI",
+            company: "CVI",
             location: "London, United Kingdom",
         },
         {
             id: 6,
             title: "Full Stack Developer",
-            company: "CVAI",
+            company: "CVI",
             location: "London, United Kingdom",
         },
     ];

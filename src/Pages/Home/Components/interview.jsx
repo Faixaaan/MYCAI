@@ -253,7 +253,7 @@ const Interview = () => {
                                         }}
                                     >
                                         Get started with
-                                        MCAI
+                                        CVI
                                     </Typography>
                                     <Typography
                                         sx={{
@@ -266,7 +266,7 @@ const Interview = () => {
                                         }}
                                     >
                                         Identify, develop, and execute
-                                        impactful MCAI business
+                                        impactful CVI business
                                         strategies.
                                     </Typography>
                                     <Box sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
@@ -282,7 +282,7 @@ const Interview = () => {
                                             width: { xs: "100%", sm: "auto", lg: "100%" },
                                             fontFamily: "Roboto"
                                         }}>
-                                            View all MCAI <DoubleArrowIcon sx={{ ml: "10px" }} />
+                                            View all CVI <DoubleArrowIcon sx={{ ml: "10px" }} />
                                         </Button>
                                     </Box>
                                 </Box>
