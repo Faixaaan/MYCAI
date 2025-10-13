@@ -17,6 +17,7 @@ const Chatbot = () => {
     const [open, setOpen] = useState(false);
     const [messages, setMessages] = useState([
         { text: "Hi there! Welcome we're here to help.", sender: "bot" }
+
     ]);
     const [input, setInput] = useState("");
     const messagesEndRef = useRef(null);
@@ -60,6 +61,15 @@ const Chatbot = () => {
 
     return (
         <>
+
+
+
+
+
+
+
+
+        
             {/* Chatbox */}
             <Fade in={open} timeout={300}>
                 <Box 
@@ -70,6 +80,9 @@ const Chatbot = () => {
                         zIndex: 9999 
                     }}
                 >
+
+
+
                     <Paper
                         elevation={16}
                         sx={{
@@ -264,11 +277,21 @@ const Chatbot = () => {
                         </Box>
                     </Paper>
                 </Box>
+
+
+
+
+
+
+
+
+
             </Fade>
 
             {/* Chatbot Icon */}
             <Fade in={true} timeout={300}>
-                <Box
+                 
+                 <Box
                     onClick={toggleChat}
                     sx={{
                         position: "fixed",

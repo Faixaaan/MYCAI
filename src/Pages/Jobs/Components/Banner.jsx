@@ -9,6 +9,7 @@ import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import discover from '../../../Images/discover.png'
 
 const Banner = () => {
 
@@ -216,125 +217,143 @@ const Banner = () => {
                             alignItems: "center",
                         }}
                     >
-                        <Container maxWidth="lg">
-                            <Grid
-                                container
-                                spacing={0}
+                        <Container
+                            maxWidth="lg"
+                            sx={{
+                                mt: 6,
+                                mb: 6,
+                            }}
+                        >
+                            <Box
                                 sx={{
-                                    borderRadius: "25px",
-                                    overflow: "hidden",
-                                    background: "linear-gradient(90deg, #cce0ff 0%, #0862DC 100%)",
-                                    minHeight: "450px",
+                                    position: "relative",
+                                    borderRadius: "30px",
+                                    background: "linear-gradient(to bottom, #cce0ff 0%, #0862DC 100%)",
+                                    minHeight: { xs: "520px", md: "370px" },
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "space-between",
+                                    overflow: "visible",
+                                    px: { xs: 2, md: 4 },
+                                    py: { xs: 4, md: 4 },
                                 }}
                             >
                                 {/* LEFT SIDE */}
-                                <Grid
-                                    item
-                                    xs={12}
-                                    md={5}
+                                <Box
                                     sx={{
                                         display: "flex",
                                         flexDirection: "column",
                                         justifyContent: "center",
-                                        alignItems: "center",
-                                        textAlign: "center",
+                                        alignItems: { xs: "center", md: "flex-start" },
                                         color: "#fff",
-                                        p: { md: 5, xs: 3 },
+                                        textAlign: { xs: "center", md: "left" },
+                                        pl: { md: 6 },
                                     }}
                                 >
                                     <Box
                                         component="img"
-                                        src=''
+                                        src={discover}
                                         alt="Discover Jobs"
-                                        sx={{
-                                            width: "120px",
-                                            height: "auto",
-                                            mb: 2,
-                                        }}
+                                        sx={{ width: '123px', mb: 2 }}
                                     />
                                     <Typography
                                         sx={{
-                                            fontSize: { md: "28px", xs: "22px" },
-                                            fontWeight: "700",
+                                            fontSize: { md: "26px", xs: "20px" },
+                                            fontWeight: 700,
                                             fontFamily: "Montserrat",
+                                            mb: 1,
                                         }}
                                     >
-                                        Discover jobs across popular roles
+                                        Discover jobs <br /> across popular roles
                                     </Typography>
                                     <Typography
                                         sx={{
-                                            fontSize: { md: "16px", xs: "14px" },
-                                            fontWeight: "400",
+                                            fontSize: { md: "15px", xs: "13px" },
+                                            fontWeight: 400,
                                             fontFamily: "Montserrat",
-                                            mt: 1,
+                                            maxWidth: "280px",
                                         }}
                                     >
                                         Select a role and we'll show you relevant jobs for it!
                                     </Typography>
-                                </Grid>
+                                </Box>
 
-                                {/* RIGHT SIDE */}
-                                <Grid
-                                    item
-                                    xs={12}
-                                    md={7}
+                                {/* RIGHT SIDE FLOATING CARD */}
+                                <Box
                                     sx={{
+                                        position: "absolute",
+                                        top: "50%",
+                                        right: { md: "50px", xs: "50%" },
+                                        transform: {
+                                            md: "translateY(-50%)",
+                                            xs: "translate(50%, -50%)",
+                                        },
                                         backgroundColor: "#fff",
-                                        borderRadius: { md: "0 25px 25px 0", xs: "25px" },
-                                        p: { md: 4, xs: 3 },
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
+                                        borderRadius: "25px",
+                                        boxShadow: "0px 6px 18px rgba(0,0,0,0.1)",
+                                        width: { xs: "90%", md: "380px" },
+                                        height: { xs: "auto", md: "450px" }, // smaller height
+                                        py: 3,
+                                        px: 3,
                                     }}
                                 >
-                                    <Grid container spacing={2}>
+                                    {/* Force exactly 2 cards per row */}
+                                    <Grid
+                                        container
+                                        spacing={1.5}
+                                        columns={12}
+                                        sx={{
+                                            display: "grid",
+                                            gridTemplateColumns: "repeat(2, 1fr)", // 👈 always 2 per row
+                                            gap: "10px",
+                                        }}
+                                    >
                                         {roles.map((role, index) => (
-                                            <Grid item xs={6} sm={6} md={6} key={index}>
-                                                <Box
+                                            <Box
+                                                key={index}
+                                                sx={{
+                                                    border: "1px solid #E0E0E0",
+                                                    borderRadius: "12px",
+                                                    px: 1.5,
+                                                    py: 1,
+                                                    display: "flex",
+                                                    flexDirection: "column",
+                                                    justifyContent: "center",
+                                                    alignItems: "flex-start",
+                                                    height: "55px",
+                                                    transition: "all 0.3s ease",
+                                                    "&:hover": {
+                                                        boxShadow: "0px 4px 10px rgba(0,0,0,0.1)",
+                                                        transform: "translateY(-3px)",
+                                                    },
+                                                }}
+                                            >
+                                                <Typography
                                                     sx={{
-                                                        border: "1px solid #E0E0E0",
-                                                        borderRadius: "12px",
-                                                        px: 2,
-                                                        py: 1.5,
-                                                        display: "flex",
-                                                        flexDirection: "column",
-                                                        justifyContent: "center",
-                                                        alignItems: "flex-start",
-                                                        height: "80px",
-                                                        transition: "all 0.3s ease",
-                                                        "&:hover": {
-                                                            boxShadow: "0px 4px 10px rgba(0,0,0,0.1)",
-                                                            transform: "translateY(-3px)",
-                                                        },
+                                                        fontSize: "13px",
+                                                        fontWeight: 600,
+                                                        fontFamily: "Montserrat",
+                                                        color: "#000",
                                                     }}
                                                 >
-                                                    <Typography
-                                                        sx={{
-                                                            fontSize: "15px",
-                                                            fontWeight: 600,
-                                                            fontFamily: "Montserrat",
-                                                            color: "#000",
-                                                        }}
-                                                    >
-                                                        {role}
-                                                    </Typography>
-                                                    <Typography
-                                                        sx={{
-                                                            fontSize: "13px",
-                                                            fontWeight: 400,
-                                                            fontFamily: "Montserrat",
-                                                            color: "#777",
-                                                            mt: 0.5,
-                                                        }}
-                                                    >
-                                                        23.6k+ jobs &gt;&gt;
-                                                    </Typography>
-                                                </Box>
-                                            </Grid>
+                                                    {role}
+                                                </Typography>
+                                                <Typography
+                                                    sx={{
+                                                        fontSize: "11px",
+                                                        fontWeight: 400,
+                                                        fontFamily: "Montserrat",
+                                                        color: "#777",
+                                                        mt: 0.5,
+                                                    }}
+                                                >
+                                                    23.6k+ jobs &gt;&gt;
+                                                </Typography>
+                                            </Box>
                                         ))}
                                     </Grid>
-                                </Grid>
-                            </Grid>
+                                </Box>
+                            </Box>
                         </Container>
                     </Box>
 
