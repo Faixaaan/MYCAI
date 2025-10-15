@@ -112,7 +112,7 @@ const OnlineCourse = () => {
                                 >
 
 
-                                    
+
                                     {item.icon}
                                 </Box>
 
@@ -121,7 +121,7 @@ const OnlineCourse = () => {
                                         p: 0,
                                         display: "flex",
                                         flexDirection: "column",
-                                        justifyContent: "center", // 👈 ensures text block is vertically centered
+                                        justifyContent: "center", 
                                     }}
                                 >
                                     <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 0.5 }}>
