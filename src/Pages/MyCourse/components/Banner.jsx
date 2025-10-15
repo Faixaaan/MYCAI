@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, Container, Typography } from '@mui/material';
+import { Box, Container, Typography } from '@mui/material';
 import BannerImg from '../../../Images/course-banner.png';
 
 const Banner = () => {
@@ -17,16 +17,25 @@ const Banner = () => {
             }}
         >
             <Container maxWidth='lg'>
-                <Typography sx={{ fontSize: "60px", fontWeight: "600", maxWidth: "610px", lineHeight: "138%", letterSpacing: "0%",color:"#fff",pt:"130px" }}>
+                <Typography sx={{ fontSize: "60px", fontWeight: "600", maxWidth: "610px", lineHeight: "138%", letterSpacing: "0%", color: "#fff", pt: "130px" }}>
                     Access the world's
                     best learning course
                     with <span style={{ color: "#FF8014" }}>MYCVI.AI</span>
                 </Typography>
 
 
-                
+
+
+
             </Container>
+
+
+
         </Box>
+
+
+
+
     );
 };
 
