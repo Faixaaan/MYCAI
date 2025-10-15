@@ -142,7 +142,7 @@ const OnlineCourse = () => {
                     ))}
                 </Grid>
 
-                {/* === Bottom Section === */}
+                
                 <Box
                     sx={{
                         mt: { xs: 6, md: 10 },
