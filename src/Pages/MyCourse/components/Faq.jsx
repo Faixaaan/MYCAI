@@ -78,7 +78,7 @@ const Faq = () => {
         </Box>
 
         <Box sx={{display:"flex",justifyContent:"center",alignItems:"center",mt:6}}>
-            <Button variant="contained" sx={{ml:5,bgcolor:"transparent",borderRadius:"9px",padding:"8px 21px",textTransform:"capitalize",color:"#000",border:"1px solid #000"}}>
+            <Button variant="contained" sx={{bgcolor:"transparent",borderRadius:"9px",padding:{md:"8px 21px",xs:"6px 21px"},textTransform:"capitalize",color:"#000",border:"1px solid #000"}}>
                See More FAQ..
             </Button>
             <Button variant="contained" sx={{ml:5,bgcolor:"#FF8014",borderRadius:"9px",padding:"8px 28px",textTransform:"capitalize"}}>

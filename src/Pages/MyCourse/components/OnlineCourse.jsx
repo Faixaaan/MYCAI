@@ -168,6 +168,7 @@ const OnlineCourse = () => {
                             minHeight: 220,
                             p: 2,
                             position: "relative",
+                            width:"100%"
                         }}
                     >
                         <PlayCircleOutlineIcon sx={{ fontSize: 80, color: "#0862DC" }} />

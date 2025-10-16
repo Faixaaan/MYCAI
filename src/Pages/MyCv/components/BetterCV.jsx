@@ -28,7 +28,7 @@ const BetterCV = () => {
         <>
             <Box sx={{ bgcolor: "#DDF2FF", minHeight: "500px", width: "100%", padding: "60px 0px" }}>
                 <Container>
-                    <Typography sx={{ textAlign: "center", fontSize: "48px", fontWeight: "600", lineHeight: "138%", letterSpacing: "0%" }}>
+                    <Typography sx={{ textAlign: "center", fontSize:{ md:"48px",xs:"30px"}, fontWeight: "600", lineHeight: "138%", letterSpacing: "0%" }}>
                         Why use BetterCV’s free resume builder?
                     </Typography>
                     <Box sx={{ mt: 6, display: "flex", justifyContent: "space-between", alignItems: "center" }}>

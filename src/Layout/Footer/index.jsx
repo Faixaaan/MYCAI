@@ -4,6 +4,7 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
     return (
@@ -66,10 +67,14 @@ const Footer = () => {
                                     Quick Links
                                 </Typography>
                                 <ul style={{ padding: "0px", margin: "0px", paddingTop: "5px" }}>
-                                    <li style={{ listStyle: "none", paddingBottom: "10px" }}><a href="" style={{ textDecoration: "none", fontSize: "18px", color: "#fff", fontWeight: "400" }}>My Jobs</a></li>
-                                    <li style={{ listStyle: "none", paddingBottom: "10px" }}><a href="" style={{ textDecoration: "none", fontSize: "18px", color: "#fff", fontWeight: "400" }}>My CV</a></li>
-                                    <li style={{ listStyle: "none", paddingBottom: "10px" }}><a href="" style={{ textDecoration: "none", fontSize: "18px", color: "#fff", fontWeight: "400" }}>My Courses</a></li>
-                                    <li style={{ listStyle: "none", paddingBottom: "10px" }}><a href="" style={{ textDecoration: "none", fontSize: "18px", color: "#fff", fontWeight: "400" }}>My Earning</a></li>
+                                    <li style={{ listStyle: "none", paddingBottom: "10px" }}><Link  to={'/my-jobs'} style={{ textDecoration: "none", fontSize: "18px", color: "#fff", fontWeight: "400" }}>My Jobs</Link>
+                                    </li>
+                                    <li style={{ listStyle: "none", paddingBottom: "10px" }}><Link to={'/my-cv'} style={{ textDecoration: "none", fontSize: "18px", color: "#fff", fontWeight: "400" }}>My CV</Link>
+                                    </li>
+                                    <li style={{ listStyle: "none", paddingBottom: "10px" }}><Link to={'/my-courses'} style={{ textDecoration: "none", fontSize: "18px", color: "#fff", fontWeight: "400" }}>My Courses</Link>
+                                    </li>
+                                    <li style={{ listStyle: "none", paddingBottom: "10px" }}><Link to={'my-mock-interview'} style={{ textDecoration: "none", fontSize: "18px", color: "#fff", fontWeight: "400" }}>My Earning</Link>
+                                    </li>
                                       <li style={{ listStyle: "none", paddingBottom: "10px" }}><a href="" style={{ textDecoration: "none", fontSize: "18px", color: "#fff", fontWeight: "400" }}>Refund Policy</a></li>
                                       <li style={{ listStyle: "none", paddingBottom: "10px" }}><a href="" style={{ textDecoration: "none", fontSize: "18px", color: "#fff", fontWeight: "400" }}>Data Protection Policy</a></li>
 

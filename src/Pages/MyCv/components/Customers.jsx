@@ -62,7 +62,7 @@ const Customers = () => {
                 <Typography
                     sx={{
                         textAlign: "center",
-                        fontSize: "48px",
+                        fontSize:{ md:"48px",xs:"30px"},
                         fontWeight: 600,
                         lineHeight: "138%",
                         mb: 6,

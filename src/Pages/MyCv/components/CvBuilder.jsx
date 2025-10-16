@@ -10,10 +10,10 @@ const CvBuilder = () => {
         <Typography
           variant="h4"
           sx={{
-            fontSize: "42px",
+            fontSize:{ md:"48px",xs:"30px"},
             fontWeight: 700,
             textAlign: "center",
-            mb: 10,
+            mb: {md:10,xs:6},
             lineHeight: "120%",
           }}
         >
