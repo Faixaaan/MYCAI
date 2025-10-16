@@ -9,13 +9,14 @@ import {
   FormControl,
 } from '@mui/material';
 import BannerImg from '../../../Images/Mock-interview-Banner.png';
+import PhoneBannerImg from '../../../Images/mock-interview.png';
 
 const Banner = () => {
   return (
     <Box
       sx={{
         height: '110vh',
-        backgroundImage: `url(${BannerImg})`,
+        backgroundImage: { xs: `url(${PhoneBannerImg})`, md: `url(${BannerImg})` },
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
@@ -27,7 +28,7 @@ const Banner = () => {
         {/* Heading */}
         <Typography
           sx={{
-            fontSize: '60px',
+            fontSize: { md: '60px', xs: "30px" },
             fontWeight: '600',
             maxWidth: '610px',
             lineHeight: '138%',
@@ -43,7 +44,7 @@ const Banner = () => {
         {/* Subheading */}
         <Typography
           sx={{
-            fontSize: '24px',
+            fontSize: { md: '24px', xs: "20px" },
             fontWeight: '500',
             maxWidth: '610px',
             lineHeight: '138%',
@@ -61,23 +62,25 @@ const Banner = () => {
           sx={{
             mt: 4,
             display: 'flex',
+            flexWrap: 'wrap', // allows wrapping on small screens
             alignItems: 'center',
             gap: 2,
             backgroundColor: '#fff',
             borderRadius: '10px',
             p: 1.2,
             boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.1)',
-            width: 'fit-content',
+            width: {  sm: '635px' }, // full width on mobile, auto on desktop
           }}
         >
           {/* Jobs Dropdown */}
           <FormControl
+            size="small"
             sx={{
-              minWidth: 120,
+              minWidth: { xs: '100%', sm: 120 }, // full width on mobile
+              flex: { xs: 1, sm: 'unset' },
               backgroundColor: '#fff',
               borderRadius: '6px',
             }}
-            size="small"
           >
             <Select defaultValue="Jobs">
               <MenuItem value="Jobs">Jobs</MenuItem>
@@ -88,12 +91,13 @@ const Banner = () => {
 
           {/* Search Position Dropdown */}
           <FormControl
+            size="small"
             sx={{
-              minWidth: 160,
+              minWidth: { xs: '100%', sm: 160 },
+              flex: { xs: 1, sm: 'unset' },
               backgroundColor: '#fff',
               borderRadius: '6px',
             }}
-            size="small"
           >
             <Select defaultValue="Search Position">
               <MenuItem value="Search Position">Search Position</MenuItem>
@@ -105,12 +109,13 @@ const Banner = () => {
 
           {/* Select Round Dropdown */}
           <FormControl
+            size="small"
             sx={{
-              minWidth: 140,
+              minWidth: { xs: '100%', sm: 140 },
+              flex: { xs: 1, sm: 'unset' },
               backgroundColor: '#fff',
               borderRadius: '6px',
             }}
-            size="small"
           >
             <Select defaultValue="Select Round">
               <MenuItem value="Select Round">Select Round</MenuItem>
@@ -126,10 +131,11 @@ const Banner = () => {
             sx={{
               backgroundColor: '#FF8014',
               color: '#fff',
-              fontWeight: '600',
+              fontWeight: 600,
               borderRadius: '6px',
               textTransform: 'none',
               px: 3,
+              width: { xs: '100%', sm: 'auto' }, // full width on mobile
               '&:hover': {
                 backgroundColor: '#e67212',
               },

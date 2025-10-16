@@ -112,6 +112,7 @@ const Footer = () => {
 
                             </Box>
                         </Grid>
+                        
                     </Grid>
                     <Divider sx={{ my: 2, borderColor: "#fff", opacity: 0.3 }} />
 

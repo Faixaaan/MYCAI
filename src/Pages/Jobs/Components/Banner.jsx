@@ -1,7 +1,8 @@
-import { Box, Container, TextField, Typography, InputAdornment, Button, Grid } from "@mui/material";
+import { Box, Container, TextField, Typography, InputAdornment, Button, Grid, useTheme, useMediaQuery } from "@mui/material";
 import React from "react";
 import SearchIcon from "@mui/icons-material/Search";
-import bannerimg from '../../../Images/JobsBanner.png'
+import bannerimg from '../../../Images/JobsBanner.png';
+import Phonebannerimg from '../../../Images/mobile-jobs-banner.png'
 import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
 import BusinessIcon from "@mui/icons-material/Business";
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -12,6 +13,9 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import discover from '../../../Images/discover.png'
 
 const Banner = () => {
+
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
     const roles = [
         "Full stack developer",
@@ -130,7 +134,11 @@ const Banner = () => {
                     <Box sx={{
                         display: "flex", justifyContent: "center", mt: "40px"
                     }}>
-                        <img src={bannerimg} alt="jobs banner" style={{ borderRadius: "15px" }} />
+                        <img
+                            src={isMobile ? Phonebannerimg  : bannerimg}
+                            alt="jobs banner"
+                            style={{ width: "100%", borderRadius: "15px" }}
+                        />
                     </Box>
                     {/* ======= Category Cards Section ======= */}
                     <Grid

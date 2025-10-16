@@ -1,13 +1,14 @@
 import React from 'react';
 import { Box, Container, Typography } from '@mui/material';
 import BannerImg from '../../../Images/course-banner.png';
+import MobileBannerImg from '../../../Images/my-courses-mobile-banner.png'
 
 const Banner = () => {
     return (
         <Box
             sx={{
                 height: '110vh',
-                backgroundImage: `url(${BannerImg})`,
+                backgroundImage: {xs:`url(${MobileBannerImg})`,md:`url(${BannerImg})`},
                 backgroundSize: 'cover', // cover full area
                 backgroundPosition: 'center', // center the image
                 backgroundRepeat: 'no-repeat',
