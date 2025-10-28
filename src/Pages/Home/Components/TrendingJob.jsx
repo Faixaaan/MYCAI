@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 import {
     Box,
     Container,
@@ -22,6 +22,8 @@ import BeenhereIcon from '@mui/icons-material/Beenhere';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Chatbot from './Chatbot';
 import SearchIcon from '@mui/icons-material/Search';
+import { axiosInstance } from "../../../api/axios/axios";
+import { endpoints } from "../../../api/endpoints/endpoints";
 
 // ----------- Job Card Component -----------
 const JobCard = ({ job }) => (
@@ -192,6 +194,25 @@ const TrendingJob = () => {
         },
     ];
 
+     const [data, setData] = useState({});
+        
+          const GetBannerData = async () => {
+            try {
+              const res = await axiosInstance.get(endpoints.home.Banner);
+              console.log(res?.data, "bannerdata");
+              setData(res?.data);
+            } catch (err) {
+              console.error(
+                "Error fetching banner data:",
+                err.response?.data || err.message
+              );
+            }
+          };
+        
+          useEffect(() => {
+            GetBannerData();
+          }, []);
+
     return (
         <Box
             sx={{
@@ -214,7 +235,7 @@ const TrendingJob = () => {
                         paddingBottom: "20px",
                     }}
                 >
-                    CVI Your AI Jobs Finder
+                    {data?.section1_heading}
                 </Typography>
 
 

@@ -1,9 +1,11 @@
 import { Box, Button, Container, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { axiosInstance } from "../../../api/axios/axios";
+import { endpoints } from "../../../api/endpoints/endpoints";
 
 const Faq = () => {
   const questions = [
@@ -14,6 +16,28 @@ const Faq = () => {
     "Can I edit my resume after downloading?",
     "What templates are available?",
   ];
+
+  const [data, setData] = useState({});
+  const [faqData,setFaqData] = useState([])
+  
+    const GetBannerData = async () => {
+      try {
+        const res = await axiosInstance.get(endpoints.course.banner);
+        const faqRes = await axiosInstance.get(endpoints.course.faqs);
+        setFaqData(faqRes?.data?.faq);
+        console.log(res?.data, "bannerdata");
+        setData(res?.data);
+      } catch (err) {
+        console.error(
+          "Error fetching banner data:",
+          err.response?.data || err.message
+        );
+      }
+    };
+  
+    useEffect(() => {
+      GetBannerData();
+    }, []);
 
   return (
     <Box sx={{ bgcolor: "#D9D9D9", width: "100%", py: { xs: 6, md: 8 } }}>
@@ -28,7 +52,7 @@ const Faq = () => {
             color: "#000",
           }}
         >
-          Got questions? We have got answers by AI!
+         {data?.section4_heading}
         </Typography>
 
         {/* Accordions */}
@@ -63,14 +87,12 @@ const Faq = () => {
                 id={`panel${index}-header`}
               >
                 <Typography component="span" sx={{ fontWeight: 600 }}>
-                  {question}
+                  {faqData?.question}
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Typography color="text.secondary">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-                  eget.
+                  {faqData?.answer}
                 </Typography>
               </AccordionDetails>
             </Accordion>

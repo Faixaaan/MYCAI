@@ -1,11 +1,13 @@
 import { Box, Container, Grid, Typography } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import benficard from '../../../Images/BenifitCard1.png';
 import benficard2 from '../../../Images/benifit-card2.png';
 import benficard3 from '../../../Images/benifitcard3.png';
 import benficard4 from '../../../Images/benifitcard4.png';
 import benficard5 from '../../../Images/benifitcard5.png';
 import benficard6 from '../../../Images/benifitcard6.png';
+import { axiosInstance } from '../../../api/axios/axios';
+import { endpoints } from '../../../api/endpoints/endpoints';
 
 const KeyBenifit = () => {
   const img = [
@@ -16,6 +18,29 @@ const KeyBenifit = () => {
     { img: benficard5,title:"Job Description-Based " },
     { img: benficard6,title:"Resume Analyzer and Builder" },
   ];
+
+   const [data, setData] = useState({});
+   const [benifitData,setBenifitData] = useState([])
+  
+    const GetBannerData = async () => {
+      try {
+        const res = await axiosInstance.get(endpoints.mock.banner);
+        const benifitRes = await axiosInstance.get(endpoints.mock.benifits)
+        console.log(benifitRes?.data?.mockBenifit, "bannerdata");
+        setBenifitData(benifitRes?.data?.mockBenifit)
+        setData(res?.data);
+      } catch (err) {
+        console.error(
+          "Error fetching banner data:",
+          err.response?.data || err.message
+        );
+        // You might want to add error state handling here
+      }
+    };
+  
+    useEffect(() => {
+      GetBannerData();
+    }, []);
 
   return (
     <Box sx={{ bgcolor: '#D9D9D9', minHeight: '400px' }}>
@@ -31,12 +56,12 @@ const KeyBenifit = () => {
               fontSize: '48px',
             }}
           >
-            Key Benefits with CVI
+            {data?.section2_head}
           </Typography>
 
           {/* ✅ Correct Grid layout */}
           <Grid container spacing={8}>
-            {img.map((item, index) => (
+            {benifitData?.map((item, index) => (
               <Grid item xs={12} sm={6} md={4} key={index}>
                 <Box
                   sx={{
@@ -57,7 +82,7 @@ const KeyBenifit = () => {
                   }}
                 >
                   <img
-                    src={item.img}
+                    src={item.image}
                     alt={`Benefit ${index + 1}`}
                     style={{
                       width: '100%',
@@ -70,7 +95,7 @@ const KeyBenifit = () => {
                     
                   />
                   <Typography sx={{fontSize:"20px",fontWeight:"500",lineHeight:"138%",letterSpacing:"0%"}}>
-                     {item?.title}
+                     {item?.category}
                   </Typography>
                 </Box>
               </Grid>

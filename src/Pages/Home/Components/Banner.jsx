@@ -1,12 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 import { Box, Button, TextField, Typography, InputAdornment, IconButton } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import bannerImg from '../../../Images/banner.png';
 import PhonebannerImg from '../../../Images/phoneBanner.png';
 import SendIcon from "@mui/icons-material/Send";
 import MicIcon from "@mui/icons-material/Mic";
+import { axiosInstance } from "../../../api/axios/axios";
+import { endpoints } from "../../../api/endpoints/endpoints";
 
 const Banner = () => {
+
+
+     const [data, setData] = useState({});
+    
+      const GetBannerData = async () => {
+        try {
+          const res = await axiosInstance.get(endpoints.home.Banner);
+          console.log(res?.data, "bannerdata");
+          setData(res?.data);
+        } catch (err) {
+          console.error(
+            "Error fetching banner data:",
+            err.response?.data || err.message
+          );
+        }
+      };
+    
+      useEffect(() => {
+        GetBannerData();
+      }, []);
+    
+
     return (
         <Box
             sx={{
@@ -14,8 +38,8 @@ const Banner = () => {
                 width: '100%',
                 minHeight: { md: '810px', xs: "500px" },
                 backgroundImage: {
-                    xs: `url(${PhonebannerImg})`,
-                    md: `url(${bannerImg})`,
+                    xs: `url(${data?.banner_img_mobile})`,
+                    md: `url(${data?.banner_img_desktop})`,
                 },
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',

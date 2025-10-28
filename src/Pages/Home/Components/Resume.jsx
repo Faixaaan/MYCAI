@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Container, Typography, useMediaQuery } from "@mui/material";
 import Slider from "react-slick";
 import cvpage from "../../../Images/cvPage10.png";
@@ -9,6 +9,8 @@ import cvpage4 from "../../../Images/cvPage14.png";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import GradeIcon from "@mui/icons-material/Grade";
+import { axiosInstance } from "../../../api/axios/axios";
+import { endpoints } from "../../../api/endpoints/endpoints";
 
 const Resume = () => {
   const isMobile = useMediaQuery("(max-width:600px)");
@@ -37,6 +39,25 @@ const Resume = () => {
     beforeChange: (current, next) => setActiveSlide(next), // 👈 added this
   };
 
+  const [data, setData] = useState({});
+          
+            const GetBannerData = async () => {
+              try {
+                const res = await axiosInstance.get(endpoints.home.Banner);
+                console.log(res?.data, "bannerdata");
+                setData(res?.data);
+              } catch (err) {
+                console.error(
+                  "Error fetching banner data:",
+                  err.response?.data || err.message
+                );
+              }
+            };
+          
+            useEffect(() => {
+              GetBannerData();
+            }, []);
+
   return (
     <Box sx={{ background: "#D9D9D994", py: 6 }}>
       <Container maxWidth="xl">
@@ -49,7 +70,7 @@ const Resume = () => {
             mb: 1,
           }}
         >
-          CVI: Your Resume, Smarter
+          {data?.section2_heading}
         </Typography>
         <Typography
           sx={{
@@ -60,7 +81,7 @@ const Resume = () => {
             mb: 4,
           }}
         >
-          Over 200+ templates available
+         {data?.section2_subheading}
         </Typography>
 
         <Box className="slider-container">

@@ -9,7 +9,7 @@ import {
   Button,
   useMediaQuery,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -21,6 +21,8 @@ import Excell  from '../../../Images/Excel.png'
 import Python  from '../../../Images/Python.png'
 import StarIcon from "@mui/icons-material/Star";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import { axiosInstance } from "../../../api/axios/axios";
+import { endpoints } from "../../../api/endpoints/endpoints";
 
 // ---------------- CARD COMPONENT ---------------- //
 const EarningCard = ({ job }) => (
@@ -156,6 +158,25 @@ const Courses = () => {
     { img: Python, id: 6,  title: "Python for Everybody",subtitle:"Beginner",rate:"$24,88" },
   ];
 
+    const [data, setData] = useState({});
+            
+              const GetBannerData = async () => {
+                try {
+                  const res = await axiosInstance.get(endpoints.home.Banner);
+                  console.log(res?.data, "bannerdata");
+                  setData(res?.data);
+                } catch (err) {
+                  console.error(
+                    "Error fetching banner data:",
+                    err.response?.data || err.message
+                  );
+                }
+              };
+            
+              useEffect(() => {
+                GetBannerData();
+              }, []);
+
   return (
     <Box sx={{ background: "#fff", py: 5 }}>
       <Container maxWidth="xl">
@@ -167,7 +188,7 @@ const Courses = () => {
             pb: "40px",
           }}
         >
-          CVI Courses
+          {data?.section3_heading}
         </Typography>
 
         {/* FIRST SLIDER */}
