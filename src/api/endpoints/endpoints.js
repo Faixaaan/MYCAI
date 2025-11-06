@@ -10,5 +10,8 @@ export const endpoints ={
     },
     home:{
         Banner:"index"
+    },
+    auth:{
+        sigin:"/submit-user"
     }
 }

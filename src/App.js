@@ -10,6 +10,9 @@ import Wallet from './Pages/Wallet';
 import MyCv from './Pages/MyCv';
 import MyCourse from './Pages/MyCourse';
 import MockInterview from './Pages/MockInterview';
+import Dashboard from './Pages/Dashboard';
+import SignIn from './Pages/auth/Login';
+import SignUp from './Pages/auth/signup';
 
 
 
@@ -25,6 +28,9 @@ function App() {
           <Route path='/my-cv' element={<MyCv />} />
           <Route path='/my-courses' element={<MyCourse />} />
           <Route path='/my-mock-interview' element={<MockInterview />} />
+          <Route path='/dashboard' element={<Dashboard />} />
+          <Route path='/signin' element={<SignIn />} />
+          <Route path='/signup' element={<SignUp />} />
         </Routes>
         <Footer />
       </BrowserRouter>
