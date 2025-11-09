@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Card,
@@ -9,6 +9,9 @@ import {
   Grid,
   BottomNavigation,
   BottomNavigationAction,
+  Modal,
+  TextField,
+  Fade,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
@@ -29,6 +32,39 @@ import PersonIcon from "@mui/icons-material/Person";
 const Wallet = () => {
   const [showBalance, setShowBalance] = useState(false);
   const [tabValue, setTabValue] = useState(0);
+  const [open, setOpen] = useState(false);
+  const [form, setForm] = useState({
+    cvi_value: "",
+    transaction_type: "deposit",
+  });
+
+  // 🧠 State for wallet and user info
+  const [walletAmount, setWalletAmount] = useState("0");
+  const [userId, setUserId] = useState("");
+
+  useEffect(() => {
+    // ✅ Retrieve data from localStorage
+    const storedData = localStorage.getItem("userData");
+    if (storedData) {
+      try {
+        const parsed = JSON.parse(storedData);
+        setWalletAmount(parsed.wallet_amount || "0");
+        setUserId(parsed.user_id || "");
+      } catch (err) {
+        console.error("Error parsing localStorage data:", err);
+      }
+    }
+  }, []);
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Form Data:", form);
+    setOpen(false);
+  };
 
   return (
     <Box
@@ -44,7 +80,7 @@ const Wallet = () => {
       <Container maxWidth="xs">
         <Card
           sx={{
-            width: {md:"100%",xs:"88%"},
+            width: { md: "100%", xs: "88%" },
             bgcolor: "#111827",
             borderRadius: "24px",
             boxShadow: "0px 0px 20px rgba(0,0,0,0.4)",
@@ -102,7 +138,7 @@ const Wallet = () => {
             </Typography>
             <Box display="flex" justifyContent="space-between" alignItems="center">
               <Typography sx={{ fontSize: 22, letterSpacing: 2 }}>
-                {showBalance ? "12,540 CVI" : "••••••••••"}
+                {showBalance ? `${walletAmount} CVI` : "••••••••••"}
               </Typography>
               <IconButton
                 onClick={() => setShowBalance(!showBalance)}
@@ -126,6 +162,7 @@ const Wallet = () => {
                     background: "rgba(76,201,240,0.1)",
                   },
                 }}
+                onClick={() => setOpen(true)}
               >
                 Send
               </Button>
@@ -172,7 +209,7 @@ const Wallet = () => {
                 p: "6px 10px",
               }}
             >
-              <Typography sx={{ fontSize: 14 }}>0x1234...5678</Typography>
+              <Typography sx={{ fontSize: 14 }}>{userId || "N/A"}</Typography>
               <Box display="flex" alignItems="center" gap={1}>
                 <IconButton size="small" sx={{ color: "#fff" }}>
                   <ContentCopyIcon fontSize="small" />
@@ -214,7 +251,7 @@ const Wallet = () => {
             ))}
           </Grid>
 
-          {/* Embedded Bottom Tabs */}
+          {/* Bottom Tabs */}
           <BottomNavigation
             showLabels
             value={tabValue}
@@ -263,6 +300,86 @@ const Wallet = () => {
           </BottomNavigation>
         </Card>
       </Container>
+
+      {/* Modal for Send Form */}
+      <Modal open={open} onClose={() => setOpen(false)} closeAfterTransition>
+        <Fade in={open}>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              bgcolor: "#111827",
+              borderRadius: "20px",
+              border: "1px solid rgba(255,255,255,0.25)",
+              boxShadow: "0 0 20px rgba(0,0,0,0.5)",
+              width: 340,
+              p: 3,
+              color: "#fff",
+            }}
+          >
+            <Typography variant="h6" sx={{ mb: 2, textAlign: "center" }}>
+              Send CVI Tokens
+            </Typography>
+
+            <TextField
+              label="CVI Value"
+              name="cvi_value"
+              value={form.cvi_value}
+              onChange={handleChange}
+              fullWidth
+              variant="outlined"
+              type="number"
+              InputLabelProps={{ style: { color: "#9CA3AF" } }}
+              sx={{
+                mb: 2,
+                input: { color: "#fff" },
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": { borderColor: "rgba(255,255,255,0.25)" },
+                  "&:hover fieldset": { borderColor: "#4CC9F0" },
+                },
+              }}
+            />
+
+            <TextField
+              label="Transaction Type"
+              name="transaction_type"
+              value={form.transaction_type}
+              onChange={handleChange}
+              fullWidth
+              variant="outlined"
+              InputLabelProps={{ style: { color: "#9CA3AF" } }}
+              sx={{
+                mb: 3,
+                input: { color: "#fff" },
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": { borderColor: "rgba(255,255,255,0.25)" },
+                  "&:hover fieldset": { borderColor: "#4CC9F0" },
+                },
+              }}
+            />
+
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{
+                bgcolor: "#4CC9F0",
+                color: "#000",
+                fontWeight: 600,
+                borderRadius: "12px",
+                textTransform: "none",
+                "&:hover": { bgcolor: "#38bdf8" },
+              }}
+            >
+              Submit
+            </Button>
+          </Box>
+        </Fade>
+      </Modal>
     </Box>
   );
 };

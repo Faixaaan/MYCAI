@@ -17,7 +17,8 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import { motion } from "framer-motion";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const MotionCard = motion(Card);
 
@@ -34,21 +35,24 @@ const SignUp = () => {
   });
 
   const [loading, setLoading] = useState(false);
+   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+  e.preventDefault();
+  setLoading(true);
 
-    try {
-      await axios.post(
-        "https://mycvi.adretsoftware.in/admin/api/submit-user",
-        form
-      );
-      // Clear fields on success
+  try {
+    const res = await axios.post(
+      "https://mycvi.adretsoftware.in/admin/api/submit-user",
+      form
+    );
+
+    if (res.status === 201) {
+      toast.success(res?.data?.message || "Registration successful! 🎉");
       setForm({
         name: "",
         email: "",
@@ -59,12 +63,18 @@ const SignUp = () => {
         address: "",
         preferred_location: "",
       });
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
+      navigate("/signin"); // optional: redirect after successful signup
     }
-  };
+  } catch (err) {
+    console.error(err);
+    toast.error(
+      err?.response?.data?.message || "Registration failed! Please try again."
+    );
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <Box

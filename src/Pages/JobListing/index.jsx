@@ -1,0 +1,312 @@
+import React, { useEffect, useState } from "react";
+import {
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  IconButton,
+  Chip,
+  Avatar,
+  Divider,
+  Container,
+  Grid,
+} from "@mui/material";
+import {
+  Close as CloseIcon,
+  CheckCircle as CheckCircleIcon,
+  LinkedIn as LinkedInIcon,
+  Share as ShareIcon,
+  MoreVert as MoreVertIcon,
+  Star as StarIcon,
+} from "@mui/icons-material";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { endpoints } from "../../api/endpoints/endpoints";
+import { axiosInstance } from "../../api/axios/axios";
+
+const JobCard = ({ job, onClose, isExpanded, onClick, onTitleClick }) => (
+  <Card
+    onClick={onClick}
+    sx={{
+      mb: 2,
+      cursor: "pointer",
+      "&:hover": { bgcolor: "action.hover" },
+      border: isExpanded ? "2px solid #0a66c2" : "1px solid #e0e0e0",
+    }}
+  >
+    <CardContent sx={{ p: 2 }}>
+      <Box sx={{ display: "flex", alignItems: "flex-start", gap: 2 }}>
+        <Avatar
+          sx={{
+            width: 48,
+            height: 48,
+            bgcolor: job.company === "Naukr.ai" ? "#fff" : "#000",
+            color: job.company === "Naukr.ai" ? "#000" : "#fff",
+            border: "1px solid #e0e0e0",
+          }}
+        >
+          {job?.company_logo}
+        </Avatar>
+
+        <Box sx={{ flex: 1, minWidth: 0 }}>
+          <Typography
+            variant="subtitle1"
+            sx={{
+              color: "#0a66c2",
+              fontWeight: 600,
+              mb: 0.5,
+              cursor: "pointer",
+              "&:hover": { textDecoration: "underline" },
+            }}
+            onClick={(e) => {
+              e.stopPropagation();
+              // guard in case job is not yet defined
+              if (job?.job_id) onTitleClick(job.job_id);
+            }}
+          >
+            {job?.job_title}
+          </Typography>
+          <Typography variant="body2" color="text.primary" sx={{ mb: 0.5 }}>
+            {job?.company_name}
+          </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+            {job?.city}
+          </Typography>
+
+          {job.activelyReviewing && (
+            <Box
+              sx={{ display: "flex", alignItems: "center", gap: 0.5, mb: 1 }}
+            >
+              <CheckCircleIcon sx={{ fontSize: 16, color: "success.main" }} />
+              <Typography variant="body2" color="text.secondary">
+                Actively reviewing applicants
+              </Typography>
+            </Box>
+          )}
+
+          <Typography variant="caption" color="text.secondary">
+            {job.meta}
+          </Typography>
+        </Box>
+
+        <IconButton
+          size="small"
+          onClick={(e) => {
+            e.stopPropagation();
+            onClose();
+          }}
+        >
+          <CloseIcon fontSize="small" />
+        </IconButton>
+      </Box>
+    </CardContent>
+  </Card>
+);
+
+const JobDetail = ({ job, onClick, onTitleClick }) => (
+  <Box>
+    <Box sx={{ mb: 4 }}>
+      <Box sx={{ display: "flex", alignItems: "flex-start", gap: 2, mb: 3 }}>
+        <Avatar
+          sx={{
+            width: 56,
+            height: 56,
+            bgcolor: "#fff",
+            color: "#000",
+            border: "1px solid #e0e0e0",
+          }}
+        >
+          N
+        </Avatar>
+        <Box sx={{ flex: 1 }}>
+          <Typography variant="caption" color="text.secondary">
+            Naukr.ai
+          </Typography>
+        </Box>
+        <Box sx={{ display: "flex", gap: 1 }}>
+          <IconButton>
+            <ShareIcon />
+          </IconButton>
+          <IconButton>
+            <MoreVertIcon />
+          </IconButton>
+        </Box>
+      </Box>
+
+      <Typography
+        variant="h4"
+        sx={{ fontWeight: 600, mb: 2, cursor: 'pointer' }}
+        role="button"
+        tabIndex={0}
+        onClick={(e) => {
+          e.stopPropagation();
+          // avoid errors if job is undefined while data is loading
+          if (job?.job_id) onTitleClick(job.job_id);
+        }}
+        onKeyDown={(e) => {
+          // support keyboard activation (Enter / Space)
+          if ((e.key === 'Enter' || e.key === ' ') && job?.job_id) {
+            e.preventDefault();
+            onTitleClick(job.job_id);
+          }
+        }}
+      >
+        {job?.job_title}
+      </Typography>
+
+      <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+        India · 1 day ago · Over 100 applicants
+      </Typography>
+
+      <Typography variant="body2" sx={{ mb: 3 }}>
+        Promoted by hirer ·{" "}
+        <Box component="span" sx={{ color: "#057642", fontWeight: 600 }}>
+          Actively reviewing applicants
+        </Box>
+      </Typography>
+
+      <Box sx={{ display: "flex", gap: 1, mb: 3, flexWrap: "wrap" }}>
+        <Chip label="Remote" variant="outlined" />
+        <Chip label="Full-time" variant="outlined" />
+      </Box>
+
+      <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
+        <Button
+          variant="contained"
+          startIcon={<LinkedInIcon />}
+          sx={{
+            bgcolor: "#0a66c2",
+            textTransform: "none",
+            fontWeight: 600,
+            "&:hover": { bgcolor: "#004182" },
+          }}
+        >
+          Easy Apply
+        </Button>
+        <Button
+          variant="outlined"
+          sx={{
+            textTransform: "none",
+            fontWeight: 600,
+            borderColor: "#0a66c2",
+            color: "#0a66c2",
+          }}
+        >
+          Save
+        </Button>
+      </Box>
+    </Box>
+
+    <Divider sx={{ my: 3 }} />
+
+    <Box>
+      <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
+        About the job
+      </Typography>
+
+      <Box sx={{ bgcolor: "action.hover", p: 2, borderRadius: 1, mb: 3 }}>
+        <Typography variant="body2" color="text.secondary">
+          <strong>Tips:</strong> Provide a summary of the role, what success in
+          the position looks like, and how this role fits into the organization
+          overall.
+        </Typography>
+      </Box>
+
+      <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>
+        Responsibilities
+      </Typography>
+
+      <Box sx={{ pl: 3, mb: 2 }}>
+        <Typography
+          variant="body2"
+          component="div"
+          dangerouslySetInnerHTML={{ __html: job?.requirement }}
+        />
+      </Box>
+    </Box>
+  </Box>
+);
+
+const JobListing = () => {
+  const [selectedJob, setSelectedJob] = useState(0);
+  const [job, setJobData] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchJobData = async () => {
+      try {
+        const res = await axiosInstance.get(endpoints.jobs.allJobs);
+        setJobData(res?.data?.adminJob);
+        console.log(res?.data?.adminJob, "all_job_data");
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchJobData();
+  }, []);
+
+  const handleTitleClick = (job_id) => {
+    navigate(`/job-detail/${job_id}`);
+  };
+
+  return (
+    <Box sx={{ bgcolor: "#f3f2ef", minHeight: "100vh", py: 3 }}>
+      <Container maxWidth="lg" sx={{ px: 4 }}>
+        <Grid container spacing={3}>
+          {/* Left Panel - Job List */}
+          <Grid item size={{ xs: 12, md: 6 }}>
+            <Card sx={{ mb: 2 }}>
+              <CardContent>
+                <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5 }}>
+                  Top job picks for you
+                </Typography>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ mb: 1 }}
+                >
+                  Based on your profile, preferences, and activity like applies,
+                  searches, and saves
+                </Typography>
+                <Typography variant="caption" color="text.secondary">
+                  {job?.length || 0} results
+                </Typography>
+              </CardContent>
+            </Card>
+
+            <Box
+              sx={{
+                maxHeight: { lg: "calc(100vh - 200px)" },
+                overflow: "auto",
+              }}
+            >
+              {job.map((item, index) => (
+                <JobCard
+                  key={item.job_id || index}
+                  job={item}
+                  onClose={() => {}}
+                  isExpanded={selectedJob === index}
+                  onClick={() => setSelectedJob(index)}
+                  onTitleClick={handleTitleClick}
+                />
+              ))}
+            </Box>
+          </Grid>
+
+          {/* Right Panel - Job Details */}
+          <Grid item size={{ xs: 12, md: 6 }}>
+            <Card sx={{ position: "sticky", top: 16 }}>
+              <CardContent sx={{ p: 3 }}>
+                <JobDetail job={job[selectedJob]} onTitleClick={handleTitleClick} />
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+      </Container>
+    </Box>
+  );
+};
+
+export default JobListing;

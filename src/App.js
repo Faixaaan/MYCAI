@@ -13,12 +13,18 @@ import MockInterview from './Pages/MockInterview';
 import Dashboard from './Pages/Dashboard';
 import SignIn from './Pages/auth/Login';
 import SignUp from './Pages/auth/signup';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import JobListing from './Pages/JobListing';
+import JobDetailPage from './Pages/JobListing/jobDetailPage';
 
 
 
 function App() {
   return (
     <>
+          <ToastContainer position="top-right" autoClose={3000} theme="colored" />
+
       <BrowserRouter>
         <Navbar />
         <Routes>
@@ -31,6 +37,8 @@ function App() {
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/signin' element={<SignIn />} />
           <Route path='/signup' element={<SignUp />} />
+          <Route path='/joblisting' element={<JobListing />} />
+          <Route path="/job-detail/:job_id" element={<JobDetailPage />} />
         </Routes>
         <Footer />
       </BrowserRouter>

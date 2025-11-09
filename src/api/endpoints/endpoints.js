@@ -13,5 +13,8 @@ export const endpoints ={
     },
     auth:{
         sigin:"/submit-user"
+    },
+    jobs:{
+        allJobs:"/admin-jobs"
     }
 }

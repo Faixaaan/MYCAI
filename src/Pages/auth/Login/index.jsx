@@ -11,6 +11,7 @@ import {
   IconButton,
   Stack,
   Divider,
+  CircularProgress,
 } from "@mui/material";
 import { Email, Lock } from "@mui/icons-material";
 import FacebookIcon from "@mui/icons-material/Facebook";
@@ -18,14 +19,20 @@ import GoogleIcon from "@mui/icons-material/Google";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { setUserData } from "../../../Redux/userSlice";
 
 const MotionCard = motion(Card);
 
 const SignIn = () => {
   const [values, setValues] = useState({ email: "", password: "" });
-const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const handleChange = (e) => {
     setValues((v) => ({ ...v, [e.target.name]: e.target.value }));
   };
@@ -35,18 +42,32 @@ const [loading, setLoading] = useState(false);
     setLoading(true);
 
     try {
-      await axios.post(
+      const res = await axios.post(
         "https://mycvi.adretsoftware.in/admin/api/login-user",
         values
       );
-      // Clear fields on success
-      setValues({
-        email: "",
 
-        password: "",
-      });
+      console.log(res, "login");
+
+      if (res.status === 200) {
+        toast.success(res?.data?.message || "Login successful! 🎉");
+        const userData = res?.data?.user
+        // ✅ Store user data or token in localStorage
+        localStorage.setItem("userData", JSON.stringify(res.data.user));
+        localStorage.setItem("token", res.data.token);
+
+        // ✅ Navigate after successful login
+        
+        dispatch(setUserData(userData))
+        navigate("/dashboard");
+        // ✅ Clear form fields
+        setValues({ email: "", password: "" });
+      }
     } catch (err) {
       console.error(err);
+      toast.error(
+        err?.response?.data?.message || "Login failed! Please try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -56,7 +77,7 @@ const [loading, setLoading] = useState(false);
     <Box
       sx={{
         minHeight: "100vh",
-        background: "#0B1120", // Cool blue-purple gradient from WebGradients.com
+        background: "#0B1120",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -136,6 +157,7 @@ const [loading, setLoading] = useState(false);
                 fullWidth
                 variant="contained"
                 size="large"
+                disabled={loading}
                 sx={{
                   background:
                     "linear-gradient(90deg, #764ba2 30%, #667eea 90%)",
@@ -152,7 +174,11 @@ const [loading, setLoading] = useState(false);
                   },
                 }}
               >
-                Sign In
+                {loading ? (
+                  <CircularProgress size={24} sx={{ color: "#fff" }} />
+                ) : (
+                  "Sign In"
+                )}
               </Button>
             </Stack>
           </form>
@@ -166,50 +192,22 @@ const [loading, setLoading] = useState(false);
             Sign in with
           </Typography>
           <Stack direction="row" spacing={2} justifyContent="center">
-            <IconButton
-              size="large"
-              sx={{
-                color: "#1877f2",
-                bgcolor: "rgba(24, 119, 242, 0.1)",
-                borderRadius: 2,
-                "&:hover": { bgcolor: "rgba(24, 119, 242, 0.2)" },
-              }}
-            >
-              <FacebookIcon />
-            </IconButton>
-            <IconButton
-              size="large"
-              sx={{
-                color: "#ea4335",
-                bgcolor: "rgba(234, 67, 53, 0.1)",
-                borderRadius: 2,
-                "&:hover": { bgcolor: "rgba(234, 67, 53, 0.2)" },
-              }}
-            >
-              <GoogleIcon />
-            </IconButton>
-            <IconButton
-              size="large"
-              sx={{
-                color: "#1da1f2",
-                bgcolor: "rgba(29, 161, 242, 0.1)",
-                borderRadius: 2,
-                "&:hover": { bgcolor: "rgba(29, 161, 242, 0.2)" },
-              }}
-            >
-              <TwitterIcon />
-            </IconButton>
-            <IconButton
-              size="large"
-              sx={{
-                color: "#e1306c",
-                bgcolor: "rgba(225, 48, 108, 0.1)",
-                borderRadius: 2,
-                "&:hover": { bgcolor: "rgba(225, 48, 108, 0.2)" },
-              }}
-            >
-              <InstagramIcon />
-            </IconButton>
+            {[FacebookIcon, GoogleIcon, TwitterIcon, InstagramIcon].map(
+              (Icon, i) => (
+                <IconButton
+                  key={i}
+                  size="large"
+                  sx={{
+                    color: "#fff",
+                    bgcolor: "rgba(255,255,255,0.1)",
+                    borderRadius: 2,
+                    "&:hover": { bgcolor: "rgba(255,255,255,0.2)" },
+                  }}
+                >
+                  <Icon />
+                </IconButton>
+              )
+            )}
           </Stack>
 
           <Divider sx={{ my: 3, bgcolor: "rgba(255,255,255,0.15)" }} />
