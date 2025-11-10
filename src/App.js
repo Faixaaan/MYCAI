@@ -17,6 +17,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import JobListing from './Pages/JobListing';
 import JobDetailPage from './Pages/JobListing/jobDetailPage';
+import MyEarnings from './Pages/MyEarnings';
 
 
 
@@ -39,6 +40,7 @@ function App() {
           <Route path='/signup' element={<SignUp />} />
           <Route path='/joblisting' element={<JobListing />} />
           <Route path="/job-detail/:id" element={<JobDetailPage />} />
+           <Route path="/my-earnings" element={<MyEarnings />} />
         </Routes>
         <Footer />
       </BrowserRouter>

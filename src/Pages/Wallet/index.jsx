@@ -271,7 +271,7 @@ const Wallet = () => {
                     p: "6px 10px",
                   }}
                 >
-                  <Typography sx={{ fontSize: 14 }}>{userId || "N/A"}</Typography>
+                  <Typography sx={{ fontSize: 14 }}>{userId || "USER6F3686EA"}</Typography>
                   <Box display="flex" alignItems="center" gap={1}>
                     <IconButton size="small" sx={{ color: "#fff" }}>
                       <ContentCopyIcon fontSize="small" />
