@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, TextField, Typography, InputAdornment, IconButton } from '@mui/material';
+import { Box, TextField, InputAdornment, IconButton } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import bannerImg from '../../../Images/banner.png';
-import PhonebannerImg from '../../../Images/phoneBanner.png';
 import SendIcon from "@mui/icons-material/Send";
 import MicIcon from "@mui/icons-material/Mic";
 import { axiosInstance } from "../../../api/axios/axios";
