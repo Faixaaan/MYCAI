@@ -75,8 +75,8 @@ const Footer = () => {
                                     </li>
                                     <li style={{ listStyle: "none", paddingBottom: "10px" }}><Link to={'my-mock-interview'} style={{ textDecoration: "none", fontSize: "18px", color: "#fff", fontWeight: "400" }}>My Earning</Link>
                                     </li>
-                                      <li style={{ listStyle: "none", paddingBottom: "10px" }}><a href="" style={{ textDecoration: "none", fontSize: "18px", color: "#fff", fontWeight: "400" }}>Refund Policy</a></li>
-                                      <li style={{ listStyle: "none", paddingBottom: "10px" }}><a href="" style={{ textDecoration: "none", fontSize: "18px", color: "#fff", fontWeight: "400" }}>Data Protection Policy</a></li>
+                                      <li style={{ listStyle: "none", paddingBottom: "10px" }}><Link to="/" style={{ textDecoration: "none", fontSize: "18px", color: "#fff", fontWeight: "400" }}>Refund Policy</Link></li>
+                                      <li style={{ listStyle: "none", paddingBottom: "10px" }}><Link to="/" style={{ textDecoration: "none", fontSize: "18px", color: "#fff", fontWeight: "400" }}>Data Protection Policy</Link></li>
 
                                 </ul>
 
@@ -88,10 +88,10 @@ const Footer = () => {
                                     Employers
                                 </Typography>
                                 <ul style={{ padding: "0px", margin: "0px", paddingTop: "5px" }}>
-                                    <li style={{ listStyle: "none", paddingBottom: "10px" }}><a href="" style={{ textDecoration: "none", fontSize: "18px", color: "#fff", fontWeight: "400" }}>Post a Job</a></li>
-                                    <li style={{ listStyle: "none", paddingBottom: "10px" }}><a href="" style={{ textDecoration: "none", fontSize: "18px", color: "#fff", fontWeight: "400" }}>Products</a></li>
-                                    <li style={{ listStyle: "none", paddingBottom: "10px" }}><a href="" style={{ textDecoration: "none", fontSize: "18px", color: "#fff", fontWeight: "400" }}>Subscription</a></li>
-                                    <li style={{ listStyle: "none", paddingBottom: "10px" }}><a href="" style={{ textDecoration: "none", fontSize: "18px", color: "#fff", fontWeight: "400" }}>Employer App</a></li>
+                                    <li style={{ listStyle: "none", paddingBottom: "10px" }}><Link to="/" style={{ textDecoration: "none", fontSize: "18px", color: "#fff", fontWeight: "400" }}>Post a Job</Link></li>
+                                    <li style={{ listStyle: "none", paddingBottom: "10px" }}><Link to="/" style={{ textDecoration: "none", fontSize: "18px", color: "#fff", fontWeight: "400" }}>Products</Link></li>
+                                    <li style={{ listStyle: "none", paddingBottom: "10px" }}><Link to="/" style={{ textDecoration: "none", fontSize: "18px", color: "#fff", fontWeight: "400" }}>Subscription</Link></li>
+                                    <li style={{ listStyle: "none", paddingBottom: "10px" }}><Link to="/" style={{ textDecoration: "none", fontSize: "18px", color: "#fff", fontWeight: "400" }}>Employer App</Link></li>
 
                                 </ul>
 
