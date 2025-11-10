@@ -36,7 +36,7 @@ import {
   Schedule,
   Business,
   CheckCircle,
-  Close
+  
 } from '@mui/icons-material';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -46,8 +46,8 @@ export default function JobDetailPage() {
   const [showApplyModal, setShowApplyModal] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const isTablet = useMediaQuery(theme.breakpoints.down('lg'));
-  const [job, setJobData] = useState([]);
+ 
+ const [job, setJobData] = useState([]);
 
   const { id } = useParams();
 

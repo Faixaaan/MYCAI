@@ -12,9 +12,8 @@ import {
   Modal,
   TextField,
   Fade,
-  CardContent,
-  Divider,
-  Tabs,
+  
+Tabs,
   Tab,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -29,7 +28,6 @@ import PercentIcon from "@mui/icons-material/Percent";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import HistoryIcon from "@mui/icons-material/History";
 import HomeIcon from "@mui/icons-material/Home";
-import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 import PersonIcon from "@mui/icons-material/Person";
 import { axiosInstance } from "../../api/axios/axios";
@@ -39,100 +37,9 @@ import { toast } from "react-toastify";
 
 
 // ✅ Tab Components
-const HomeTab = ({ walletAmount, showBalance, toggleBalance }) => (
-  <Box>
-    <Typography sx={{ color: "#9CA3AF", fontSize: 14, mb: 1 }}>
-      Main Balance
-    </Typography>
-    <Box display="flex" justifyContent="space-between" alignItems="center">
-      <Typography sx={{ fontSize: 24, letterSpacing: 1 }}>
-        {showBalance ? `${walletAmount} CVI` : "••••••••••"}
-      </Typography>
-      <IconButton sx={{ color: "#9CA3AF" }} onClick={toggleBalance}>
-        {showBalance ? <VisibilityOffIcon /> : <VisibilityIcon />}
-      </IconButton>
-    </Box>
 
-    <Box display="flex" gap={1.5} mt={2}>
-      <Button
-        fullWidth
-        variant="outlined"
-        startIcon={<SendIcon />}
-        sx={{
-          borderColor: "rgba(255,255,255,0.25)",
-          color: "#fff",
-          borderRadius: "12px",
-          textTransform: "none",
-          "&:hover": {
-            borderColor: "#4CC9F0",
-            background: "rgba(76,201,240,0.1)",
-          },
-        }}
-      >
-        Send
-      </Button>
-      <Button
-        fullWidth
-        variant="outlined"
-        startIcon={<DownloadIcon />}
-        sx={{
-          borderColor: "rgba(255,255,255,0.25)",
-          color: "#fff",
-          borderRadius: "12px",
-          textTransform: "none",
-          "&:hover": {
-            borderColor: "#4CC9F0",
-            background: "rgba(76,201,240,0.1)",
-          },
-        }}
-      >
-        Receive
-      </Button>
-    </Box>
-  </Box>
-);
 
-const HistoryTab = () => (
-  <Box>
-    <Typography variant="h6" sx={{ mb: 2, fontWeight: "bold" }}>
-      Transaction History
-    </Typography>
-    <Box
-      sx={{
-        background: "rgba(255,255,255,0.05)",
-        borderRadius: "10px",
-        p: 2,
-        border: "1px solid rgba(255,255,255,0.15)",
-      }}
-    >
-      <Typography variant="body2" sx={{ color: "#9CA3AF" }}>
-        No transactions found yet.
-      </Typography>
-    </Box>
-  </Box>
-);
 
-const SwapTab = () => (
-  <Box>
-    <Typography variant="h6" sx={{ mb: 2, fontWeight: "bold" }}>
-      Swap Tokens
-    </Typography>
-    <Typography variant="body2" sx={{ color: "#9CA3AF" }}>
-      Swap feature coming soon...
-    </Typography>
-  </Box>
-);
-
-const ProfileTab = () => (
-  <Box>
-    <Typography variant="h6" sx={{ mb: 2, fontWeight: "bold" }}>
-      User Profile
-    </Typography>
-    <Typography variant="body2" sx={{ color: "#9CA3AF" }}>
-      Profile info and wallet details will appear here.
-    </Typography>
-  </Box>
-);
 
 const Wallet = () => {
   const [showBalance, setShowBalance] = useState(false);
