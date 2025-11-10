@@ -2,11 +2,11 @@ import React from 'react';
 import { Box, Button, Container, Typography } from '@mui/material';
 import BannerImg from '../../../Images/mycv-banner.png';
 import MobileBannerImg from '../../../Images/my-cv-mobile-banner.png'
-import { useNavigate } from 'react-router-dom';
+
 
 const Banner = () => {
 
-    const navigate = useNavigate()
+ 
   
 
     const handleClick = ()=>{
