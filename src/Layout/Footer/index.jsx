@@ -103,10 +103,10 @@ const Footer = () => {
                                     Resources
                                 </Typography>
                                 <ul style={{ padding: "0px", margin: "0px", paddingTop: "5px" }}>
-                                    <li style={{ listStyle: "none", paddingBottom: "10px" }}><a href="" style={{ textDecoration: "none", fontSize: "18px", color: "#fff", fontWeight: "400" }}>How to hire employes</a></li>
-                                    <li style={{ listStyle: "none", paddingBottom: "10px" }}><a href="" style={{ textDecoration: "none", fontSize: "18px", color: "#fff", fontWeight: "400" }}>How to write a job description</a></li>
-                                    <li style={{ listStyle: "none", paddingBottom: "10px" }}><a href="" style={{ textDecoration: "none", fontSize: "18px", color: "#fff", fontWeight: "400" }}>Guide to hiring with</a></li>
-                                    <li style={{ listStyle: "none", paddingBottom: "10px" }}><a href="" style={{ textDecoration: "none", fontSize: "18px", color: "#fff", fontWeight: "400" }}>Interview question guide</a></li>
+                                    <li style={{ listStyle: "none", paddingBottom: "10px" }}><a href="#" style={{ textDecoration: "none", fontSize: "18px", color: "#fff", fontWeight: "400" }}>How to hire employes</a></li>
+                                    <li style={{ listStyle: "none", paddingBottom: "10px" }}><a href="#" style={{ textDecoration: "none", fontSize: "18px", color: "#fff", fontWeight: "400" }}>How to write a job description</a></li>
+                                    <li style={{ listStyle: "none", paddingBottom: "10px" }}><a href="#" style={{ textDecoration: "none", fontSize: "18px", color: "#fff", fontWeight: "400" }}>Guide to hiring with</a></li>
+                                    <li style={{ listStyle: "none", paddingBottom: "10px" }}><a href="#" style={{ textDecoration: "none", fontSize: "18px", color: "#fff", fontWeight: "400" }}>Interview question guide</a></li>
 
                                 </ul>
 
