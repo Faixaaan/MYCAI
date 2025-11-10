@@ -1,11 +1,5 @@
 import { Box, Container, Grid, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import benficard from '../../../Images/BenifitCard1.png';
-import benficard2 from '../../../Images/benifit-card2.png';
-import benficard3 from '../../../Images/benifitcard3.png';
-import benficard4 from '../../../Images/benifitcard4.png';
-import benficard5 from '../../../Images/benifitcard5.png';
-import benficard6 from '../../../Images/benifitcard6.png';
 import { axiosInstance } from '../../../api/axios/axios';
 import { endpoints } from '../../../api/endpoints/endpoints';
 
