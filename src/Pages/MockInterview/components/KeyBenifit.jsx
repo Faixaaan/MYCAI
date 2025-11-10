@@ -10,14 +10,7 @@ import { axiosInstance } from '../../../api/axios/axios';
 import { endpoints } from '../../../api/endpoints/endpoints';
 
 const KeyBenifit = () => {
-  const img = [
-    { img: benficard,title:"Ultimate Interview Mastery" },
-    { img: benficard2,title:"Company-Specific Practices" },
-    { img: benficard3,title:"Resume-Based Interviews" },
-    { img: benficard4,title:"Actionable Analytics" },
-    { img: benficard5,title:"Job Description-Based " },
-    { img: benficard6,title:"Resume Analyzer and Builder" },
-  ];
+  
 
    const [data, setData] = useState({});
    const [benifitData,setBenifitData] = useState([])

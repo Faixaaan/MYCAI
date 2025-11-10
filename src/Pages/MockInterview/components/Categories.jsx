@@ -12,25 +12,7 @@ import { endpoints } from "../../../api/endpoints/endpoints";
 
 const Categories = () => {
   // Category data with icons (you can replace with actual icons)
-  const categories = [
-    {
-      title: "Company Interview",
-      icon: "💼", // Replace with actual icon component
-    },
-    {
-      title: "JD Based Interview",
-      icon: "📋", // Replace with actual icon component
-    },
-    {
-      title: "Communication Skills",
-      icon: "💬", // Replace with actual icon component
-    },
-    {
-      title: "Resume Builder",
-      icon: "📄", // Replace with actual icon component
-    },
-    // Add more categories as needed
-  ];
+  
 
   const [data, setData] = useState({});
   const [categoriesdata, setCategoriesData] = useState([]);

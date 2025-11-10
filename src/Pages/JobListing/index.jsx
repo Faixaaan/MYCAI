@@ -18,9 +18,9 @@ import {
   LinkedIn as LinkedInIcon,
   Share as ShareIcon,
   MoreVert as MoreVertIcon,
-  Star as StarIcon,
+  
 } from "@mui/icons-material";
-import axios from "axios";
+
 import { useNavigate } from "react-router-dom";
 import { endpoints } from "../../api/endpoints/endpoints";
 import { axiosInstance } from "../../api/axios/axios";

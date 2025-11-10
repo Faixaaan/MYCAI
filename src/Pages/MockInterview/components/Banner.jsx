@@ -8,8 +8,6 @@ import {
   Select,
   FormControl,
 } from "@mui/material";
-import BannerImg from "../../../Images/Mock-interview-Banner.png";
-import PhoneBannerImg from "../../../Images/mock-interview.png";
 import { endpoints } from "../../../api/endpoints/endpoints";
 import { axiosInstance } from "../../../api/axios/axios";
 

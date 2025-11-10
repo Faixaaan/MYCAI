@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Box, Container, Typography } from "@mui/material";
-import BannerImg from "../../../Images/course-banner.png";
-import MobileBannerImg from "../../../Images/my-courses-mobile-banner.png";
 import { axiosInstance } from "../../../api/axios/axios";
 import { endpoints } from "../../../api/endpoints/endpoints";
 
