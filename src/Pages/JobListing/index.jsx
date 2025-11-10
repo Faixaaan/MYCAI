@@ -227,10 +227,10 @@ const JobDetail = ({ job, onClick, onTitleClick }) => (
         <Typography
           variant="body2"
           component="div"
-          dangerouslySetInnerHTML={{
-            __html: job?. description
+          dangerouslySetInnerHTML={{__html: job?. description}}
+            
              
-          }}
+          
         />
       </Box>
     </Box>

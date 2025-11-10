@@ -119,8 +119,8 @@ const Wallet = () => {
         setAcepptData(res?.data)
         setPendingData(pendingRes?.data);
         setCviValue(cviValueRes?.data?.cvi_value || 0)
-        setWalletAmount(walletRes?.data?.data?.
-wallet_amount)
+        setWalletAmount(walletRes?.data?.data?.wallet_amount)
+
         
         console.log(walletRes?.data, "singleTransactionData");
       } catch (err) {
