@@ -74,8 +74,8 @@ const JobCard = ({ job, onClose, isExpanded, onClick, onTitleClick }) => (
             {job?.company_name}
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-            {job?.
-              candidate_required_location}
+            {job?.candidate_required_location}
+              
           </Typography>
 
           {job.activelyReviewing && (
@@ -228,8 +228,8 @@ const JobDetail = ({ job, onClick, onTitleClick }) => (
           variant="body2"
           component="div"
           dangerouslySetInnerHTML={{
-            __html: job?.
-              description
+            __html: job?. description
+             
           }}
         />
       </Box>

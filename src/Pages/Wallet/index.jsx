@@ -133,18 +133,7 @@ wallet_amount)
 
 
 
-  const toggleBalance = () => setShowBalance(!showBalance);
-
-  const pending = [
-    { token: "100 CVI", status: "Pending", type: "Deposit" },
-    { token: "50 CVI", status: "Pending", type: "Withdrawal" },
-  ];
-
-  const completed = [
-    { token: "200 CVI", status: "Accepted", type: "Deposit" },
-    { token: "30 CVI", status: "Declined", type: "Withdrawal" },
-  ];
-
+  
   const renderTabContent = () => {
     switch (tabValue) {
       // 🏠 Home Tab — keep your existing design here

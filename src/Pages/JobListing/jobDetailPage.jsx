@@ -230,8 +230,8 @@ In this role, you'll collaborate with designers, backend developers, and product
                   About the job
                 </Typography>
                 <Typography variant="body1" color="text.secondary" paragraph sx={{ whiteSpace: 'pre-line' }} dangerouslySetInnerHTML={{
-            __html: job?.
-              description
+            __html: job?.description
+              
           }}>
                   
                 </Typography>
