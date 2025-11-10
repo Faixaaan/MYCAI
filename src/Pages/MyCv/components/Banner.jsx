@@ -2,8 +2,18 @@ import React from 'react';
 import { Box, Button, Container, Typography } from '@mui/material';
 import BannerImg from '../../../Images/mycv-banner.png';
 import MobileBannerImg from '../../../Images/my-cv-mobile-banner.png'
+import { useNavigate } from 'react-router-dom';
 
 const Banner = () => {
+
+    const navigate = useNavigate()
+  
+
+    const handleClick = ()=>{
+      window.open('https://mycvi.adretsoftware.in/cv/pricing.html', '_blank');
+    }
+
+
     return (
         <Box
             sx={{
@@ -35,7 +45,7 @@ const Banner = () => {
                 </Typography>
 
                 <Box sx={{ display: "flex", alignItems: "center", mt: 4 }}>
-                    <Button variant='contained' sx={{ borderRadius: "22px", bgcolor: "#FF8014", textTransform: "capitalize", padding: { md: "8px 25px", xs: "8px 20px" }, fontSize: "16px", fontWeight: "400", lineHeight: "138%", letterSpacing: "0%" }}>
+                    <Button variant='contained' sx={{ borderRadius: "22px", bgcolor: "#FF8014", textTransform: "capitalize", padding: { md: "8px 25px", xs: "8px 20px" }, fontSize: "16px", fontWeight: "400", lineHeight: "138%", letterSpacing: "0%" }} onClick={handleClick}>
                         Create your CV
                     </Button>
 
