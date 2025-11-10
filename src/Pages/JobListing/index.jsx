@@ -11,6 +11,7 @@ import {
   Divider,
   Container,
   Grid,
+  CircularProgress
 } from "@mui/material";
 import {
   Close as CloseIcon,
@@ -18,12 +19,13 @@ import {
   LinkedIn as LinkedInIcon,
   Share as ShareIcon,
   MoreVert as MoreVertIcon,
-  
+
 } from "@mui/icons-material";
 
 import { useNavigate } from "react-router-dom";
 import { endpoints } from "../../api/endpoints/endpoints";
 import { axiosInstance } from "../../api/axios/axios";
+import axios from "axios";
 
 const JobCard = ({ job, onClose, isExpanded, onClick, onTitleClick }) => (
   <Card
@@ -46,7 +48,7 @@ const JobCard = ({ job, onClose, isExpanded, onClick, onTitleClick }) => (
             border: "1px solid #e0e0e0",
           }}
         >
-          {job?.company_logo}
+          {job?.url}
         </Avatar>
 
         <Box sx={{ flex: 1, minWidth: 0 }}>
@@ -62,16 +64,18 @@ const JobCard = ({ job, onClose, isExpanded, onClick, onTitleClick }) => (
             onClick={(e) => {
               e.stopPropagation();
               // guard in case job is not yet defined
-              if (job?.job_id) onTitleClick(job.job_id);
+              if (job?.id) onTitleClick(job.id);
             }}
           >
-            {job?.job_title}
+            {job?.title}
+
           </Typography>
           <Typography variant="body2" color="text.primary" sx={{ mb: 0.5 }}>
             {job?.company_name}
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-            {job?.city}
+            {job?.
+              candidate_required_location}
           </Typography>
 
           {job.activelyReviewing && (
@@ -86,7 +90,8 @@ const JobCard = ({ job, onClose, isExpanded, onClick, onTitleClick }) => (
           )}
 
           <Typography variant="caption" color="text.secondary">
-            {job.meta}
+            {job.salary
+            }
           </Typography>
         </Box>
 
@@ -142,7 +147,7 @@ const JobDetail = ({ job, onClick, onTitleClick }) => (
         onClick={(e) => {
           e.stopPropagation();
           // avoid errors if job is undefined while data is loading
-          if (job?.job_id) onTitleClick(job.job_id);
+          if (job?.id) onTitleClick(job.id);
         }}
         onKeyDown={(e) => {
           // support keyboard activation (Enter / Space)
@@ -152,7 +157,8 @@ const JobDetail = ({ job, onClick, onTitleClick }) => (
           }
         }}
       >
-        {job?.job_title}
+        {job?.title
+}
       </Typography>
 
       <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
@@ -221,7 +227,10 @@ const JobDetail = ({ job, onClick, onTitleClick }) => (
         <Typography
           variant="body2"
           component="div"
-          dangerouslySetInnerHTML={{ __html: job?.requirement }}
+          dangerouslySetInnerHTML={{
+            __html: job?.
+              description
+          }}
         />
       </Box>
     </Box>
@@ -231,19 +240,36 @@ const JobDetail = ({ job, onClick, onTitleClick }) => (
 const JobListing = () => {
   const [selectedJob, setSelectedJob] = useState(0);
   const [job, setJobData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchJobData = async () => {
       try {
         const res = await axiosInstance.get(endpoints.jobs.allJobs);
-        setJobData(res?.data?.adminJob);
+
         console.log(res?.data?.adminJob, "all_job_data");
       } catch (err) {
         console.error(err);
       }
     };
 
+    const DemoData = async () => {
+      try {
+         setLoading(true);
+        const res = await axios.get(`https://remotive.com/api/remote-jobs`);
+        setJobData(res?.data?.jobs);
+        console.log(res?.data?.jobs, 'demoData')
+      }
+      catch (err) {
+        console.log(err)
+      }
+      finally {
+        setLoading(false); // Stop loader
+      }
+    }
+
+    DemoData()
     fetchJobData();
   }, []);
 
@@ -254,7 +280,23 @@ const JobListing = () => {
   return (
     <Box sx={{ bgcolor: "#f3f2ef", minHeight: "100vh", py: 3 }}>
       <Container maxWidth="lg" sx={{ px: 4 }}>
-        <Grid container spacing={3}>
+        {
+          loading?(
+            <>
+             <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "300px",
+                }}
+              >
+                <CircularProgress color="primary" />
+              </Box>
+            </>
+          ):(
+            <>
+            <Grid container spacing={3}>
           {/* Left Panel - Job List */}
           <Grid item size={{ xs: 12, md: 6 }}>
             <Card sx={{ mb: 2 }}>
@@ -286,7 +328,7 @@ const JobListing = () => {
                 <JobCard
                   key={item.job_id || index}
                   job={item}
-                  onClose={() => {}}
+                  onClose={() => { }}
                   isExpanded={selectedJob === index}
                   onClick={() => setSelectedJob(index)}
                   onTitleClick={handleTitleClick}
@@ -304,6 +346,10 @@ const JobListing = () => {
             </Card>
           </Grid>
         </Grid>
+            </>
+          )
+        }
+        
       </Container>
     </Box>
   );

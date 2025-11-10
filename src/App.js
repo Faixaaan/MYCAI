@@ -38,7 +38,7 @@ function App() {
           <Route path='/signin' element={<SignIn />} />
           <Route path='/signup' element={<SignUp />} />
           <Route path='/joblisting' element={<JobListing />} />
-          <Route path="/job-detail/:job_id" element={<JobDetailPage />} />
+          <Route path="/job-detail/:id" element={<JobDetailPage />} />
         </Routes>
         <Footer />
       </BrowserRouter>
