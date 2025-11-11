@@ -16,9 +16,10 @@ import {
 import {
   Close as CloseIcon,
   CheckCircle as CheckCircleIcon,
-  LinkedIn as LinkedInIcon,
+  
   Share as ShareIcon,
   MoreVert as MoreVertIcon,
+   Business,
 
 } from "@mui/icons-material";
 
@@ -39,18 +40,7 @@ const JobCard = ({ job, onClose, isExpanded, onClick, onTitleClick }) => (
   >
     <CardContent sx={{ p: 2 }}>
       <Box sx={{ display: "flex", alignItems: "flex-start", gap: 2 }}>
-        <Avatar
-          sx={{
-            width: 48,
-            height: 48,
-            bgcolor: job.company === "Naukr.ai" ? "#fff" : "#000",
-            color: job.company === "Naukr.ai" ? "#000" : "#fff",
-            border: "1px solid #e0e0e0",
-          }}
-        >
-          {job?.url}
-        </Avatar>
-
+        <img src='https://i.fbcd.co/products/original/fd7108f1b1d0bbe3e726f746e701793fc0cf4e7d3a3b6cc9cb4bfb21dc995a44.jpg' alt="" style={{width:"68px",height:"68px"}} />
         <Box sx={{ flex: 1, minWidth: 0 }}>
           <Typography
             variant="subtitle1"
