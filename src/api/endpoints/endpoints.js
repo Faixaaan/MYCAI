@@ -18,10 +18,11 @@ export const endpoints ={
         allJobs:"/admin-jobs"
     },
     cvi_wallet:{
-        request_transaction:"/submit-request-transtion",
+        request_transaction:"/add-fund",
         transaction_list:"/single-transtion",
         payment_pending_transaction:"/single-request-transtion",
         convert_token:"/cvi-value",
-        single_user:"/single-user"
+        single_user:"/single-user",
+        cvi_token:"/swape-converter"
     }
 }

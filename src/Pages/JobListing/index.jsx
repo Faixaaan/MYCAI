@@ -180,7 +180,7 @@ const JobDetail = ({ job, onClick, onTitleClick }) => (
       <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
         <Button
           variant="contained"
-          startIcon={<LinkedInIcon />}
+          
           sx={{
             bgcolor: "#0a66c2",
             textTransform: "none",

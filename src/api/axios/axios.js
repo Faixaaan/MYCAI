@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const baseURL = 'https://mycvi.adretsoftware.in/admin/api'
+const baseURL = 'https://mycvi.ai/admin/api'
 
 export const axiosInstance = axios.create({
     baseURL

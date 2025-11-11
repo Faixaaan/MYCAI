@@ -12,8 +12,8 @@ import {
   Modal,
   TextField,
   Fade,
-  
-Tabs,
+
+  Tabs,
   Tab,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -46,17 +46,23 @@ const Wallet = () => {
   const [tabValue, setTabValue] = useState(0);
   const [tabValuee, setTabValuee] = useState(0);
   const [open, setOpen] = useState(false);
+  const [tokenOpen, setTokenOpen] = useState(false);
   const [pendingData, setPendingData] = useState([])
   const [acepptData, setAcepptData] = useState([])
   const [cviValue, setCviValue] = useState({})
-  const [walletAmount ,setWalletAmount] = useState(0);
+  const [walletAmount, setWalletAmount] = useState(0);
+  const [cviValuee, setCviValuee] = useState({})
   const [form, setForm] = useState({
     cvi_value: "",
-    transaction_type: "deposit",
+
+  });
+  const [tokenform, setTokenForm] = useState({
+    cvi_token: "",
+
   });
 
   // 🧠 State for wallet and user info
-  
+
   const [userId, setUserId] = useState("");
 
   useEffect(() => {
@@ -65,7 +71,7 @@ const Wallet = () => {
     if (storedData) {
       try {
         const parsed = JSON.parse(storedData);
-        
+
         setUserId(parsed.user_id || "");
       } catch (err) {
         console.error("Error parsing localStorage data:", err);
@@ -77,13 +83,29 @@ const Wallet = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const handleChangee = (e) => {
+    setTokenForm({ ...tokenform, [e.target.name]: e.target.value });
+  };
+
+  // unique transaction id 
+
+  const generateTransactionId = () => {
+    const timestamp = Date.now();
+    const random = Math.floor(Math.random() * 100000);
+    return `TXN-${timestamp}-${random}`;
+  };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const transactionId = generateTransactionId();
+
     const payload = {
-      user: userId,
-      cvi_value: form.cvi_value,
-      transition_type: form.transaction_type, // note spelling matches your API
+      user_id: userId,
+      amount: form.cvi_value,
+      transtion_id: transactionId, // note spelling matches your API
+      status: true
     };
 
     try {
@@ -97,6 +119,34 @@ const Wallet = () => {
     } catch (err) {
       console.error("❌ Error submitting:", err);
       alert("Failed to submit transaction!");
+      setOpen(false);
+    }
+  };
+
+  // token handle form submit 
+
+  const tokenHandleSubmit = async (e) => {
+    e.preventDefault();
+
+    const payload = {
+      user_id: userId,
+      cvi_token: tokenform.cvi_token,
+
+    };
+
+    try {
+      const res = await axiosInstance.post(endpoints.cvi_wallet?.cvi_token, payload)
+
+
+      console.log("✅ API Response:", res.data);
+      toast.success(res?.data?.message);
+      setTokenOpen(false);
+      setForm({ cvi_value: "" });
+    } catch (err) {
+      console.error("❌ Error submitting:", err);
+      toast.error(err?.response?.data?.message);
+      setTokenOpen(false);
+
     }
   };
 
@@ -118,11 +168,13 @@ const Wallet = () => {
         const walletRes = await axiosInstance.get(`${endpoints.cvi_wallet.single_user}/${userId}`)
         setAcepptData(res?.data)
         setPendingData(pendingRes?.data);
-        setCviValue(cviValueRes?.data?.cvi_value || 0)
-        setWalletAmount(walletRes?.data?.data?.wallet_amount)
+        setCviValue(walletRes?.data?.data?.cvi_amount || 0)
+        setCviValuee(cviValueRes?.data?.cvi_value)
 
-        
-        console.log(walletRes?.data, "singleTransactionData");
+        setWalletAmount(walletRes?.data?.data?.real_amount)
+
+
+        console.log(cviValueRes?.data?.cvi_value, "singleTransactionData");
       } catch (err) {
         console.error(err);
       }
@@ -132,8 +184,8 @@ const Wallet = () => {
   }, [userId]); // ✅ Re-run only when userId changes
 
 
+  console.log(cviValue, 'value')
 
-  
   const renderTabContent = () => {
     switch (tabValue) {
       // 🏠 Home Tab — keep your existing design here
@@ -226,7 +278,7 @@ const Wallet = () => {
                     }}
                     onClick={() => setOpen(true)}
                   >
-                    Send
+                    Deposit
                   </Button>
                   <Button
                     fullWidth
@@ -510,6 +562,15 @@ const Wallet = () => {
                 </IconButton>
               </Box>
 
+              {/* heading */}
+
+              <Typography>
+                Own the Future – 1 Token at £{cviValuee || 0}
+
+
+              </Typography>
+
+
               {/* 🔹 Balance Boxes */}
               <Box
                 sx={{
@@ -534,7 +595,7 @@ const Wallet = () => {
                     Main Balance
                   </Typography>
                   <Typography sx={{ fontSize: 22, fontWeight: 700, color: "#fff", mt: 0.5 }}>
-                    ${walletAmount}
+                    £{walletAmount}
                   </Typography>
                 </Box>
 
@@ -555,13 +616,39 @@ const Wallet = () => {
                   <Typography
                     sx={{ fontSize: 22, fontWeight: 700, color: "#fff", mt: 0.5 }}
                   >
-                    {walletAmount !== undefined && cviValue !== undefined
-                      ? (Number(walletAmount) * Number(cviValue)).toFixed(2)
-                      : "0"}
+                    {cviValue}
                   </Typography>
 
                 </Box>
+
+
               </Box>
+
+              {/* action button */}
+
+
+              <Box sx={{ width: "100%" }}>
+                <Button
+                  fullWidth
+                  variant="outlined"
+                  startIcon={<BoltIcon />}
+                  sx={{
+                    borderColor: "rgba(255,255,255,0.25)",
+                    color: "#fff",
+                    borderRadius: "12px",
+                    textTransform: "none",
+                    "&:hover": {
+                      borderColor: "#4CC9F0",
+                      background: "rgba(76,201,240,0.1)",
+                    },
+                  }}
+                  onClick={() => setTokenOpen(true)}
+                >
+                  Buy Tokens
+                </Button>
+              </Box>
+
+
 
 
 
@@ -702,17 +789,18 @@ const Wallet = () => {
               borderRadius: "20px",
               border: "1px solid rgba(255,255,255,0.25)",
               boxShadow: "0 0 20px rgba(0,0,0,0.5)",
-              width: 340,
+              width: 360,
               p: 3,
               color: "#fff",
             }}
           >
             <Typography variant="h6" sx={{ mb: 2, textAlign: "center" }}>
-              Send CVI Tokens
+              Enter Your Deposit Amount
             </Typography>
 
+            {/* 💰 Deposit Amount Input */}
             <TextField
-              label="CVI Value"
+              label="Deposit Amount (£)"
               name="cvi_value"
               value={form.cvi_value}
               onChange={handleChange}
@@ -730,16 +818,144 @@ const Wallet = () => {
               }}
             />
 
+            {/* 💳 Payment Gateway Selection */}
+            <Typography sx={{ color: "#9CA3AF", mb: 1 }}>
+              Choose Payment Gateway:
+            </Typography>
+
+            <Box sx={{ display: "flex", gap: 2, mb: 3 }}>
+              <Button
+                onClick={() => setForm({ ...form, gateway: "paypal" })}
+                variant={form.gateway === "paypal" ? "contained" : "outlined"}
+                sx={{
+                  flex: 1,
+                  borderColor:
+                    form.gateway === "paypal"
+                      ? "transparent"
+                      : "rgba(255,255,255,0.25)",
+                  bgcolor: form.gateway === "paypal" ? "#00457C" : "transparent",
+                  color: "#fff",
+                  borderRadius: "12px",
+                  textTransform: "none",
+                  fontWeight: 500,
+                  "&:hover": {
+                    bgcolor:
+                      form.gateway === "paypal"
+                        ? "#003366"
+                        : "rgba(76,201,240,0.1)",
+                  },
+                }}
+              >
+                <img
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRG5VZrVz6OWbHg6cgV7YbMjRWYHcVdOXHYdNT5vxY_aT9Y1ZfLXY8lXvvIYIsUgYFEJJk&usqp=CAU"
+                  alt="PayPal"
+                  style={{ height: 20, marginRight: 8 }}
+                />
+                PayPal
+              </Button>
+
+              <Button
+                onClick={() => setForm({ ...form, gateway: "stripe" })}
+                variant={form.gateway === "stripe" ? "contained" : "outlined"}
+                sx={{
+                  flex: 1,
+                  borderColor:
+                    form.gateway === "stripe"
+                      ? "transparent"
+                      : "rgba(255,255,255,0.25)",
+                  bgcolor: form.gateway === "stripe" ? "#635BFF" : "transparent",
+                  color: "#fff",
+                  borderRadius: "12px",
+                  textTransform: "none",
+                  fontWeight: 500,
+                  "&:hover": {
+                    bgcolor:
+                      form.gateway === "stripe"
+                        ? "#5146FF"
+                        : "rgba(76,201,240,0.1)",
+                  },
+                }}
+              >
+                <img
+                  src="https://cdn.sanity.io/images/5a711ubd/production/f150926f692a2e6053f931e3e701f119f3190b38-512x512.svg?w=128&h=128"
+                  alt="Stripe"
+                  style={{ height: 18, marginRight: 8 }}
+                />
+                Stripe
+              </Button>
+            </Box>
+
+            {/* 🟦 Submit Button */}
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              disabled={!form.cvi_value || !form.gateway}
+              sx={{
+                bgcolor: !form.cvi_value || !form.gateway ? "#3A3A3A" : "#00C6FF",
+                color: !form.cvi_value || !form.gateway ? "#fff" : "#000",
+                fontWeight: 600,
+                borderRadius: "12px",
+                textTransform: "none",
+                transition: "all 0.3s ease",
+                "&:hover": {
+                  bgcolor:
+                    !form.cvi_value || !form.gateway ? "#3A3A3A" : "#00AEEF",
+                  cursor:
+                    !form.cvi_value || !form.gateway ? "not-allowed" : "pointer",
+                },
+                "&.Mui-disabled": {
+                  color: "#fff", // ✅ Force white color when disabled
+                  opacity: 1, // ✅ Prevent MUI from dimming it
+                  backgroundColor: "#3A3A3A", // ✅ Keep dark gray visible
+                },
+              }}
+            >
+              Continue to Payment
+            </Button>
+
+
+          </Box>
+        </Fade>
+      </Modal>
+
+
+      {/* token converted modal */}
+
+      <Modal open={tokenOpen} onClose={() => setOpen(false)} closeAfterTransition>
+        <Fade in={tokenOpen}>
+          <Box
+            component="form"
+            onSubmit={tokenHandleSubmit}
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              bgcolor: "#111827",
+              borderRadius: "20px",
+              border: "1px solid rgba(255,255,255,0.25)",
+              boxShadow: "0 0 20px rgba(0,0,0,0.5)",
+              width: 340,
+              p: 3,
+              color: "#fff",
+            }}
+          >
+            <Typography variant="h6" sx={{ mb: 2, textAlign: "center" }}>
+              Send CVI Tokens
+            </Typography>
+
             <TextField
-              label="Transaction Type"
-              name="transaction_type"
-              value={form.transaction_type}
-              onChange={handleChange}
+              label="CVI Token"
+              name="cvi_token"
+              value={form.cvi_token}
+              onChange={handleChangee}
               fullWidth
               variant="outlined"
+              type="number"
               InputLabelProps={{ style: { color: "#9CA3AF" } }}
               sx={{
-                mb: 3,
+                mb: 2,
                 input: { color: "#fff" },
                 "& .MuiOutlinedInput-root": {
                   "& fieldset": { borderColor: "rgba(255,255,255,0.25)" },
@@ -747,6 +963,8 @@ const Wallet = () => {
                 },
               }}
             />
+
+
 
             <Button
               type="submit"
