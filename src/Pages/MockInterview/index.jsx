@@ -10,7 +10,7 @@ const MockInterview = () => {
     <>
       <Banner/>
       <Chatbot/>
-      <Categories/>
+      {/* <Categories/> */}
       <KeyBenifit/>
       <HowitWorks/>
     </>

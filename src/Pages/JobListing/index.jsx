@@ -16,10 +16,10 @@ import {
 import {
   Close as CloseIcon,
   CheckCircle as CheckCircleIcon,
-  
+
   Share as ShareIcon,
   MoreVert as MoreVertIcon,
-   Business,
+
 
 } from "@mui/icons-material";
 
@@ -27,6 +27,10 @@ import { useNavigate } from "react-router-dom";
 import { endpoints } from "../../api/endpoints/endpoints";
 import { axiosInstance } from "../../api/axios/axios";
 import axios from "axios";
+import { Modal, Fade, Backdrop } from "@mui/material";
+import { Dialog, DialogContent, DialogActions } from "@mui/material";
+
+
 
 const JobCard = ({ job, onClose, isExpanded, onClick, onTitleClick }) => (
   <Card
@@ -40,7 +44,7 @@ const JobCard = ({ job, onClose, isExpanded, onClick, onTitleClick }) => (
   >
     <CardContent sx={{ p: 2 }}>
       <Box sx={{ display: "flex", alignItems: "flex-start", gap: 2 }}>
-        <img src='https://i.fbcd.co/products/original/fd7108f1b1d0bbe3e726f746e701793fc0cf4e7d3a3b6cc9cb4bfb21dc995a44.jpg' alt="" style={{width:"68px",height:"68px"}} />
+        <img src='https://icons.veryicon.com/png/o/miscellaneous/fill/part-time-job.png' alt="" style={{ width: "68px", height: "68px" }} />
         <Box sx={{ flex: 1, minWidth: 0 }}>
           <Typography
             variant="subtitle1"
@@ -65,7 +69,7 @@ const JobCard = ({ job, onClose, isExpanded, onClick, onTitleClick }) => (
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
             {job?.candidate_required_location}
-              
+
           </Typography>
 
           {job.activelyReviewing && (
@@ -99,7 +103,7 @@ const JobCard = ({ job, onClose, isExpanded, onClick, onTitleClick }) => (
   </Card>
 );
 
-const JobDetail = ({ job, onClick, onTitleClick }) => (
+const JobDetail = ({ job, onClick, onTitleClick, handleModalOpen }) => (
   <Box>
     <Box sx={{ mb: 4 }}>
       <Box sx={{ display: "flex", alignItems: "flex-start", gap: 2, mb: 3 }}>
@@ -148,7 +152,7 @@ const JobDetail = ({ job, onClick, onTitleClick }) => (
         }}
       >
         {job?.title
-}
+        }
       </Typography>
 
       <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
@@ -170,13 +174,13 @@ const JobDetail = ({ job, onClick, onTitleClick }) => (
       <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
         <Button
           variant="contained"
-          
           sx={{
             bgcolor: "#0a66c2",
             textTransform: "none",
             fontWeight: 600,
             "&:hover": { bgcolor: "#004182" },
           }}
+          onClick={() => handleModalOpen("apply")}
         >
           Easy Apply
         </Button>
@@ -188,9 +192,11 @@ const JobDetail = ({ job, onClick, onTitleClick }) => (
             borderColor: "#0a66c2",
             color: "#0a66c2",
           }}
+          onClick={() => handleModalOpen("save")}
         >
           Save
         </Button>
+
       </Box>
     </Box>
 
@@ -217,11 +223,11 @@ const JobDetail = ({ job, onClick, onTitleClick }) => (
         <Typography
           variant="body2"
           component="div"
-          dangerouslySetInnerHTML={{__html: job?.description}}/>
-            
-             
-          
-        
+          dangerouslySetInnerHTML={{ __html: job?.description }} />
+
+
+
+
       </Box>
     </Box>
   </Box>
@@ -231,6 +237,9 @@ const JobListing = () => {
   const [selectedJob, setSelectedJob] = useState(0);
   const [job, setJobData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
+  const [modalType, setModalType] = useState(""); // "apply" or "save"
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -246,7 +255,7 @@ const JobListing = () => {
 
     const DemoData = async () => {
       try {
-         setLoading(true);
+        setLoading(true);
         const res = await axios.get(`https://remotive.com/api/remote-jobs`);
         setJobData(res?.data?.jobs);
         console.log(res?.data?.jobs, 'demoData')
@@ -267,13 +276,19 @@ const JobListing = () => {
     navigate(`/job-detail/${job_id}`);
   };
 
+  const handleModalOpen = (type) => {
+    setModalType(type);
+    setOpenModal(true);
+  };
+
+
   return (
     <Box sx={{ bgcolor: "#f3f2ef", minHeight: "100vh", py: 3 }}>
       <Container maxWidth="lg" sx={{ px: 4 }}>
         {
-          loading?(
+          loading ? (
             <>
-             <Box
+              <Box
                 sx={{
                   display: "flex",
                   justifyContent: "center",
@@ -284,62 +299,96 @@ const JobListing = () => {
                 <CircularProgress color="primary" />
               </Box>
             </>
-          ):(
+          ) : (
             <>
-            <Grid container spacing={3}>
-          {/* Left Panel - Job List */}
-          <Grid item size={{ xs: 12, md: 6 }}>
-            <Card sx={{ mb: 2 }}>
-              <CardContent>
-                <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5 }}>
-                  Top job picks for you
-                </Typography>
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  sx={{ mb: 1 }}
-                >
-                  Based on your profile, preferences, and activity like applies,
-                  searches, and saves
-                </Typography>
-                <Typography variant="caption" color="text.secondary">
-                  {job?.length || 0} results
-                </Typography>
-              </CardContent>
-            </Card>
+              <Grid container spacing={3}>
+                {/* Left Panel - Job List */}
+                <Grid item size={{ xs: 12, md: 6 }}>
+                  <Card sx={{ mb: 2 }}>
+                    <CardContent>
+                      <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5 }}>
+                        Top job picks for you
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{ mb: 1 }}
+                      >
+                        Based on your profile, preferences, and activity like applies,
+                        searches, and saves
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        {job?.length || 0} results
+                      </Typography>
+                    </CardContent>
+                  </Card>
 
-            <Box
-              sx={{
-                maxHeight: { lg: "calc(100vh - 200px)" },
-                overflow: "auto",
-              }}
-            >
-              {job.map((item, index) => (
-                <JobCard
-                  key={item.job_id || index}
-                  job={item}
-                  onClose={() => { }}
-                  isExpanded={selectedJob === index}
-                  onClick={() => setSelectedJob(index)}
-                  onTitleClick={handleTitleClick}
-                />
-              ))}
-            </Box>
-          </Grid>
+                  <Box
+                    sx={{
+                      maxHeight: { lg: "calc(100vh - 200px)" },
+                      overflow: "auto",
+                    }}
+                  >
+                    {job.map((item, index) => (
+                      <JobCard
+                        key={item.job_id || index}
+                        job={item}
+                        onClose={() => { }}
+                        isExpanded={selectedJob === index}
+                        onClick={() => setSelectedJob(index)}
+                        onTitleClick={handleTitleClick}
+                      />
+                    ))}
+                  </Box>
+                </Grid>
 
-          {/* Right Panel - Job Details */}
-          <Grid item size={{ xs: 12, md: 6 }}>
-            <Card sx={{ position: "sticky", top: 16 }}>
-              <CardContent sx={{ p: 3 }}>
-                <JobDetail job={job[selectedJob]} onTitleClick={handleTitleClick} />
-              </CardContent>
-            </Card>
-          </Grid>
-        </Grid>
+                {/* Right Panel - Job Details */}
+                <Grid item size={{ xs: 12, md: 6 }}>
+                  <Card sx={{ position: "sticky", top: 16 }}>
+                    <CardContent sx={{ p: 3 }}>
+                      <JobDetail job={job[selectedJob]} onTitleClick={handleTitleClick} handleModalOpen={handleModalOpen} />
+                    </CardContent>
+                  </Card>
+                </Grid>
+              </Grid>
             </>
           )
         }
-        
+
+        {/* modal */}
+
+        <Dialog
+          open={openModal}
+          onClose={() => setOpenModal(false)}
+          maxWidth="sm"
+          fullWidth
+        >
+          <DialogContent sx={{ textAlign: "center", py: 4 }}>
+            <CheckCircleIcon sx={{ fontSize: 80, color: "success.main", mb: 2 }} />
+            <Typography variant="h4" fontWeight="bold" gutterBottom>
+              {modalType === "apply" ? "Application Submitted!" : "Job Saved!"}
+            </Typography>
+            <Typography variant="body1" color="text.secondary">
+              {modalType === "apply"
+                ? "Your application has been sent successfully."
+                : "This job has been saved to your profile."}
+            </Typography>
+          </DialogContent>
+
+          <DialogActions sx={{ justifyContent: "center", pb: 3 }}>
+            <Button
+              variant="contained"
+              onClick={() => setOpenModal(false)}
+              fullWidth
+              sx={{ mx: 3, borderRadius: 28, py: 1.5 }}
+            >
+              Done
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+
+
       </Container>
     </Box>
   );

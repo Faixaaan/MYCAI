@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, TextField, InputAdornment, IconButton } from '@mui/material';
+import { Box, TextField, InputAdornment, IconButton, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import SendIcon from "@mui/icons-material/Send";
 import MicIcon from "@mui/icons-material/Mic";
@@ -102,14 +102,19 @@ const Banner = () => {
                             endAdornment: (
                                 <InputAdornment position="end">
                                     {/* 🎙️ Mic Icon */}
-                                    <IconButton
+                                    <Button
                                         sx={{
-                                            color: "#000",
+                                            color: "#fff",
                                             mr: 1,
+                                            borderRadius:"15px",
+                                            textTransform:"capitalize",
+                                            background:
+                                                "linear-gradient(90deg, #A334FA 0%, #FF7A00 100%)",
                                         }}
+                                        variant="contained"
                                     >
-                                        <MicIcon />
-                                    </IconButton>
+                                        use AI
+                                    </Button>
 
                                     {/* 🟣 Gradient Send Button */}
                                     <IconButton

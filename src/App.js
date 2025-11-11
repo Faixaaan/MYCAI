@@ -26,7 +26,7 @@ function App() {
     <>
           <ToastContainer position="top-right" autoClose={3000} theme="colored" />
 
-      <BrowserRouter>
+      <BrowserRouter >
         <Navbar />
         <Routes>
           <Route path='/' element={<Home />} />

@@ -142,6 +142,7 @@ const Banner = () => {
           </Box>
           <Box
             sx={{
+              position: "relative",
               display: "flex",
               justifyContent: "center",
               mt: "40px",
@@ -152,7 +153,62 @@ const Banner = () => {
               alt="jobs banner"
               style={{ width: "100%", borderRadius: "15px" }}
             />
+
+            {/* Overlay content */}
+            <Box
+              sx={{
+                position: "absolute",
+                top: "50%",
+                left: "10%",
+                transform: "translateY(-50%)",
+                color: "#fff",
+                zIndex: 2,
+                maxWidth: { xs: "80%", md: "45%" },
+              }}
+            >
+              <Typography
+                variant="h5"
+                sx={{
+                  fontWeight: 600,
+                  color: "#fff",
+                  mb: 1,
+                  lineHeight: 1.4,
+                }}
+              >
+                Practice customised mock interview with AI!
+              </Typography>
+
+              <Typography
+                variant="body1"
+                sx={{
+                  mb: 3,
+                  color: "#f5f5f5",
+                  opacity: 0.9,
+                }}
+              >
+                Get AI answer, tips and insights
+              </Typography>
+
+              <Button
+                variant="contained"
+                sx={{
+                  background: "linear-gradient(90deg, #00C6FF 0%, #0072FF 100%)",
+                  borderRadius: "20px",
+                  textTransform: "none",
+                  px: 3,
+                  py: 1.2,
+                  fontWeight: 600,
+                  boxShadow: "0 4px 14px rgba(0,0,0,0.2)",
+                  "&:hover": {
+                    background: "linear-gradient(90deg, #00B0E8 0%, #0062E0 100%)",
+                  },
+                }}
+              >
+                Start For Free
+              </Button>
+            </Box>
           </Box>
+
           {/* ======= Category Cards Section ======= */}
           <Grid
             container

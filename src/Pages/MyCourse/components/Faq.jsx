@@ -25,7 +25,7 @@ const Faq = () => {
         const res = await axiosInstance.get(endpoints.course.banner);
         const faqRes = await axiosInstance.get(endpoints.course.faqs);
         setFaqData(faqRes?.data?.faq);
-        console.log(res?.data, "bannerdata");
+        console.log(faqRes?.data?.faq, "bannerdata");
         setData(res?.data);
       } catch (err) {
         console.error(
@@ -57,7 +57,7 @@ const Faq = () => {
 
         {/* Accordions */}
         <Box sx={{ mt: 6 }}>
-          {questions.map((question, index) => (
+          {faqData.map((question, index) => (
             <Accordion
               key={index}
               defaultExpanded={index === 0}
@@ -87,12 +87,12 @@ const Faq = () => {
                 id={`panel${index}-header`}
               >
                 <Typography component="span" sx={{ fontWeight: 600 }}>
-                  {faqData?.question}
+                  {question?.question}
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Typography color="text.secondary">
-                  {faqData?.answer}
+                  {question?.answer}
                 </Typography>
               </AccordionDetails>
             </Accordion>

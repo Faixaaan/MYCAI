@@ -12,7 +12,7 @@ const MyCv = () => {
       <Chatbot/>
       <BetterCV/>
       <CvBuilder/>
-      <Customers/>
+      {/* <Customers/> */}
     </>
   )
 }
