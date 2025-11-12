@@ -8,14 +8,7 @@ import { axiosInstance } from "../../../api/axios/axios";
 import { endpoints } from "../../../api/endpoints/endpoints";
 
 const Faq = () => {
-  const questions = [
-    "How does the AI help generate resumes?",
-    "Can I customize my resume layout?",
-    "Is BetterCV free to use?",
-    "How do I download my resume as a PDF?",
-    "Can I edit my resume after downloading?",
-    "What templates are available?",
-  ];
+ 
 
   const [data, setData] = useState({});
   const [faqData,setFaqData] = useState([])

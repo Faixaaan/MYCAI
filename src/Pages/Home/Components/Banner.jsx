@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Box, TextField, InputAdornment, IconButton, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import SendIcon from "@mui/icons-material/Send";
-import MicIcon from "@mui/icons-material/Mic";
 import { axiosInstance } from "../../../api/axios/axios";
 import { endpoints } from "../../../api/endpoints/endpoints";
 

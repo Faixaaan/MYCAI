@@ -27,7 +27,6 @@ import { useNavigate } from "react-router-dom";
 import { endpoints } from "../../api/endpoints/endpoints";
 import { axiosInstance } from "../../api/axios/axios";
 import axios from "axios";
-import { Modal, Fade, Backdrop } from "@mui/material";
 import { Dialog, DialogContent, DialogActions } from "@mui/material";
 
 
