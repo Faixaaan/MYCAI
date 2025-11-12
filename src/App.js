@@ -18,6 +18,7 @@ import "react-toastify/dist/ReactToastify.css";
 import JobListing from './Pages/JobListing';
 import JobDetailPage from './Pages/JobListing/jobDetailPage';
 import MyEarnings from './Pages/MyEarnings';
+import CreateCv from './Pages/CreateCv';
 
 
 
@@ -41,6 +42,7 @@ function App() {
           <Route path='/joblisting' element={<JobListing />} />
           <Route path="/job-detail/:id" element={<JobDetailPage />} />
            <Route path="/my-earnings" element={<MyEarnings />} />
+               <Route path="/create-cv" element={<CreateCv />} />
         </Routes>
         <Footer />
       </BrowserRouter>
