@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Breadcrumbs, Link } from "@mui/material";
+import { Box, Breadcrumbs, Link, Typography } from "@mui/material";
 import breadcrumbsImage from "../../../Images/BreadCrumbs.jpg";
 
 const Breadcrumbss = ({ activePage, setActivePage }) => {
@@ -25,25 +25,48 @@ const Breadcrumbss = ({ activePage, setActivePage }) => {
           p: { xs: 1, sm: 1.5 },
           borderRadius: "8px",
           fontSize: { xs: "14px", sm: "16px" },
+          color: "#fff",
         }}
       >
+        {/* Pricing */}
         <Link
           underline="hover"
           color={activePage === "pricing" ? "#ff0" : "#fff"}
           onClick={() => setActivePage("pricing")}
-          sx={{ cursor: "pointer", fontWeight: activePage === "pricing" ? 600 : 400 }}
+          sx={{
+            cursor: "pointer",
+            fontWeight: activePage === "pricing" ? 600 : 400,
+          }}
         >
           Pricing
         </Link>
 
+        {/* Templates */}
         <Link
           underline="hover"
-          color={activePage === "templates" ? "#ff0" : "#fff"}
+          color={
+            ["templates", "createCv", "previewTemplate"].includes(activePage)
+              ? "#ff0"
+              : "#fff"
+          }
           onClick={() => setActivePage("templates")}
-          sx={{ cursor: "pointer", fontWeight: activePage === "templates" ? 600 : 400 }}
+          sx={{
+            cursor: "pointer",
+            fontWeight: ["templates", "createCv", "previewTemplate"].includes(activePage)
+              ? 600
+              : 400,
+          }}
         >
           Templates
         </Link>
+
+        {/* Conditional breadcrumbs for deeper pages */}
+        {activePage === "createCv" && (
+          <Typography sx={{ color: "#ff0", fontWeight: 600 }}>Create CV</Typography>
+        )}
+        {activePage === "previewTemplate" && (
+          <Typography sx={{ color: "#ff0", fontWeight: 600 }}>Preview Template</Typography>
+        )}
       </Breadcrumbs>
     </Box>
   );

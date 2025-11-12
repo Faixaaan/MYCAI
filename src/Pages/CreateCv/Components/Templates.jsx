@@ -6,7 +6,7 @@ import Template1 from '../../../Images/resume.png'
 import Template2 from '../../../Images/resume2.png'
 import Template3 from '../../../Images/resume3.png'
 
-const Templates = () => {
+const Templates = ({ setActivePage }) => {
   return (
     <>
       <Box>
@@ -73,23 +73,7 @@ const Templates = () => {
                 mt: 4
               }}
             >
-              {[
-                {
-                  img: Template1,
-                  linkSee: "https://mycvi.adretsoftware.in/cv/templates.html",
-                  linkUse: "https://mycvi.adretsoftware.in/cv/templates.html"
-                },
-                {
-                  img: Template2,
-                  linkSee: "https://mycvi.adretsoftware.in/cv/templates.html",
-                  linkUse: "https://mycvi.adretsoftware.in/cv/templates.html"
-                },
-                {
-                  img: Template3,
-                  linkSee: "https://mycvi.adretsoftware.in/cv/templates.html",
-                  linkUse: "https://mycvi.adretsoftware.in/cv/templates.html"
-                }
-              ].map((template, index) => (
+              {[Template1, Template2, Template3].map((img, index) => (
                 <Card
                   key={index}
                   sx={{
@@ -103,7 +87,7 @@ const Templates = () => {
                 >
                   <Box
                     component="img"
-                    src={template.img}
+                    src={img}
                     alt={`Template ${index + 1}`}
                     sx={{
                       width: "100%",
@@ -122,8 +106,9 @@ const Templates = () => {
                       flexWrap: "wrap"
                     }}
                   >
+                    {/* 🔸 Preview Template */}
                     <Button
-                      onClick={() => window.open(template.linkSee, "_blank")}
+                      onClick={() => setActivePage("previewTemplate")}
                       sx={{
                         border: "2px solid #3B82F6",
                         color: "#3B82F6",
@@ -137,8 +122,10 @@ const Templates = () => {
                     >
                       SEE TEMPLATE →
                     </Button>
+
+                    {/* 🔸 Use Template */}
                     <Button
-                      onClick={() => window.open(template.linkUse, "_blank")}
+                      onClick={() => setActivePage("createCv")}
                       sx={{
                         border: "2px solid #3B82F6",
                         color: "#3B82F6",
