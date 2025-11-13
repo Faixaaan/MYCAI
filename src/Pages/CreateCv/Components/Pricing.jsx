@@ -1,8 +1,11 @@
 import React from 'react';
 import { Box, Container, Typography, Button, Card, CardContent, Chip } from '@mui/material';
 import FeaturesCard from './FeaturesCard';
+import { useNavigate } from 'react-router-dom';
 
 const Pricing = () => {
+
+    const navigate = useNavigate()
     return (
         <>
             <Box>
@@ -189,6 +192,7 @@ const Pricing = () => {
                                                 backgroundColor: 'rgba(59, 130, 246, 0.04)'
                                             }
                                         }}
+                                        onClick={()=>navigate('/cvi-wallet')}
                                     >
                                         Get Started
                                     </Button>
@@ -290,6 +294,7 @@ const Pricing = () => {
                                                 backgroundColor: 'rgba(59, 130, 246, 0.04)'
                                             }
                                         }}
+                                         onClick={()=>navigate('/cvi-wallet')}
                                     >
                                         Get Started
                                     </Button>
