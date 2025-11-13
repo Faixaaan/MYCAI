@@ -12,6 +12,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import profileImg from "../../../Images/resume.png";
+import Resume from './Resume';
+import ResumeTWo from './ResumeTwo';
+import ResumeThree from './ResumeThree';
+import ResumeFour from './ResumeFour';
+import ResumeFive from './ResumeFive';
 
 
 const UseTemplate = () => {
@@ -110,7 +115,7 @@ const UseTemplate = () => {
   };
 
   const handleEducationChange = (id, field) => (e) => {
-    setEducations(educations.map(edu => 
+    setEducations(educations.map(edu =>
       edu.id === id ? { ...edu, [field]: e.target.value } : edu
     ));
   };
@@ -137,7 +142,7 @@ const UseTemplate = () => {
   };
 
   const handleExperienceChange = (id, field) => (e) => {
-    setExperiences(experiences.map(exp => 
+    setExperiences(experiences.map(exp =>
       exp.id === id ? { ...exp, [field]: e.target.value } : exp
     ));
   };
@@ -161,7 +166,7 @@ const UseTemplate = () => {
   };
 
   const handleSkillChange = (id, field) => (e) => {
-    setSkills(skills.map(skill => 
+    setSkills(skills.map(skill =>
       skill.id === id ? { ...skill, [field]: e.target.value } : skill
     ));
   };
@@ -188,11 +193,11 @@ const UseTemplate = () => {
   const handleSocialLinkChange = (id, field) => (e) => {
     if (field === 'socialIcon') {
       const file = e.target.files[0];
-      setSocialLinks(socialLinks.map(social => 
+      setSocialLinks(socialLinks.map(social =>
         social.id === id ? { ...social, [field]: file } : social
       ));
     } else {
-      setSocialLinks(socialLinks.map(social => 
+      setSocialLinks(socialLinks.map(social =>
         social.id === id ? { ...social, [field]: e.target.value } : social
       ));
     }
@@ -222,7 +227,7 @@ const UseTemplate = () => {
             gridTemplateColumns: {
               xs: "1fr",
               sm: "1fr",
-              md: "1fr 1fr",
+              md: "1.5fr 0.5fr",
             },
             gap: { xs: 0, sm: 3, md: 4 },
             alignItems: "start",
@@ -233,42 +238,32 @@ const UseTemplate = () => {
             sx={{
               width: "100%",
               backgroundColor: "#fff",
-              boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
-              borderRadius: "12px",
+              boxShadow: { xs: "none", md: "0 4px 20px rgba(0,0,0,0.08)" },
+              borderRadius: "16px",
               overflow: "hidden",
               display: "flex",
               justifyContent: "center",
-              alignItems: "center",
-              p: { xs: 0, sm: 3 },
+              alignItems: "flex-start",
+              p: { xs: 0, sm: 2, md: 3 },
+              height: "100%",
             }}
           >
-            <Box
-              component="img"
-              src={profileImg}
-              alt="CV Template Preview"
-              sx={{
-                width: { xs: "90%", sm: "85%", md: "100%" },
-                height: "auto",
-                maxWidth: { xs: "100%", sm: "500px", md: "700px" },
-                borderRadius: "8px",
-                display: "block",
-              }}
-            />
+            <ResumeFive />
           </Box>
 
           {/* RIGHT SIDE - FORM SECTION */}
-          <Box sx={{ 
+          <Box sx={{
             width: '100%',
-            p: { xs: 0, sm: 3 }, 
+            p: { xs: 0, sm: 3 },
             bgcolor: '#f5f5f5',
           }}>
 
             {/* PERSONAL INFO */}
-            <Typography 
-              variant="h4" 
-              sx={{ 
-                mb: { xs: 2, sm: 3, md: 4 }, 
-                fontWeight: 600, 
+            <Typography
+              variant="h4"
+              sx={{
+                mb: { xs: 2, sm: 3, md: 4 },
+                fontWeight: 600,
                 color: '#0d47a1',
                 fontSize: { xs: '1.75rem', sm: '2rem', md: '2.125rem' }
               }}
@@ -278,42 +273,42 @@ const UseTemplate = () => {
 
             <Card sx={{ mb: 3, boxShadow: 3 }}>
               <CardContent sx={{ p: { xs: 2, sm: 3, md: 4 } }}>
-                <Box sx={{ 
-                  display: 'flex', 
+                <Box sx={{
+                  display: 'flex',
                   flexDirection: { xs: 'column', sm: 'row' },
-                  alignItems: { xs: 'center', sm: 'flex-start' }, 
-                  mb: { xs: 3, md: 4 }, 
+                  alignItems: { xs: 'center', sm: 'flex-start' },
+                  mb: { xs: 3, md: 4 },
                   gap: { xs: 2, sm: 3 },
                   textAlign: { xs: 'center', sm: 'left' }
                 }}>
                   <Avatar
                     src={image}
-                    sx={{ 
-                      width: { xs: 100, sm: 120 }, 
-                      height: { xs: 100, sm: 120 }, 
-                      border: '4px solid #e0e0e0' 
+                    sx={{
+                      width: { xs: 100, sm: 120 },
+                      height: { xs: 100, sm: 120 },
+                      border: '4px solid #e0e0e0'
                     }}
                   />
                   <Box sx={{ width: { xs: '100%', sm: 'auto' } }}>
-                    <Typography 
-                      variant="h6" 
-                      sx={{ 
-                        mb: 1, 
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        mb: 1,
                         fontWeight: 500,
                         fontSize: { xs: '1.1rem', sm: '1.25rem' }
                       }}
                     >
                       Upload your picture
                     </Typography>
-                    <Typography 
-                      variant="body2" 
-                      color="text.secondary" 
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
                       sx={{ mb: 2 }}
                     >
                       For best results, use image 300px by 300px in either .jpg or .png
                     </Typography>
-                    <Box sx={{ 
-                      display: 'flex', 
+                    <Box sx={{
+                      display: 'flex',
                       flexDirection: { xs: 'column', sm: 'row' },
                       gap: 2,
                       width: { xs: '100%', sm: 'auto' }
@@ -322,7 +317,7 @@ const UseTemplate = () => {
                         variant="contained"
                         component="label"
                         startIcon={<CloudUploadIcon />}
-                        sx={{ 
+                        sx={{
                           textTransform: 'none',
                           width: { xs: '100%', sm: 'auto' }
                         }}
@@ -339,7 +334,7 @@ const UseTemplate = () => {
                         variant="outlined"
                         startIcon={<DeleteIcon />}
                         onClick={handleRemoveImage}
-                        sx={{ 
+                        sx={{
                           textTransform: 'none',
                           width: { xs: '100%', sm: 'auto' }
                         }}
@@ -465,11 +460,11 @@ const UseTemplate = () => {
             </Card>
 
             {/* ADD EDUCATIONS */}
-            <Typography 
-              variant="h4" 
-              sx={{ 
-                mb: { xs: 2, sm: 3, md: 4 }, 
-                fontWeight: 600, 
+            <Typography
+              variant="h4"
+              sx={{
+                mb: { xs: 2, sm: 3, md: 4 },
+                fontWeight: 600,
                 color: '#0d47a1',
                 fontSize: { xs: '1.75rem', sm: '2rem', md: '2.125rem' }
               }}
@@ -599,11 +594,11 @@ const UseTemplate = () => {
             </Box>
 
             {/* ADD EXPERIENCES */}
-            <Typography 
-              variant="h4" 
-              sx={{ 
-                mb: { xs: 2, sm: 3, md: 4 }, 
-                fontWeight: 600, 
+            <Typography
+              variant="h4"
+              sx={{
+                mb: { xs: 2, sm: 3, md: 4 },
+                fontWeight: 600,
                 color: '#0d47a1',
                 fontSize: { xs: '1.75rem', sm: '2rem', md: '2.125rem' }
               }}
@@ -734,11 +729,11 @@ const UseTemplate = () => {
             </Box>
 
             {/* ADD SKILLS */}
-            <Typography 
-              variant="h4" 
-              sx={{ 
-                mb: { xs: 2, sm: 3, md: 4 }, 
-                fontWeight: 600, 
+            <Typography
+              variant="h4"
+              sx={{
+                mb: { xs: 2, sm: 3, md: 4 },
+                fontWeight: 600,
                 color: '#0d47a1',
                 fontSize: { xs: '1.75rem', sm: '2rem', md: '2.125rem' }
               }}
@@ -824,11 +819,11 @@ const UseTemplate = () => {
             </Box>
 
             {/* ADD SOCIAL LINKS */}
-            <Typography 
-              variant="h4" 
-              sx={{ 
-                mb: { xs: 2, sm: 3, md: 4 }, 
-                fontWeight: 600, 
+            <Typography
+              variant="h4"
+              sx={{
+                mb: { xs: 2, sm: 3, md: 4 },
+                fontWeight: 600,
                 color: '#0d47a1',
                 fontSize: { xs: '1.75rem', sm: '2rem', md: '2.125rem' }
               }}
