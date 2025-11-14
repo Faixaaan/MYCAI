@@ -248,7 +248,7 @@ const UseTemplate = () => {
               height: "100%",
             }}
           >
-            <ResumeFive />
+            <ResumeTWo />
           </Box>
 
           {/* RIGHT SIDE - FORM SECTION */}

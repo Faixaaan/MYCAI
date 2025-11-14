@@ -2,9 +2,9 @@ import React from 'react'
 import { Box, Container, Button, Typography, Card } from '@mui/material'
 import FeaturesCard from './FeaturesCard'
 
-import Template1 from '../../../Images/resume.png'
-import Template2 from '../../../Images/resume2.png'
-import Template3 from '../../../Images/resume3.png'
+import Template1 from '../../../Images/Minimalist Modern Professional CV Resume.jpg'
+import Template2 from '../../../Images/Minimalist Modern Professional CV Resume.jpg'
+import Template3 from '../../../Images/Minimalist Modern Professional CV Resume.jpg'
 
 const Templates = ({ setActivePage }) => {
   return (

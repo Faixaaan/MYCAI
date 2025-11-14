@@ -10,6 +10,7 @@ import {
   TextField,
 } from "@mui/material";
 import profileImg from "../../../Images/resume.png"; // replace with your actual image
+import ResumeTWo from './ResumeTwo';
 
 const PreviewTemplate = () => {
   return (
@@ -41,18 +42,7 @@ const PreviewTemplate = () => {
               p: { xs: 2, sm: 3 },
             }}
           >
-            <Box
-              component="img"
-              src={profileImg}
-              alt="CV Template Preview"
-              sx={{
-                width: "100%",
-                height: "auto",
-                maxWidth: "700px",
-                borderRadius: "8px",
-                display: "block",
-              }}
-            />
+            <ResumeTWo/>
           </Box>
 
           {/* RIGHT SIDE - INFO + SUBSCRIBE */}
