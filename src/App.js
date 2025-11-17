@@ -19,13 +19,14 @@ import JobListing from './Pages/JobListing';
 import JobDetailPage from './Pages/JobListing/jobDetailPage';
 import MyEarnings from './Pages/MyEarnings';
 import CreateCv from './Pages/CreateCv';
+import SubscriptionPlan from './Pages/CreateCv/Components/SubscriptionPlan';
 
 
 
 function App() {
   return (
     <>
-          <ToastContainer position="top-right" autoClose={3000} theme="colored" />
+      <ToastContainer position="top-right" autoClose={3000} theme="colored" />
 
       <BrowserRouter >
         <Navbar />
@@ -41,8 +42,9 @@ function App() {
           <Route path='/signup' element={<SignUp />} />
           <Route path='/joblisting' element={<JobListing />} />
           <Route path="/job-detail/:id" element={<JobDetailPage />} />
-           <Route path="/my-earnings" element={<MyEarnings />} />
-               <Route path="/create-cv" element={<CreateCv />} />
+          <Route path="/my-earnings" element={<MyEarnings />} />
+          <Route path="/create-cv" element={<CreateCv />} />
+          <Route path="/subscription-plan" element={<SubscriptionPlan />} />
         </Routes>
         <Footer />
       </BrowserRouter>

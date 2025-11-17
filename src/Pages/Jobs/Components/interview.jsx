@@ -1,19 +1,26 @@
 import { Box, Container, Grid, Typography } from '@mui/material'
 import React from 'react'
 import interview from '../../../Images/next-interview.png'
+import { useNavigate } from 'react-router-dom'
 
 const Interview = () => {
+
+    const navigate = useNavigate()
+
+    const handleClick = ()=>{
+        navigate('/joblisting')
+    }
 
     const roles = [
         "TCS",
         "WIPRO",
         "IBM",
-        "COGNIGANT",
-        "CAGEMIN",
-        "DELOITE",
+        "Cognizant",
+        "Capgemini",
+        "Deloitte",
         "GOOGLE",
         "META",
-        "FLIPLKART",
+        "FLIPKART",
         "AMAZON",
     ];
 
@@ -139,7 +146,9 @@ const Interview = () => {
                                                         boxShadow: "0px 4px 10px rgba(0,0,0,0.1)",
                                                         transform: "translateY(-3px)",
                                                     },
+                                                    cursor:"pointer"
                                                 }}
+                                                onClick={handleClick}
                                             >
                                                 <Typography
                                                     sx={{

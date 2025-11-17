@@ -18,7 +18,6 @@ import ResumeThree from './ResumeThree';
 import ResumeFour from './ResumeFour';
 import ResumeFive from './ResumeFive';
 
-
 const UseTemplate = () => {
   const [image, setImage] = useState('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop');
   const [formData, setFormData] = useState({
@@ -71,6 +70,38 @@ const UseTemplate = () => {
       socialName: '',
       socialLink: '',
       socialIcon: null
+    }
+  ]);
+
+  // Languages state
+  const [languages, setLanguages] = useState([
+    {
+      id: 1,
+      language: ''
+    }
+  ]);
+
+  // Hobbies state
+  const [hobbies, setHobbies] = useState([
+    {
+      id: 1,
+      hobby: ''
+    }
+  ]);
+
+  // References state
+  const [references, setReferences] = useState([
+    {
+      id: 1,
+      reference: ''
+    }
+  ]);
+
+  // Certificates state
+  const [certificates, setCertificates] = useState([
+    {
+      id: 1,
+      certificate: ''
     }
   ]);
 
@@ -203,6 +234,98 @@ const UseTemplate = () => {
     }
   };
 
+  // Languages handlers
+  const handleAddLanguage = () => {
+    setLanguages([
+      ...languages,
+      {
+        id: Date.now(),
+        language: ''
+      }
+    ]);
+  };
+
+  const handleRemoveLanguage = (id) => {
+    if (languages.length > 1) {
+      setLanguages(languages.filter(lang => lang.id !== id));
+    }
+  };
+
+  const handleLanguageChange = (id, field) => (e) => {
+    setLanguages(languages.map(lang =>
+      lang.id === id ? { ...lang, [field]: e.target.value } : lang
+    ));
+  };
+
+  // Hobbies handlers
+  const handleAddHobby = () => {
+    setHobbies([
+      ...hobbies,
+      {
+        id: Date.now(),
+        hobby: ''
+      }
+    ]);
+  };
+
+  const handleRemoveHobby = (id) => {
+    if (hobbies.length > 1) {
+      setHobbies(hobbies.filter(hobby => hobby.id !== id));
+    }
+  };
+
+  const handleHobbyChange = (id, field) => (e) => {
+    setHobbies(hobbies.map(hobby =>
+      hobby.id === id ? { ...hobby, [field]: e.target.value } : hobby
+    ));
+  };
+
+  // References handlers
+  const handleAddReference = () => {
+    setReferences([
+      ...references,
+      {
+        id: Date.now(),
+        reference: ''
+      }
+    ]);
+  };
+
+  const handleRemoveReference = (id) => {
+    if (references.length > 1) {
+      setReferences(references.filter(ref => ref.id !== id));
+    }
+  };
+
+  const handleReferenceChange = (id, field) => (e) => {
+    setReferences(references.map(ref =>
+      ref.id === id ? { ...ref, [field]: e.target.value } : ref
+    ));
+  };
+
+  // Certificates handlers
+  const handleAddCertificate = () => {
+    setCertificates([
+      ...certificates,
+      {
+        id: Date.now(),
+        certificate: ''
+      }
+    ]);
+  };
+
+  const handleRemoveCertificate = (id) => {
+    if (certificates.length > 1) {
+      setCertificates(certificates.filter(cert => cert.id !== id));
+    }
+  };
+
+  const handleCertificateChange = (id, field) => (e) => {
+    setCertificates(certificates.map(cert =>
+      cert.id === id ? { ...cert, [field]: e.target.value } : cert
+    ));
+  };
+
   // Create CV Handler
   const handleCreateCV = () => {
     const cvData = {
@@ -211,10 +334,13 @@ const UseTemplate = () => {
       educations,
       experiences,
       skills,
-      socialLinks
+      socialLinks,
+      languages,
+      hobbies,
+      references,
+      certificates
     };
     console.log('CV Data:', cvData);
-    // Here you can send the data to your backend or process it further
     alert('CV Created Successfully! Check console for data.');
   };
 
@@ -920,6 +1046,314 @@ const UseTemplate = () => {
                 }}
               >
                 Add another social Link
+              </Button>
+            </Box>
+
+            {/* LANGUAGES */}
+            <Typography
+              variant="h4"
+              sx={{
+                mb: { xs: 2, sm: 3, md: 4 },
+                fontWeight: 600,
+                color: '#0d47a1',
+                fontSize: { xs: '1.75rem', sm: '2rem', md: '2.125rem' }
+              }}
+            >
+              Add Languages
+            </Typography>
+
+            {languages.map((language) => (
+              <Card key={language.id} sx={{ mb: 3, boxShadow: 3, position: 'relative' }}>
+                <CardContent sx={{ p: { xs: 2, sm: 3, md: 4 } }}>
+                  {languages.length > 1 && (
+                    <IconButton
+                      onClick={() => handleRemoveLanguage(language.id)}
+                      sx={{
+                        position: 'absolute',
+                        top: 8,
+                        right: 8,
+                        color: 'error.main'
+                      }}
+                    >
+                      <CloseIcon />
+                    </IconButton>
+                  )}
+
+                  <Box
+                    sx={{
+                      display: 'grid',
+                      gridTemplateColumns: {
+                        xs: '1fr',
+                        sm: '1fr 1fr',
+                        md: '1fr 1fr',
+                      },
+                      gap: { xs: 2, sm: 2.5, md: 3 },
+                    }}
+                  >
+                    <Box sx={{ gridColumn: { xs: '1', sm: '1 / -1' } }}>
+                      <Typography variant="body2" sx={{ mb: 1, fontWeight: 500 }}>
+                        Add Language
+                      </Typography>
+                      <TextField
+                        fullWidth
+                        placeholder="English"
+                        value={language.language}
+                        onChange={handleLanguageChange(language.id, 'language')}
+                        variant="outlined"
+                        size="small"
+                      />
+                    </Box>
+                  </Box>
+                </CardContent>
+              </Card>
+            ))}
+
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 3 }}>
+              <Button
+                variant="contained"
+                startIcon={<AddIcon />}
+                onClick={handleAddLanguage}
+                sx={{
+                  textTransform: 'none',
+                  backgroundColor: '#00bcd4',
+                  '&:hover': {
+                    backgroundColor: '#00acc1'
+                  }
+                }}
+              >
+                Add Another Language
+              </Button>
+            </Box>
+
+            {/* HOBBIES */}
+            <Typography
+              variant="h4"
+              sx={{
+                mb: { xs: 2, sm: 3, md: 4 },
+                fontWeight: 600,
+                color: '#0d47a1',
+                fontSize: { xs: '1.75rem', sm: '2rem', md: '2.125rem' }
+              }}
+            >
+              Add Hobbies
+            </Typography>
+
+            {hobbies.map((hobby) => (
+              <Card key={hobby.id} sx={{ mb: 3, boxShadow: 3, position: 'relative' }}>
+                <CardContent sx={{ p: { xs: 2, sm: 3, md: 4 } }}>
+                  {hobbies.length > 1 && (
+                    <IconButton
+                      onClick={() => handleRemoveHobby(hobby.id)}
+                      sx={{
+                        position: 'absolute',
+                        top: 8,
+                        right: 8,
+                        color: 'error.main'
+                      }}
+                    >
+                      <CloseIcon />
+                    </IconButton>
+                  )}
+
+                  <Box
+                    sx={{
+                      display: 'grid',
+                      gridTemplateColumns: {
+                        xs: '1fr',
+                        sm: '1fr 1fr',
+                        md: '1fr 1fr',
+                      },
+                      gap: { xs: 2, sm: 2.5, md: 3 },
+                    }}
+                  >
+                    <Box sx={{ gridColumn: { xs: '1', sm: '1 / -1' } }}>
+                      <Typography variant="body2" sx={{ mb: 1, fontWeight: 500 }}>
+                        Add Hobby
+                      </Typography>
+                      <TextField
+                        fullWidth
+                        placeholder="Playing Cricket"
+                        value={hobby.hobby}
+                        onChange={handleHobbyChange(hobby.id, 'hobby')}
+                        variant="outlined"
+                        size="small"
+                      />
+                    </Box>
+                  </Box>
+                </CardContent>
+              </Card>
+            ))}
+
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 3 }}>
+              <Button
+                variant="contained"
+                startIcon={<AddIcon />}
+                onClick={handleAddHobby}
+                sx={{
+                  textTransform: 'none',
+                  backgroundColor: '#00bcd4',
+                  '&:hover': {
+                    backgroundColor: '#00acc1'
+                  }
+                }}
+              >
+                Add Another Hobby
+              </Button>
+            </Box>
+
+            {/* REFERENCES */}
+            <Typography
+              variant="h4"
+              sx={{
+                mb: { xs: 2, sm: 3, md: 4 },
+                fontWeight: 600,
+                color: '#0d47a1',
+                fontSize: { xs: '1.75rem', sm: '2rem', md: '2.125rem' }
+              }}
+            >
+              Add Reference
+            </Typography>
+
+            {references.map((reference) => (
+              <Card key={reference.id} sx={{ mb: 3, boxShadow: 3, position: 'relative' }}>
+                <CardContent sx={{ p: { xs: 2, sm: 3, md: 4 } }}>
+                  {references.length > 1 && (
+                    <IconButton
+                      onClick={() => handleRemoveReference(reference.id)}
+                      sx={{
+                        position: 'absolute',
+                        top: 8,
+                        right: 8,
+                        color: 'error.main'
+                      }}
+                    >
+                      <CloseIcon />
+                    </IconButton>
+                  )}
+
+                  <Box
+                    sx={{
+                      display: 'grid',
+                      gridTemplateColumns: {
+                        xs: '1fr',
+                        sm: '1fr 1fr',
+                        md: '1fr 1fr',
+                      },
+                      gap: { xs: 2, sm: 2.5, md: 3 },
+                    }}
+                  >
+                    <Box sx={{ gridColumn: { xs: '1', sm: '1 / -1' } }}>
+                      <Typography variant="body2" sx={{ mb: 1, fontWeight: 500 }}>
+                        Add Reference
+                      </Typography>
+                      <TextField
+                        fullWidth
+                        placeholder="Reference details"
+                        value={reference.reference}
+                        onChange={handleReferenceChange(reference.id, 'reference')}
+                        variant="outlined"
+                        size="small"
+                        multiline
+                        rows={3}
+                      />
+                    </Box>
+                  </Box>
+                </CardContent>
+              </Card>
+            ))}
+
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 3 }}>
+              <Button
+                variant="contained"
+                startIcon={<AddIcon />}
+                onClick={handleAddReference}
+                sx={{
+                  textTransform: 'none',
+                  backgroundColor: '#00bcd4',
+                  '&:hover': {
+                    backgroundColor: '#00acc1'
+                  }
+                }}
+              >
+                Add Another Reference
+              </Button>
+            </Box>
+
+            {/* CERTIFICATES */}
+            <Typography
+              variant="h4"
+              sx={{
+                mb: { xs: 2, sm: 3, md: 4 },
+                fontWeight: 600,
+                color: '#0d47a1',
+                fontSize: { xs: '1.75rem', sm: '2rem', md: '2.125rem' }
+              }}
+            >
+              Add Certificate
+            </Typography>
+
+            {certificates.map((certificate) => (
+              <Card key={certificate.id} sx={{ mb: 3, boxShadow: 3, position: 'relative' }}>
+                <CardContent sx={{ p: { xs: 2, sm: 3, md: 4 } }}>
+                  {certificates.length > 1 && (
+                    <IconButton
+                      onClick={() => handleRemoveCertificate(certificate.id)}
+                      sx={{
+                        position: 'absolute',
+                        top: 8,
+                        right: 8,
+                        color: 'error.main'
+                      }}
+                    >
+                      <CloseIcon />
+                    </IconButton>
+                  )}
+
+                  <Box
+                    sx={{
+                      display: 'grid',
+                      gridTemplateColumns: {
+                        xs: '1fr',
+                        sm: '1fr 1fr',
+                        md: '1fr 1fr',
+                      },
+                      gap: { xs: 2, sm: 2.5, md: 3 },
+                    }}
+                  >
+                    <Box sx={{ gridColumn: { xs: '1', sm: '1 / -1' } }}>
+                      <Typography variant="body2" sx={{ mb: 1, fontWeight: 500 }}>
+                        Add Certificate
+                      </Typography>
+                      <TextField
+                        fullWidth
+                        placeholder="Certificate details"
+                        value={certificate.certificate}
+                        onChange={handleCertificateChange(certificate.id, 'certificate')}
+                        variant="outlined"
+                        size="small"
+                        multiline
+                        rows={3}
+                      />
+                    </Box>
+                  </Box>
+                </CardContent>
+              </Card>
+            ))}
+
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 3 }}>
+              <Button
+                variant="contained"
+                startIcon={<AddIcon />}
+                onClick={handleAddCertificate}
+                sx={{
+                  textTransform: 'none',
+                  backgroundColor: '#00bcd4',
+                  '&:hover': {
+                    backgroundColor: '#00acc1'
+                  }
+                }}
+              >
+                Add Another Certificate
               </Button>
             </Box>
 

@@ -53,7 +53,7 @@ const Banner = () => {
 
 
 
-                    <Button variant='contained' sx={{ ml: 4, borderRadius: "22px", bgcolor: "transparent", textTransform: "capitalize", padding: { md: "8px 25px", xs: "8px 20px" }, fontSize: "16px", fontWeight: "400", lineHeight: "138%", letterSpacing: "0%", color: "#000", border: "1px solid #000" }}>
+                    <Button variant='contained' sx={{ ml: 4, borderRadius: "22px", bgcolor: "transparent", textTransform: "capitalize", padding: { md: "8px 25px", xs: "8px 20px" }, fontSize: "16px", fontWeight: "400", lineHeight: "138%", letterSpacing: "0%", color: "#000", border: "1px solid #000" }} onClick={handleClick}>
                         Upgrade a CV
                     </Button>
                 </Box>

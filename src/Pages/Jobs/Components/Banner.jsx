@@ -21,11 +21,16 @@ import BarChartIcon from "@mui/icons-material/BarChart";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import discover from "../../../Images/discover.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Banner = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const navigate = useNavigate()
+
+  const handleClick = ()=>{
+    navigate('/jobListing')
+  }
 
   const roles = [
     "Full stack developer",
@@ -240,6 +245,7 @@ const Banner = () => {
                   display: "flex",
                   justifyContent: "center",
                 }}
+                
               >
                 <Box
                   sx={{
@@ -260,6 +266,7 @@ const Banner = () => {
                       transform: "translateY(-2px)",
                     },
                   }}
+                  onClick={handleClick}
                 >
                   <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                     <Box sx={{ color: "#000000" }}>{item.icon}</Box>

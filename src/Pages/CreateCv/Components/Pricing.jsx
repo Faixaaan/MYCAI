@@ -3,7 +3,7 @@ import { Box, Container, Typography, Button, Card, CardContent, Chip } from '@mu
 import FeaturesCard from './FeaturesCard';
 import { useNavigate } from 'react-router-dom';
 
-const Pricing = () => {
+const Pricing = ({setActivePage}) => {
 
     const navigate = useNavigate()
     return (
@@ -85,7 +85,7 @@ const Pricing = () => {
                                     }}
                                 >
                                     <Box>
-                                        <Typography sx={{ fontWeight: 600 }}>Lets Build CV</Typography>
+                                        <Typography sx={{ fontWeight: 600 }} onClick={() => setActivePage("templates")}>Lets Build CV</Typography>
                                         <Typography sx={{ fontSize: '0.875rem' }}>with 7days of Free Trial</Typography>
                                     </Box>
                                 </Button>

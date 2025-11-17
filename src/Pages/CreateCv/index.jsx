@@ -14,7 +14,7 @@ const CreateCv = () => {
       <Breadcrumbss activePage={activePage} setActivePage={setActivePage} />
 
       {/* Content switch */}
-      {activePage === "pricing" && <Pricing />}
+      {activePage === "pricing" && <Pricing setActivePage={setActivePage} />}
       {activePage === "templates" && (
         <Templates setActivePage={setActivePage} />
       )}

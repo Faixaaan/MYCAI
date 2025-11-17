@@ -1,8 +1,16 @@
 import { Box, Container, Grid, Typography, Button } from "@mui/material";
 import React from "react";
 import resumeSample from "../../../Images/cv-builder.png"; // <-- update path if needed
+import { useNavigate } from "react-router-dom";
 
 const CvBuilder = () => {
+
+  
+    const navigate = useNavigate()
+  
+      const handleClick = ()=>{
+        navigate('/create-cv')
+      }
   return (
     <Box sx={{ bgcolor: "#fff", py: 8 }}>
       <Container maxWidth="lg">
@@ -246,6 +254,7 @@ const CvBuilder = () => {
                       bgcolor: "#E96C00",
                     },
                   }}
+                  onClick={handleClick}
                 >
                   Create my resume now
                 </Button>
