@@ -174,7 +174,7 @@ const Wallet = () => {
         setWalletAmount(walletRes?.data?.data?.real_amount)
 
 
-        console.log(cviValueRes?.data?.cvi_value, "singleTransactionData");
+        console.log(pendingRes?.data, "singleTransactionData");
       } catch (err) {
         console.error(err);
       }
@@ -338,7 +338,7 @@ const Wallet = () => {
               {/* Action Buttons */}
               <Grid container spacing={1}>
                 {[
-                  { icon: <BoltIcon />, label: "Buy Tokens" },
+
                   { icon: <PercentIcon />, label: "Daily Rewards" },
                   { icon: <AutorenewIcon />, label: "Compound" },
 
@@ -441,73 +441,123 @@ const Wallet = () => {
                   },
                 }}
               >
-                <Tab label="Pending" />
-                <Tab label="Accepted / Declined" />
+                <Tab label="Fund" />
+                <Tab label="Swap" />
               </Tabs>
 
               {/* ✅ Tab Content */}
               <Box mt={2}>
                 {tabValuee === 0 ? (
-                  pendingData && pendingData.length > 0 ? (
-                    pendingData.map((item, i) => (
-                      <Box
-                        key={i}
-                        sx={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                          borderBottom: "1px solid rgba(255,255,255,0.1)",
-                          py: 1,
-                        }}
-                      >
-                        <Typography>{item.cvi_value} CVI</Typography>
-                        <Typography>{item.status}</Typography>
-                        <Typography>{item.transition_type}</Typography>
-                      </Box>
-                    ))
-                  ) : (
-                    <Typography
-                      sx={{
-                        textAlign: "center",
-                        color: "rgba(255,255,255,0.6)",
-                        py: 2,
-                        fontSize: 14,
-                      }}
-                    >
-                      No pending tokens
-                    </Typography>
-                  )
-                ) : acepptData && acepptData.length > 0 ? (
-                  acepptData.map((item, i) => (
+                  <>
+                    {/* 🔵 Heading for FUND TAB */}
                     <Box
-
-                      key={i}
                       sx={{
                         display: "flex",
                         justifyContent: "space-between",
-                        alignItems: "center",
-                        borderBottom: "1px solid rgba(255,255,255,0.1)",
-                        py: 1,
+                        fontWeight: 600,
+                        color: "#4CC9F0",
+                        borderBottom: "1px solid rgba(255,255,255,0.15)",
+                        pb: 1,
+                        mb: 1.5,
                       }}
                     >
-                      <Typography>{item.cvi_value}</Typography>
-                      <Typography>{item.status}</Typography>
-                      <Typography>{item.transition_type}</Typography>
+                      <Typography>Sl No.</Typography>
+                      <Typography>Amount(£)</Typography>
+                      <Typography>Date</Typography>
+
                     </Box>
-                  ))
+
+                    {pendingData && pendingData?.length > 0 ? (
+                      pendingData.map((item, i) => (
+                        <Box
+                          key={i}
+                          sx={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            borderBottom: "1px solid rgba(255,255,255,0.1)",
+                            py: 1,
+                          }}
+                        >
+                          <Typography>{i+1}</Typography>
+                          <Typography>£{item.amount}</Typography>
+                                <Typography>
+  {new Date(item.created_at).toLocaleDateString("en-GB")}
+</Typography>
+
+                        </Box>
+                      ))
+                    ) : (
+                      <Typography
+                        sx={{
+                          textAlign: "center",
+                          color: "rgba(255,255,255,0.6)",
+                          py: 2,
+                          fontSize: 14,
+                        }}
+                      >
+                        No pending tokens
+                      </Typography>
+                    )}
+                  </>
                 ) : (
-                  <Typography
-                    sx={{
-                      textAlign: "center",
-                      color: "rgba(255,255,255,0.6)",
-                      py: 2,
-                      fontSize: 14,
-                    }}
-                  >
-                    No accepted/rejected tokens
-                  </Typography>
+                  <>
+                    {/* 🟣 Heading for SWAP TAB */}
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        fontWeight: 600,
+                        color: "#4CC9F0",
+                        borderBottom: "1px solid rgba(255,255,255,0.15)",
+                        pb: 1,
+                        mb: 1.5,
+                      }}
+                    >
+                      <Typography>Amount(£)</Typography>
+                      <Typography>Bonus</Typography>
+                      <Typography>CVI Token</Typography>
+                      <Typography>Date</Typography>
+                    </Box>
+
+                    {acepptData && acepptData.length > 0 ? (
+                      acepptData.map((item, i) => (
+                        <Box
+                          key={i}
+                          sx={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            borderBottom: "1px solid rgba(255,255,255,0.1)",
+                            py: 1,
+                          }}
+                        >
+                          <Typography>£{item.amount}</Typography>
+                          <Typography>{item.bonus}</Typography>
+                          <Typography>{item.cvi_token}</Typography>
+                          <Typography>
+  {new Date(item.created_at).toLocaleDateString("en-GB")}
+</Typography>
+
+
+                        </Box>
+                      ))
+                    ) : (
+                      <Typography
+                        sx={{
+                          textAlign: "center",
+                          color: "rgba(255,255,255,0.6)",
+                          py: 2,
+                          fontSize: 14,
+                        }}
+                      >
+                        No accepted/rejected tokens
+                      </Typography>
+                    )}
+                  </>
                 )}
               </Box>
+
 
             </Card>
           </Box>
