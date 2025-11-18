@@ -339,7 +339,7 @@ const JobListing = () => {
     try {
       const formData = new FormData();
       formData.append("user_id", userId);
-      formData.append("job_id", job[selectedJob]?.id || job[selectedJob]?.job_id);
+      formData.append("job_id", job[selectedJob]?.job_id || job[selectedJob]?.job_id);
       formData.append("cv", applyData.resume);
 
       const res = await axiosInstance.post(endpoints.jobs.aplly, formData);
