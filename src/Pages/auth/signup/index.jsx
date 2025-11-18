@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   Box,
-  
   Card,
   Typography,
   TextField,
@@ -24,57 +23,78 @@ const MotionCard = motion(Card);
 
 const SignUp = () => {
   const [form, setForm] = useState({
-    name: "Arjun Patel",
-    email: "arjun.patel@example.com",
-    phone: "9898765432",
-    password: "123456",
-    state: "Gujarat",
-    city: "Ahmedabad",
-    address: "Navrangpura",
-    preferred_location: "Ahmedabad,Surat",
+    name: "",
+    email: "",
+    phone: "",
+    password: "",
+    gender: "",
+    city: "",
+    address: "",
+    preferred_location: "",
+    profile_pic: null, // FIXED → file allowed
   });
 
-  const [loading, setLoading] = useState(false);
-   const navigate = useNavigate();
+  console.log(form,'genderForm')
 
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  // NORMAL INPUT HANDLER
   const handleChange = (e) => {
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
   };
 
+  // FILE UPLOAD HANDLER (FIXED)
+  const handleFileUpload = (e) => {
+    setForm((f) => ({ ...f, profile_pic: e.target.files[0] }));
+  };
+
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  setLoading(true);
+    e.preventDefault();
+    setLoading(true);
 
-  try {
-    const res = await axios.post(
-      "https://mycvi.adretsoftware.in/admin/api/submit-user",
-      form
-    );
-
-    if (res.status === 201) {
-      toast.success(res?.data?.message || "Registration successful! 🎉");
-      setForm({
-        name: "",
-        email: "",
-        phone: "",
-        password: "",
-        state: "",
-        city: "",
-        address: "",
-        preferred_location: "",
+    try {
+      // Use FormData for file upload
+      const formData = new FormData();
+      Object.keys(form).forEach((key) => {
+        formData.append(key, form[key]);
       });
-      navigate("/signin"); // optional: redirect after successful signup
-    }
-  } catch (err) {
-    console.error(err);
-    toast.error(
-      err?.response?.data?.message || "Registration failed! Please try again."
-    );
-  } finally {
-    setLoading(false);
-  }
-};
 
+      const res = await axios.post(
+        "https://mycvi.ai/admin/api/submit-user",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+
+      if (res.status === 201) {
+        toast.success(res?.data?.message || "Registration successful!");
+
+        // Reset form
+        setForm({
+          name: "",
+          email: "",
+          phone: "",
+          password: "",
+          gender: "",
+          city: "",
+          address: "",
+          preferred_location: "",
+          profile_pic: null,
+        });
+
+        navigate("/signin");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error(
+        err?.response?.data?.message || "Registration failed! Please try again."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <Box
@@ -114,12 +134,13 @@ const SignUp = () => {
 
           <form onSubmit={handleSubmit}>
             <Stack spacing={2}>
+              {/* NORMAL TEXT INPUTS */}
               {[
                 { label: "Full Name", name: "name", type: "text" },
                 { label: "Email", name: "email", type: "email" },
                 { label: "Phone", name: "phone", type: "text" },
                 { label: "Password", name: "password", type: "password" },
-                { label: "State", name: "state", type: "text" },
+                { label: "Gender", name: "gender", type: "text" },
                 { label: "City", name: "city", type: "text" },
                 { label: "Address", name: "address", type: "text" },
                 {
@@ -136,12 +157,7 @@ const SignUp = () => {
                   value={form[name]}
                   onChange={handleChange}
                   fullWidth
-                  required={
-                    name !== "state" &&
-                    name !== "city" &&
-                    name !== "address" &&
-                    name !== "preferred_location"
-                  }
+                  required
                   InputLabelProps={{ sx: { color: "#d1c4e9" } }}
                   sx={{
                     input: { color: "#fff" },
@@ -150,6 +166,22 @@ const SignUp = () => {
                   }}
                 />
               ))}
+
+              {/* FILE INPUT FIXED */}
+              <Button
+                variant="contained"
+                component="label"
+                sx={{
+                  background: "rgba(255,255,255,0.25)",
+                  color: "#fff",
+                  fontWeight: 600,
+                }}
+              >
+                Upload Profile Picture
+                <input hidden type="file" name="profile_pic" onChange={handleFileUpload} />
+              </Button>
+
+              {/* SUBMIT BUTTON */}
               <Button
                 type="submit"
                 fullWidth
@@ -157,19 +189,13 @@ const SignUp = () => {
                 size="large"
                 disabled={loading}
                 sx={{
-                  background:
-                    "linear-gradient(90deg, #764ba2 30%, #667eea 90%)",
+                  background: "linear-gradient(90deg, #764ba2 30%, #667eea 90%)",
                   fontWeight: 700,
                   letterSpacing: 1,
                   color: "#fff",
                   borderRadius: 2,
-                  boxShadow: "0 5px 15px rgba(118, 75, 162, 0.6)",
                   py: 1,
                   mt: 2,
-                  "&:hover": {
-                    background:
-                      "linear-gradient(90deg, #5f3b95 30%, #5461d3 90%)",
-                  },
                 }}
               >
                 {loading ? (
@@ -187,69 +213,11 @@ const SignUp = () => {
             align="center"
             sx={{ mb: 1, color: "#d1c4e9", fontSize: 14 }}
           >
-            Register with
-          </Typography>
-
-          <Stack direction="row" spacing={2} justifyContent="center" mb={3}>
-            <IconButton
-              size="large"
-              sx={{
-                color: "#1877f2",
-                bgcolor: "rgba(24, 119, 242, 0.1)",
-                borderRadius: 2,
-                "&:hover": { bgcolor: "rgba(24, 119, 242, 0.2)" },
-              }}
-            >
-              <FacebookIcon />
-            </IconButton>
-            <IconButton
-              size="large"
-              sx={{
-                color: "#ea4335",
-                bgcolor: "rgba(234, 67, 53, 0.1)",
-                borderRadius: 2,
-                "&:hover": { bgcolor: "rgba(234, 67, 53, 0.2)" },
-              }}
-            >
-              <GoogleIcon />
-            </IconButton>
-            <IconButton
-              size="large"
-              sx={{
-                color: "#1da1f2",
-                bgcolor: "rgba(29, 161, 242, 0.1)",
-                borderRadius: 2,
-                "&:hover": { bgcolor: "rgba(29, 161, 242, 0.2)" },
-              }}
-            >
-              <TwitterIcon />
-            </IconButton>
-            <IconButton
-              size="large"
-              sx={{
-                color: "#e1306c",
-                bgcolor: "rgba(225, 48, 108, 0.1)",
-                borderRadius: 2,
-                "&:hover": { bgcolor: "rgba(225, 48, 108, 0.2)" },
-              }}
-            >
-              <InstagramIcon />
-            </IconButton>
-          </Stack>
-
-          <Typography align="center" sx={{ color: "#c5cae9", fontSize: 14 }}>
             Already have an account?{" "}
             <Button
-              color="secondary"
-              sx={{
-                p: 0,
-                fontSize: 14,
-                textTransform: "none",
-                fontWeight: 600,
-                color: "#bb86fc",
-              }}
               component={Link}
               to="/signin"
+              sx={{ color: "#bb86fc", fontWeight: 600 }}
             >
               Sign In
             </Button>

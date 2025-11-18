@@ -12,7 +12,9 @@ export const endpoints ={
         Banner:"index"
     },
     auth:{
-        sigin:"/submit-user"
+        sigin:"/submit-user",
+        change_password:"/change-user-password",
+        update_profile:"/update-user"
     },
     jobs:{
         allJobs:"/admin-jobs"
@@ -23,6 +25,6 @@ export const endpoints ={
         payment_pending_transaction:"/single-add-fund-transtion",
         convert_token:"/cvi-value",
         single_user:"/single-user",
-        cvi_token:"/single-swape-fund-transtion"
+        cvi_token:"/swape-converter"
     }
 }

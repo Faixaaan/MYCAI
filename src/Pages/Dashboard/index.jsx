@@ -18,6 +18,7 @@ import {
   DialogContent,
   DialogActions,
   Stack,
+  Modal,
 } from "@mui/material";
 import { motion } from "framer-motion";
 import {
@@ -31,6 +32,9 @@ import {
   Delete,
 } from "@mui/icons-material";
 import { useSelector } from "react-redux";
+import { endpoints } from "../../api/endpoints/endpoints";
+import { axiosInstance } from "../../api/axios/axios";
+import { toast } from "react-toastify";
 
 const MotionBox = motion(Box);
 
@@ -49,7 +53,8 @@ const Dashboard = () => {
       city: reduxUser?.city || "Kolkata",
       address: reduxUser?.address || "Park Street",
       preferredLocation: reduxUser?.preferredLocation || "Kolkata",
-      avatarUrl: reduxUser?.avatarUrl || null,
+      avatarUrl: reduxUser?.profile_pic
+        || null,
       resumeFile: null,
     };
   });
@@ -200,6 +205,141 @@ const Dashboard = () => {
     (profile.name ? profile.name.charAt(0).toUpperCase() : "U");
   const displayName = userr?.name || profile.name || "Candidate";
 
+  const [oldPass, setOldPass] = useState("");
+  const [newPass, setNewPass] = useState("");
+  const [confirmPass, setConfirmPass] = useState("");
+  const [userId, setUserId] = useState("");
+
+  useEffect(() => {
+    // ✅ Retrieve data from localStorage
+    const storedData = localStorage.getItem("userData");
+    if (storedData) {
+      try {
+        const parsed = JSON.parse(storedData);
+
+        setUserId(parsed.user_id || "");
+      } catch (err) {
+        console.error("Error parsing localStorage data:", err);
+      }
+    }
+  }, []);
+
+  const handlePasswordUpdate = async () => {
+    if (!oldPass || !newPass || !confirmPass) {
+      alert("All fields are required");
+      return;
+    }
+
+    if (newPass !== confirmPass) {
+      alert("New Password and Confirm Password do not match!");
+      return;
+    }
+
+    const payload = {
+      old_password: oldPass,
+      new_password: newPass,
+      confirm_password: confirmPass
+    }
+
+    try {
+      const res = await axiosInstance.post(
+        `${endpoints.auth.change_password}/${userId}`,
+        payload
+      );
+
+
+
+
+      if (res?.data?.status === true) {
+        toast.success(res?.data?.message);
+        setOldPass("");
+        setNewPass("");
+        setConfirmPass("");
+      } else {
+        alert(res?.data?.message || "Something went wrong");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error(err?.data?.message);
+    }
+  };
+
+  const handleSubmitChanges = async () => {
+    try {
+      const formData = new FormData();
+
+      // Basic fields
+      formData.append("name", draftProfile.name || "");
+      formData.append("phone", draftProfile.phone || "");
+      formData.append("city", draftProfile.city || "");
+      formData.append("gender", draftProfile.gender || "");
+      formData.append("address", draftProfile.address || "");
+      formData.append("preferred_location", draftProfile.preferredLocation || "");
+
+      // Avatar file (only if a NEW image is uploaded)
+      if (draftProfile._avatarFile) {
+        formData.append("profile_pic", draftProfile._avatarFile);
+      }
+
+      // Resume file (only if a NEW file is uploaded)
+      if (draftProfile.resumeFile instanceof File) {
+        formData.append("resume", draftProfile.resumeFile);
+      }
+
+      const res = await axiosInstance.post(
+        `${endpoints.auth.update_profile}/${userId}`,
+        formData,
+
+      );
+
+      if (res?.data?.status === true) {
+        toast.success("Profile updated successfully!");
+
+        // Update UI
+        setProfile(draftProfile);
+        localStorage.setItem("userData", JSON.stringify(res.data.data));
+
+        setOpenSettings(false);
+      } else {
+        toast.error(res?.data?.message || "Update failed");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Something went wrong");
+    }
+  };
+
+  const [openCVModal, setOpenCVModal] = useState(false);
+  const [cvUrl, setCvUrl] = useState("");
+ const handleViewCV = async () => {
+  try {
+    setOpenCVModal(true);
+
+    const res = await axiosInstance.get(
+      `${endpoints.cvi_wallet.single_user}/${userId}`
+    );
+
+    console.log(res?.data,'resumee')
+
+    if (res?.data?.data?.resume) {
+      setCvUrl(res?.data?.data?.resume); // API returns CV URL
+    } else {
+      toast.error("No CV found!");
+      setOpenCVModal(false);
+    }
+
+  } catch (error) {
+    console.error(error);
+    toast.error("Failed to load CV");
+    setOpenCVModal(false);
+  }
+};
+
+
+
+
+
+
   return (
     <Box
       sx={{
@@ -209,6 +349,7 @@ const Dashboard = () => {
         py: { xs: 1, sm: 2, md: 4 },
         px: { xs: 0, sm: 0 },
         overflowX: "hidden",
+        width: "100%"
       }}
     >
       <Container maxWidth="lg" sx={{ px: { xs: 1, sm: 2, md: 4 } }}>
@@ -336,6 +477,7 @@ const Dashboard = () => {
                 width: { xs: "100%", sm: "auto" },
                 fontSize: { xs: 13, sm: 15 },
               }}
+              onClick={handleViewCV}
             >
               View CV
             </Button>
@@ -621,115 +763,141 @@ const Dashboard = () => {
         </MotionBox>
 
         {/* RESUME & ACTIONS (responsive) */}
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
-            <Card
-              sx={{
-                background: "rgba(255,255,255,0.05)",
-                border: "1px solid rgba(255,255,255,0.08)",
-                p: { xs: 1, sm: 3 },
-                mb: { xs: 2, md: 0 },
-              }}
+        {/* RESUME & ACTIONS (responsive) */}
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+            gap: "20px",
+            width: "100%",
+          }}
+        >
+          {/* LEFT CARD */}
+          <Card
+            sx={{
+              background: "rgba(255,255,255,0.05)",
+              border: "1px solid rgba(255,255,255,0.08)",
+              p: { xs: 1, sm: 3 },
+            }}
+          >
+            <Typography
+              variant="h6"
+              sx={{ mb: 2, fontWeight: 700, fontSize: { xs: 15, sm: 18 } }}
             >
-              <Typography
-                variant="h6"
-                sx={{ mb: 2, fontWeight: 700, fontSize: { xs: 15, sm: 18 } }}
-              >
-                Resume & Actions
-              </Typography>
-              <Stack
-                direction={{ xs: "column", sm: "row" }}
-                spacing={1.5}
-                alignItems={{ xs: "stretch", sm: "center" }}
-              >
-                <Button
-                  variant="contained"
-                  component="label"
-                  startIcon={<UploadFile />}
-                  sx={{
-                    backgroundColor: "#00b0ff",
-                    "&:hover": { backgroundColor: "#0288d1" },
-                    width: { xs: "100%", sm: "auto" },
-                  }}
-                >
-                  Upload/Replace Resume
-                  <input
-                    hidden
-                    accept=".pdf,.doc,.docx"
-                    type="file"
-                    onChange={handleMainResumeUpload}
-                  />
-                </Button>
-                <Button
-                  variant="outlined"
-                  onClick={() => {
-                    if (profile.resumeFile)
-                      window.open(URL.createObjectURL(profile.resumeFile));
-                    else alert("No resume uploaded");
-                  }}
-                  sx={{ color: "#cfefff", width: { xs: "100%", sm: "auto" } }}
-                >
-                  Preview Resume
-                </Button>
-                <Typography
-                  variant="body2"
-                  sx={{
-                    color: "#bcdffb",
-                    wordBreak: "break-word",
-                    pt: { xs: 1, sm: 0 },
-                  }}
-                >
-                  {profile.resumeFile
-                    ? profile.resumeFile.name
-                    : "No resume uploaded"}
-                </Typography>
-              </Stack>
-              <Typography
-                variant="caption"
-                sx={{ display: "block", mt: 2, color: "rgba(255,255,255,0.6)" }}
-              >
-                Accepted: PDF / DOC / DOCX
-              </Typography>
-            </Card>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Card
-              sx={{
-                background: "rgba(255,255,255,0.05)",
-                border: "1px solid rgba(255,255,255,0.08)",
-                p: { xs: 1, sm: 3 },
-              }}
+              Resume & Actions
+            </Typography>
+
+            <Stack
+              direction={{ xs: "column", sm: "row" }}
+              spacing={1.5}
+              alignItems={{ xs: "stretch", sm: "center" }}
             >
-              <Typography
-                variant="h6"
-                sx={{ mb: 2, fontWeight: 700, fontSize: { xs: 15, sm: 18 } }}
-              >
-                Change Password
-              </Typography>
-              <TextField
-                fullWidth
-                label="New Password"
-                size="small"
-                type="password"
-                sx={{
-                  mb: 2,
-                  input: { color: "#fff" },
-                  "& .MuiOutlinedInput-root fieldset": { borderColor: "#555" },
-                }}
-              />
               <Button
-                fullWidth
                 variant="contained"
+                component="label"
+                startIcon={<UploadFile />}
                 sx={{
-                  backgroundColor: "#64b5f6",
-                  "&:hover": { backgroundColor: "#42a5f5" },
+                  backgroundColor: "#00b0ff",
+                  "&:hover": { backgroundColor: "#0288d1" },
+                  width: { xs: "100%", sm: "auto" },
                 }}
               >
-                Update Password
+                Upload/Replace Resume
+                <input
+                  hidden
+                  accept=".pdf,.doc,.docx"
+                  type="file"
+                  onChange={handleMainResumeUpload}
+                />
               </Button>
-            </Card>
-          </Grid>
-        </Grid>
+
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  if (profile.resumeFile)
+                    window.open(URL.createObjectURL(profile.resumeFile));
+                  else alert("No resume uploaded");
+                }}
+                sx={{ color: "#cfefff", width: { xs: "100%", sm: "auto" } }}
+              >
+                Preview Resume
+              </Button>
+
+              <Typography
+                variant="body2"
+                sx={{
+                  color: "#bcdffb",
+                  wordBreak: "break-word",
+                  pt: { xs: 1, sm: 0 },
+                }}
+              >
+                {profile.resumeFile ? profile.resumeFile.name : "No resume uploaded"}
+              </Typography>
+            </Stack>
+
+            <Typography
+              variant="caption"
+              sx={{ display: "block", mt: 2, color: "rgba(255,255,255,0.6)" }}
+            >
+              Accepted: PDF / DOC / DOCX
+            </Typography>
+          </Card>
+
+          {/* RIGHT CARD */}
+          <Card
+            sx={{
+              background: "rgba(255,255,255,0.05)",
+              border: "1px solid rgba(255,255,255,0.08)",
+              p: { xs: 1, sm: 3 },
+            }}
+          >
+            <Typography
+              variant="h6"
+              sx={{ mb: 2, fontWeight: 700, fontSize: { xs: 15, sm: 18 } }}
+            >
+              Change Password
+            </Typography>
+
+            <TextField
+              fullWidth
+              label="Old Password"
+              size="small"
+              type="password"
+              value={oldPass}
+              onChange={(e) => setOldPass(e.target.value)}
+              sx={{ marginTop: "8px", color: "#fff" }}
+              autoComplete="new-password"
+            />
+
+            <TextField
+              fullWidth
+              label="New Password"
+              size="small"
+              type="password"
+              value={newPass}
+              onChange={(e) => setNewPass(e.target.value)}
+              sx={{ marginTop: "8px" }}
+            />
+
+            <TextField
+              fullWidth
+              label="Confirm Password"
+              size="small"
+              type="password"
+              value={confirmPass}
+              onChange={(e) => setConfirmPass(e.target.value)}
+              sx={{ marginTop: "8px" }}
+            />
+
+            <Button fullWidth variant="contained" onClick={handlePasswordUpdate} sx={{ mt: 3 }}>
+              Update Password
+            </Button>
+
+
+
+          </Card>
+        </Box>
+
 
         {/* ACCOUNT SETTINGS MODAL */}
         <Dialog
@@ -784,10 +952,11 @@ const Dashboard = () => {
 
               {[
                 "name",
-                "email",
+
                 "phone",
-                "state",
+
                 "city",
+                "gender",
                 "address",
                 "preferredLocation",
               ].map((field) => (
@@ -831,8 +1000,8 @@ const Dashboard = () => {
                   {draftProfile.resumeFile
                     ? draftProfile.resumeFile.name
                     : profile.resumeFile
-                    ? profile.resumeFile.name
-                    : "No resume selected"}
+                      ? profile.resumeFile.name
+                      : "No resume selected"}
                 </Typography>
               </Box>
             </Box>
@@ -849,18 +1018,63 @@ const Dashboard = () => {
             <Button fullWidth={true} onClick={() => setOpenSettings(false)}>
               Cancel
             </Button>
-            <Button
-              fullWidth={true}
-              variant="contained"
-              onClick={() => {
-                setProfile((p) => ({ ...p, ...draftProfile }));
-                setOpenSettings(false);
-              }}
-            >
-              Save Changes
-            </Button>
+            <DialogActions>
+              <Button onClick={() => setOpenSettings(false)}>Cancel</Button>
+              <Button variant="contained" onClick={handleSubmitChanges}>
+                Save Changes
+              </Button>
+            </DialogActions>
+
           </DialogActions>
         </Dialog>
+
+        {/* cv modal */}
+        <Modal open={openCVModal} onClose={() => setOpenCVModal(false)}>
+          <Box
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              bgcolor: "white",
+              p: 3,
+              width: "90%",
+              height: "90%",
+              overflow: "hidden",
+              borderRadius: "10px",
+            }}
+          >
+            <Typography variant="h6" mb={2}>
+              Your CV
+            </Typography>
+
+            {/* PDF Viewer */}
+            {cvUrl?.includes(".pdf") ? (
+              <iframe
+                src={cvUrl}
+                style={{
+                  width: "100%",
+                  height: "80vh",
+                  border: "none"
+                }}
+                title="CV Preview"
+              ></iframe>
+            ) : (
+              // Image CV Viewer
+              <img
+                src={cvUrl}
+                alt="CV"
+                style={{
+                  width: "100%",
+                  height: "80vh",
+                  objectFit: "contain",
+                  borderRadius: "10px",
+                }}
+              />
+            )}
+          </Box>
+        </Modal>
+
       </Container>
     </Box>
   );

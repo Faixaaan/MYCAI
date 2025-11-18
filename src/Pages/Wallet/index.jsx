@@ -96,7 +96,53 @@ const Wallet = () => {
   };
 
 
-  const handleSubmit = async (e) => {
+  
+
+  // get api calling 
+
+  const getData = async () => {
+  try {
+    if (!userId) {
+      console.warn("User ID not available yet — skipping API call");
+      return;
+    }
+
+    const res = await axiosInstance.get(
+      `${endpoints.cvi_wallet.transaction_list}/${userId}`
+    );
+
+    const pendingRes = await axiosInstance.get(
+      `${endpoints.cvi_wallet.payment_pending_transaction}/${userId}`
+    );
+
+    const cviValueRes = await axiosInstance.get(
+      `${endpoints.cvi_wallet.convert_token}`
+    );
+
+    const walletRes = await axiosInstance.get(
+      `${endpoints.cvi_wallet.single_user}/${userId}`
+    );
+
+    setAcepptData(res?.data);
+    setPendingData(pendingRes?.data);
+    setCviValue(walletRes?.data?.data?.cvi_amount || 0);
+    setCviValuee(cviValueRes?.data?.cvi_value);
+    setWalletAmount(walletRes?.data?.data?.real_amount);
+
+    console.log("updated data");
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+
+useEffect(() => {
+  if (userId) {
+    getData();
+  }
+}, [userId]);
+
+const handleSubmit = async (e) => {
     e.preventDefault();
 
     const transactionId = generateTransactionId();
@@ -116,6 +162,7 @@ const Wallet = () => {
       toast.success(res?.data?.message);
       setOpen(false);
       setForm({ cvi_value: "", transaction_type: "deposit" });
+      getData();
     } catch (err) {
       console.error("❌ Error submitting:", err);
       alert("Failed to submit transaction!");
@@ -142,6 +189,7 @@ const Wallet = () => {
       toast.success(res?.data?.message);
       setTokenOpen(false);
       setForm({ cvi_value: "" });
+      getData();
     } catch (err) {
       console.error("❌ Error submitting:", err);
       toast.error(err?.response?.data?.message);
@@ -150,38 +198,9 @@ const Wallet = () => {
     }
   };
 
-  // get api calling 
-
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        if (!userId) {
-          console.warn("User ID not available yet — skipping API call");
-          return;
-        }
-
-        const res = await axiosInstance.get(
-          `${endpoints.cvi_wallet.transaction_list}/${userId}`
-        );
-        const pendingRes = await axiosInstance.get(`${endpoints.cvi_wallet.payment_pending_transaction}/${userId}`);
-        const cviValueRes = await axiosInstance.get(`${endpoints.cvi_wallet.convert_token}`);
-        const walletRes = await axiosInstance.get(`${endpoints.cvi_wallet.single_user}/${userId}`)
-        setAcepptData(res?.data)
-        setPendingData(pendingRes?.data);
-        setCviValue(walletRes?.data?.data?.cvi_amount || 0)
-        setCviValuee(cviValueRes?.data?.cvi_value)
-
-        setWalletAmount(walletRes?.data?.data?.real_amount)
 
 
-        console.log(pendingRes?.data, "singleTransactionData");
-      } catch (err) {
-        console.error(err);
-      }
-    };
 
-    getData();
-  }, [userId]); // ✅ Re-run only when userId changes
 
 
   console.log(cviValue, 'value')
@@ -479,11 +498,11 @@ const Wallet = () => {
                             py: 1,
                           }}
                         >
-                          <Typography>{i+1}</Typography>
+                          <Typography>{i + 1}</Typography>
                           <Typography>£{item.amount}</Typography>
-                                <Typography>
-  {new Date(item.created_at).toLocaleDateString("en-GB")}
-</Typography>
+                          <Typography>
+                            {new Date(item.created_at).toLocaleDateString("en-GB")}
+                          </Typography>
 
                         </Box>
                       ))
@@ -536,8 +555,8 @@ const Wallet = () => {
                           <Typography>{item.bonus}</Typography>
                           <Typography>{item.cvi_token}</Typography>
                           <Typography>
-  {new Date(item.created_at).toLocaleDateString("en-GB")}
-</Typography>
+                            {new Date(item.created_at).toLocaleDateString("en-GB")}
+                          </Typography>
 
 
                         </Box>
