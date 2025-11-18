@@ -52,6 +52,10 @@ const Navbar = () => {
     navigate("/signin");
   };
 
+  const handleDashboard = ()=>{
+    navigate('/dashboard')
+  }
+
   // Avatar menu
   const handleAvatarClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
@@ -184,7 +188,7 @@ const Navbar = () => {
                     open={Boolean(anchorEl)}
                     onClose={handleClose}
                   >
-                    <MenuItem disabled>{user.name || "User"}</MenuItem>
+                    <MenuItem  onClick={handleDashboard}>{'Dashboard' || "User"}</MenuItem>
                     <MenuItem onClick={handleLogout}>Logout</MenuItem>
                   </Menu>
                 </>

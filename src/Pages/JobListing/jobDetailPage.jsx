@@ -36,18 +36,20 @@ import {
   Schedule,
   Business,
   CheckCircle,
-  
+
 } from '@mui/icons-material';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { axiosInstance } from '../../api/axios/axios';
+import { endpoints } from '../../api/endpoints/endpoints';
 
 export default function JobDetailPage() {
   const [isSaved, setIsSaved] = useState(false);
   const [showApplyModal, setShowApplyModal] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
- 
- const [job, setJobData] = useState([]);
+
+  const [job, setJobData] = useState([]);
 
   const { id } = useParams();
 
@@ -123,13 +125,14 @@ In this role, you'll collaborate with designers, backend developers, and product
   useEffect(() => {
     const fetchSingleJob = async () => {
       try {
-        const res = await axios.get('https://remotive.com/api/remote-jobs');
-        const allJobs = res?.data?.jobs || [];
-        const singleJob = allJobs.find((job) => job.id.toString() === id.toString());
-        setJobData(singleJob);
-        console.log(singleJob, '__SingleJob__');
+
+
+        const res = await axiosInstance.get(`${endpoints.jobs.single_admin_job}/${id}`);
+        setJobData(res?.data);
+        console.log(res?.data, "all_job_data_detail");
+
       } catch (err) {
-        console.log('Error fetching job:', err);
+        console.error(err);
       }
     };
 
@@ -170,7 +173,7 @@ In this role, you'll collaborate with designers, backend developers, and product
 
                   <Box sx={{ flex: 1 }}>
                     <Typography variant="h4" fontWeight="bold" gutterBottom>
-                      {job?.title}
+                      {job?.job_title}
                     </Typography>
                     <Typography variant="h6" color="text.secondary" gutterBottom>
                       {job?.company_name}
@@ -186,7 +189,7 @@ In this role, you'll collaborate with designers, backend developers, and product
                     <Box sx={{ display: 'flex', gap: 1, color: 'text.secondary', flexWrap: 'wrap' }}>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                         <Schedule fontSize="small" />
-                        <Typography variant="body2">{jobData.postedTime}</Typography>
+                        <Typography variant="body2">{jobData.publish_date}</Typography>
                       </Box>
                       <Typography variant="body2">•</Typography>
                       <Typography variant="body2">{jobData.applicants}</Typography>
@@ -202,7 +205,7 @@ In this role, you'll collaborate with designers, backend developers, and product
                     onClick={() => setShowApplyModal(true)}
                     sx={{ flex: 1, borderRadius: 28, py: 1.5, fontWeight: 'bold' }}
                   >
-                    Apply Now
+                    AI Apply
                   </Button>
                   <Button
                     variant={isSaved ? "contained" : "outlined"}
@@ -230,10 +233,11 @@ In this role, you'll collaborate with designers, backend developers, and product
                   About the job
                 </Typography>
                 <Typography variant="body1" color="text.secondary" paragraph sx={{ whiteSpace: 'pre-line' }} dangerouslySetInnerHTML={{
-            __html: job?.description
-              
-          }}>
-                  
+                  __html: job?.job_desc
+
+
+                }}>
+
                 </Typography>
 
                 <Divider sx={{ my: 3 }} />

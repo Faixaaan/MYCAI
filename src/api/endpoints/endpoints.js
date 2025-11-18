@@ -17,7 +17,9 @@ export const endpoints ={
         update_profile:"/update-user"
     },
     jobs:{
-        allJobs:"/admin-jobs"
+        allJobs:"/admin-jobs",
+        aplly:"/apply-job",
+        single_admin_job:"/single-admin-jobs"
     },
     cvi_wallet:{
         request_transaction:"/add-fund",

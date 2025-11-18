@@ -11,7 +11,9 @@ import {
   Divider,
   Container,
   Grid,
-  CircularProgress
+  CircularProgress,
+  TextField,
+  Stack
 } from "@mui/material";
 import {
   Close as CloseIcon,
@@ -28,6 +30,7 @@ import { endpoints } from "../../api/endpoints/endpoints";
 import { axiosInstance } from "../../api/axios/axios";
 import axios from "axios";
 import { Dialog, DialogContent, DialogActions } from "@mui/material";
+import { toast } from "react-toastify";
 
 
 
@@ -43,7 +46,7 @@ const JobCard = ({ job, onClose, isExpanded, onClick, onTitleClick }) => (
   >
     <CardContent sx={{ p: 2 }}>
       <Box sx={{ display: "flex", alignItems: "flex-start", gap: 2 }}>
-        <img src='https://icons.veryicon.com/png/o/miscellaneous/fill/part-time-job.png' alt="" style={{ width: "68px", height: "68px" }} />
+        <img src={job?.company_logo  || 'https://icons.veryicon.com/png/o/miscellaneous/fill/part-time-job.png'} alt="" style={{ width: "68px", height: "68px" }} />
         <Box sx={{ flex: 1, minWidth: 0 }}>
           <Typography
             variant="subtitle1"
@@ -60,14 +63,14 @@ const JobCard = ({ job, onClose, isExpanded, onClick, onTitleClick }) => (
               if (job?.id) onTitleClick(job.id);
             }}
           >
-            {job?.title}
+            {job?.job_title}
 
           </Typography>
           <Typography variant="body2" color="text.primary" sx={{ mb: 0.5 }}>
             {job?.company_name}
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-            {job?.candidate_required_location}
+            {job?.city}
 
           </Typography>
 
@@ -102,135 +105,139 @@ const JobCard = ({ job, onClose, isExpanded, onClick, onTitleClick }) => (
   </Card>
 );
 
-const JobDetail = ({ job, onClick, onTitleClick, handleModalOpen }) => (
-  <Box>
-    <Box sx={{ mb: 4 }}>
-      <Box sx={{ display: "flex", alignItems: "flex-start", gap: 2, mb: 3 }}>
-        <Avatar
-          sx={{
-            width: 56,
-            height: 56,
-            bgcolor: "#fff",
-            color: "#000",
-            border: "1px solid #e0e0e0",
+const JobDetail = ({ job, onClick, onTitleClick, handleModalOpen, appliedJobs }) => {
+
+  const isApplied = appliedJobs?.includes(job?.id || job?.job_id);
+  return (
+    <Box>
+      <Box sx={{ mb: 4 }}>
+        <Box sx={{ display: "flex", alignItems: "flex-start", gap: 2, mb: 3 }}>
+          <Avatar
+            sx={{
+              width: 56,
+              height: 56,
+              bgcolor: "#fff",
+              color: "#000",
+              border: "1px solid #e0e0e0",
+            }}
+          >
+            N
+          </Avatar>
+          <Box sx={{ flex: 1 }}>
+            <Typography variant="caption" color="text.secondary">
+              Naukr.ai
+            </Typography>
+          </Box>
+          <Box sx={{ display: "flex", gap: 1 }}>
+            <IconButton>
+              <ShareIcon />
+            </IconButton>
+            <IconButton>
+              <MoreVertIcon />
+            </IconButton>
+          </Box>
+        </Box>
+
+        <Typography
+          variant="h4"
+          sx={{ fontWeight: 600, mb: 2, cursor: 'pointer' }}
+          role="button"
+          tabIndex={0}
+          onClick={(e) => {
+            e.stopPropagation();
+            if (job?.job_id) onTitleClick(job.job_id);
+          }}
+          onKeyDown={(e) => {
+            // support keyboard activation (Enter / Space)
+            if ((e.key === 'Enter' || e.key === ' ') && job?.job_id) {
+              e.preventDefault();
+              onTitleClick(job.job_id);
+            }
           }}
         >
-          N
-        </Avatar>
-        <Box sx={{ flex: 1 }}>
-          <Typography variant="caption" color="text.secondary">
-            Naukr.ai
+          {job?.job_title}
+
+
+        </Typography>
+
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+          India · 1 day ago · Over 100 applicants
+        </Typography>
+
+        <Typography variant="body2" sx={{ mb: 3 }}>
+          Promoted by hirer ·{" "}
+          <Box component="span" sx={{ color: "#057642", fontWeight: 600 }}>
+            Actively reviewing applicants
+          </Box>
+        </Typography>
+
+        <Box sx={{ display: "flex", gap: 1, mb: 3, flexWrap: "wrap" }}>
+          <Chip label="Remote" variant="outlined" />
+          <Chip label="Full-time" variant="outlined" />
+        </Box>
+
+        <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
+          <Button
+            variant="contained"
+            sx={{
+              bgcolor: isApplied ? "#22c55e" : "#0a66c2",
+              "&:hover": { bgcolor: isApplied ? "#16a34a" : "#004182" },
+            }}
+            disabled={isApplied}
+            onClick={() => !isApplied && handleModalOpen("apply")}
+          >
+            {isApplied ? "Applied" : "Ai Apply"}
+          </Button>
+
+          <Button
+            variant="outlined"
+            sx={{
+              textTransform: "none",
+              fontWeight: 600,
+              borderColor: "#0a66c2",
+              color: "#0a66c2",
+            }}
+            onClick={() => handleModalOpen("save")}
+          >
+            Save
+          </Button>
+
+        </Box>
+      </Box>
+
+      <Divider sx={{ my: 3 }} />
+
+      <Box>
+        <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
+          About the job
+        </Typography>
+
+        <Box sx={{ bgcolor: "action.hover", p: 2, borderRadius: 1, mb: 3 }}>
+          <Typography variant="body2" color="text.secondary">
+            <strong>Tips:</strong> Provide a summary of the role, what success in
+            the position looks like, and how this role fits into the organization
+            overall.
           </Typography>
         </Box>
-        <Box sx={{ display: "flex", gap: 1 }}>
-          <IconButton>
-            <ShareIcon />
-          </IconButton>
-          <IconButton>
-            <MoreVertIcon />
-          </IconButton>
-        </Box>
-      </Box>
 
-      <Typography
-        variant="h4"
-        sx={{ fontWeight: 600, mb: 2, cursor: 'pointer' }}
-        role="button"
-        tabIndex={0}
-        onClick={(e) => {
-          e.stopPropagation();
-          // avoid errors if job is undefined while data is loading
-          if (job?.id) onTitleClick(job.id);
-        }}
-        onKeyDown={(e) => {
-          // support keyboard activation (Enter / Space)
-          if ((e.key === 'Enter' || e.key === ' ') && job?.job_id) {
-            e.preventDefault();
-            onTitleClick(job.job_id);
-          }
-        }}
-      >
-        {job?.title
-        }
-      </Typography>
-
-      <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-        India · 1 day ago · Over 100 applicants
-      </Typography>
-
-      <Typography variant="body2" sx={{ mb: 3 }}>
-        Promoted by hirer ·{" "}
-        <Box component="span" sx={{ color: "#057642", fontWeight: 600 }}>
-          Actively reviewing applicants
-        </Box>
-      </Typography>
-
-      <Box sx={{ display: "flex", gap: 1, mb: 3, flexWrap: "wrap" }}>
-        <Chip label="Remote" variant="outlined" />
-        <Chip label="Full-time" variant="outlined" />
-      </Box>
-
-      <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
-        <Button
-          variant="contained"
-          sx={{
-            bgcolor: "#0a66c2",
-            textTransform: "none",
-            fontWeight: 600,
-            "&:hover": { bgcolor: "#004182" },
-          }}
-          onClick={() => handleModalOpen("apply")}
-        >
-          Easy Apply
-        </Button>
-        <Button
-          variant="outlined"
-          sx={{
-            textTransform: "none",
-            fontWeight: 600,
-            borderColor: "#0a66c2",
-            color: "#0a66c2",
-          }}
-          onClick={() => handleModalOpen("save")}
-        >
-          Save
-        </Button>
-
-      </Box>
-    </Box>
-
-    <Divider sx={{ my: 3 }} />
-
-    <Box>
-      <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
-        About the job
-      </Typography>
-
-      <Box sx={{ bgcolor: "action.hover", p: 2, borderRadius: 1, mb: 3 }}>
-        <Typography variant="body2" color="text.secondary">
-          <strong>Tips:</strong> Provide a summary of the role, what success in
-          the position looks like, and how this role fits into the organization
-          overall.
+        <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>
+          Responsibilities
         </Typography>
-      </Box>
 
-      <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>
-        Responsibilities
-      </Typography>
-
-      <Box sx={{ pl: 3, mb: 2 }}>
-        <Typography
-          variant="body2"
-          component="div"
-          dangerouslySetInnerHTML={{ __html: job?.description }} />
+        <Box sx={{ pl: 3, mb: 2 }}>
+          <Typography
+            variant="body2"
+            component="div"
+            dangerouslySetInnerHTML={{ __html: job?.job_desc }} />
 
 
 
 
+        </Box>
       </Box>
     </Box>
-  </Box>
-);
+  )
+}
 
 const JobListing = () => {
   const [selectedJob, setSelectedJob] = useState(0);
@@ -238,38 +245,65 @@ const JobListing = () => {
   const [loading, setLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
   const [modalType, setModalType] = useState(""); // "apply" or "save"
+  const [namee, setNamee] = useState('')
+  const [isApplying, setIsApplying] = useState(false);
+  const [appliedJobs, setAppliedJobs] = useState([]);
+
+
+  const [userId, setUserId] = useState("");
+
+  useEffect(() => {
+    // ✅ Retrieve data from localStorage
+    const storedData = localStorage.getItem("userData");
+    if (storedData) {
+      try {
+        const parsed = JSON.parse(storedData);
+
+        setUserId(parsed.user_id || "");
+      } catch (err) {
+        console.error("Error parsing localStorage data:", err);
+      }
+    }
+  }, []);
+
 
   const navigate = useNavigate();
+  const [applyData, setApplyData] = useState({
+    name: "",
+    job_position: "",
+    resume: null,
+  });
+
+  const stored = localStorage.getItem("userData");
+
+  useEffect(() => {
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      setNamee(parsed?.name || "");
+    }
+  }, []);
+
+
 
   useEffect(() => {
     const fetchJobData = async () => {
       try {
-        const res = await axiosInstance.get(endpoints.jobs.allJobs);
+        setLoading(true);
 
+        const res = await axiosInstance.get(endpoints.jobs.allJobs);
+        setJobData(res?.data?.adminJob);
         console.log(res?.data?.adminJob, "all_job_data");
+
       } catch (err) {
         console.error(err);
+      } finally {
+        setLoading(false);
       }
     };
 
-    const DemoData = async () => {
-      try {
-        setLoading(true);
-        const res = await axios.get(`https://remotive.com/api/remote-jobs`);
-        setJobData(res?.data?.jobs);
-        console.log(res?.data?.jobs, 'demoData')
-      }
-      catch (err) {
-        console.log(err)
-      }
-      finally {
-        setLoading(false); // Stop loader
-      }
-    }
-
-    DemoData()
     fetchJobData();
   }, []);
+
 
   const handleTitleClick = (job_id) => {
     navigate(`/job-detail/${job_id}`);
@@ -277,8 +311,64 @@ const JobListing = () => {
 
   const handleModalOpen = (type) => {
     setModalType(type);
+
+    if (type === "apply") {
+      setApplyData((prev) => ({
+        ...prev,
+        name: namee || "",
+        job_position: job[selectedJob]?.title || "",
+      }));
+    }
+
     setOpenModal(true);
   };
+
+
+
+
+  // handleapplyNow
+
+  const handleApplyNow = async () => {
+    if (!applyData.name || !applyData.job_position || !applyData.resume) {
+      alert("Please fill all fields and upload resume");
+      return;
+    }
+
+    setIsApplying(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("user_id", userId);
+      formData.append("job_id", job[selectedJob]?.id || job[selectedJob]?.job_id);
+      formData.append("cv", applyData.resume);
+
+      const res = await axiosInstance.post(endpoints.jobs.aplly, formData);
+
+      toast.success(res.data?.message);
+
+      // 🔥 ADD THIS → store applied job ID
+      const appliedJobId = job[selectedJob]?.id || job[selectedJob]?.job_id;
+      setAppliedJobs((prev) => [...prev, appliedJobId]);
+
+      setOpenModal(false);
+
+      setApplyData({
+        name: namee || "",
+        job_position: "",
+        resume: null,
+      });
+
+    } catch (err) {
+      console.error("Apply Error:", err);
+      toast.error("Failed to apply");
+    } finally {
+      setIsApplying(false);
+    }
+  };
+
+
+
+
 
 
   return (
@@ -345,7 +435,13 @@ const JobListing = () => {
                 <Grid item size={{ xs: 12, md: 6 }}>
                   <Card sx={{ position: "sticky", top: 16 }}>
                     <CardContent sx={{ p: 3 }}>
-                      <JobDetail job={job[selectedJob]} onTitleClick={handleTitleClick} handleModalOpen={handleModalOpen} />
+                      <JobDetail
+                        job={job[selectedJob]}
+                        onTitleClick={handleTitleClick}
+                        handleModalOpen={handleModalOpen}
+                        appliedJobs={appliedJobs}
+                      />
+
                     </CardContent>
                   </Card>
                 </Grid>
@@ -356,35 +452,150 @@ const JobListing = () => {
 
         {/* modal */}
 
+        {/* APPLY FORM MODAL */}
         <Dialog
-          open={openModal}
+          open={openModal && modalType === "apply"}
           onClose={() => setOpenModal(false)}
           maxWidth="sm"
           fullWidth
+          PaperProps={{
+            sx: {
+              borderRadius: 4,
+              p: 1,
+              background: "linear-gradient(135deg, #ffffff, #f3f6ff)",
+              boxShadow: "0 8px 30px rgba(0,0,0,0.12)",
+            },
+          }}
         >
-          <DialogContent sx={{ textAlign: "center", py: 4 }}>
-            <CheckCircleIcon sx={{ fontSize: 80, color: "success.main", mb: 2 }} />
-            <Typography variant="h4" fontWeight="bold" gutterBottom>
-              {modalType === "apply" ? "Application Submitted!" : "Job Saved!"}
-            </Typography>
-            <Typography variant="body1" color="text.secondary">
-              {modalType === "apply"
-                ? "Your application has been sent successfully."
-                : "This job has been saved to your profile."}
-            </Typography>
-          </DialogContent>
-
-          <DialogActions sx={{ justifyContent: "center", pb: 3 }}>
-            <Button
-              variant="contained"
-              onClick={() => setOpenModal(false)}
-              fullWidth
-              sx={{ mx: 3, borderRadius: 28, py: 1.5 }}
+          <DialogContent sx={{ py: 4 }}>
+            {/* Header */}
+            <Typography
+              variant="h5"
+              fontWeight="700"
+              textAlign="center"
+              mb={3}
+              sx={{
+                background: "linear-gradient(90deg, #3b82f6, #6366f1)",
+                WebkitBackgroundClip: "text",
+                color: "transparent",
+              }}
             >
-              Done
+              Apply for Job
+            </Typography>
+
+            {/* Name */}
+            <TextField
+              fullWidth
+              label="Full Name"
+              value={applyData.name || namee}
+              onChange={(e) =>
+                setApplyData({ ...applyData, name: e.target.value })
+              }
+              sx={{
+                mb: 2,
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: 3,
+                },
+              }}
+            />
+
+            {/* Job Position */}
+            <TextField
+              fullWidth
+              label="Job Position"
+              value={applyData.job_position}
+              onChange={(e) =>
+                setApplyData({ ...applyData, job_position: e.target.value })
+              }
+              sx={{
+                mb: 2,
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: 3,
+                },
+              }}
+            />
+
+            {/* Upload Resume */}
+            <Button
+              variant="outlined"
+              component="label"
+              fullWidth
+              sx={{
+                mb: 2,
+                py: 1.4,
+                borderRadius: 3,
+                borderColor: "#6366f1",
+                textTransform: "none",
+                fontWeight: 600,
+                "&:hover": {
+                  borderColor: "#4f46e5",
+                  background: "#eef2ff",
+                },
+              }}
+            >
+              Upload Resume
+              <input
+                type="file"
+                hidden
+                accept=".pdf,.doc,.docx"
+                onChange={(e) =>
+                  setApplyData({ ...applyData, resume: e.target.files[0] })
+                }
+              />
             </Button>
-          </DialogActions>
+
+            {applyData.resume && (
+              <Typography variant="body2" sx={{ mb: 2, color: "#4f46e5" }}>
+                📄 {applyData.resume.name}
+              </Typography>
+            )}
+
+            {/* Buttons */}
+            <Stack direction="row" spacing={2} mt={4}>
+              {/* Apply Button */}
+              <Button
+                fullWidth
+                variant="contained"
+                sx={{
+                  py: 1.5,
+                  borderRadius: 3,
+                  fontWeight: 700,
+                  background: "linear-gradient(90deg, #3b82f6, #6366f1)",
+                  "&:hover": {
+                    background: "linear-gradient(90deg, #2563eb, #4f46e5)",
+                  },
+                }}
+                disabled={isApplying}
+                onClick={handleApplyNow}
+              >
+                {isApplying ? "Applying..." : "Apply Now"}
+              </Button>
+
+
+              {/* Create CV */}
+              <Button
+                fullWidth
+                variant="outlined"
+                sx={{
+                  py: 1.5,
+                  borderRadius: 3,
+                  fontWeight: 700,
+                  borderColor: "#6366f1",
+                  color: "#4f46e5",
+                  "&:hover": {
+                    background: "#eef2ff",
+                    borderColor: "#4f46e5",
+                  },
+                }}
+                onClick={() => navigate("/create-cv")}
+              >
+                Create CV
+              </Button>
+            </Stack>
+          </DialogContent>
         </Dialog>
+
+
 
 
 
