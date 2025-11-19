@@ -22,7 +22,9 @@ import {
   ListItemText,
   Container,
   useTheme,
-  useMediaQuery
+  useMediaQuery,
+  TextField,
+  Stack
 } from '@mui/material';
 import {
   Bookmark,
@@ -36,24 +38,31 @@ import {
   Schedule,
   Business,
   CheckCircle,
-
+  Close
 } from '@mui/icons-material';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
 import { axiosInstance } from '../../api/axios/axios';
 import { endpoints } from '../../api/endpoints/endpoints';
+import { toast } from 'react-toastify';
 
 export default function JobDetailPage() {
   const [isSaved, setIsSaved] = useState(false);
+  const [isApplied, setIsApplied] = useState(false);
   const [showApplyModal, setShowApplyModal] = useState(false);
+  const [showApplyFormModal, setShowApplyFormModal] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isApplying, setIsApplying] = useState(false);
+  const [userId, setUserId] = useState("");
+  const [applyData, setApplyData] = useState({
+    name: "",
+    resume: null,
+    job_title: ""
+  });
+
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
-  const [job, setJobData] = useState([]);
-
+  const [job, setJobData] = useState({});
   const { id } = useParams();
-
-  console.log(id, '__id__')
 
   const jobData = {
     title: "Senior Frontend Developer",
@@ -90,6 +99,163 @@ In this role, you'll collaborate with designers, backend developers, and product
     ]
   };
 
+  // Get user data from localStorage
+  useEffect(() => {
+    const storedData = localStorage.getItem("userData");
+    if (storedData) {
+      try {
+        const parsed = JSON.parse(storedData);
+        setUserId(parsed.user_id || "");
+        setApplyData(prev => ({ ...prev, name: parsed.name || "" }));
+      } catch (err) {
+        console.error("Error parsing localStorage data:", err);
+      }
+    }
+  }, []);
+
+  // Save Job Function
+  const handleSaveJob = async () => {
+    if (!userId) {
+      toast.error("User ID not found");
+      return;
+    }
+
+    if (!job?.job_id) {
+      toast.error("Job ID not found");
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      const payload = {
+        user_id: userId,
+        job_id: job.job_id
+      };
+
+      const res = await axiosInstance.post(endpoints.jobs.save_job, payload);
+
+      if (res?.data?.status === true) {
+        toast.success("Job saved successfully!");
+        setIsSaved(true);
+      } else {
+        toast.error(res?.data?.message || "Failed to save job");
+      }
+    } catch (error) {
+      console.error("Save job error:", error);
+      toast.error("Failed to save job");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  // Apply Job Function
+  const handleApplyJob = async () => {
+    if (!applyData.name || !applyData.resume) {
+      toast.error("Please fill all fields and upload resume");
+      return;
+    }
+
+    setIsApplying(true);
+    try {
+      const formData = new FormData();
+      formData.append("user_id", userId);
+      formData.append("job_id", job?.job_id);
+      formData.append("cv", applyData.resume);
+      formData.append("job_title", job?.job_title || "");
+
+      const res = await axiosInstance.post(endpoints.jobs.aplly, formData);
+
+      if (res?.data?.status === true) {
+        toast.success(res.data?.message || "Application submitted successfully!");
+        setIsApplied(true);
+        setShowApplyFormModal(false);
+        setShowApplyModal(true);
+        
+        setApplyData(prev => ({
+          ...prev,
+          resume: null
+        }));
+      } else {
+        toast.error(res?.data?.message || "Failed to apply");
+      }
+    } catch (error) {
+      console.error("Apply Error:", error);
+      toast.error("Failed to apply");
+    } finally {
+      setIsApplying(false);
+    }
+  };
+
+  // Apply Form Modal
+  const ApplyFormModal = () => (
+    <Dialog
+      open={showApplyFormModal}
+      onClose={() => setShowApplyFormModal(false)}
+      maxWidth="sm"
+      fullWidth
+    >
+      <DialogContent sx={{ py: 4 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+          <Typography variant="h5" fontWeight="700">
+            Apply for Job
+          </Typography>
+          <IconButton onClick={() => setShowApplyFormModal(false)}>
+            <Close />
+          </IconButton>
+        </Box>
+
+        
+
+        <TextField
+          fullWidth
+          label="Job Title"
+          value={job?.job_title || ""}
+          InputProps={{ readOnly: true }}
+          sx={{ mb: 2 }}
+        />
+
+        <Button
+          variant="outlined"
+          component="label"
+          fullWidth
+          sx={{ mb: 2, py: 1.4 }}
+        >
+          Upload Resume
+          <input
+            type="file"
+            hidden
+            accept=".pdf,.doc,.docx"
+            onChange={(e) => setApplyData({ ...applyData, resume: e.target.files[0] })}
+          />
+        </Button>
+
+        {applyData.resume && (
+          <Typography variant="body2" sx={{ mb: 2, color: "primary.main" }}>
+            📄 {applyData.resume.name}
+          </Typography>
+        )}
+
+        <Stack direction="row" spacing={2} mt={4}>
+          <Button
+            fullWidth
+            variant="outlined"
+            onClick={() => setShowApplyFormModal(false)}
+          >
+            Cancel
+          </Button>
+          <Button
+            fullWidth
+            variant="contained"
+            disabled={isApplying}
+            onClick={handleApplyJob}
+          >
+            {isApplying ? "Applying..." : "Apply Now"}
+          </Button>
+        </Stack>
+      </DialogContent>
+    </Dialog>
+  );
+
   const ApplyModal = () => (
     <Dialog
       open={showApplyModal}
@@ -103,7 +269,7 @@ In this role, you'll collaborate with designers, backend developers, and product
           Application Submitted!
         </Typography>
         <Typography variant="body1" color="text.secondary">
-          Your application has been sent to {jobData.company}
+          Your application has been sent to {job?.company_name}
         </Typography>
       </DialogContent>
       <DialogActions sx={{ justifyContent: 'center', pb: 3 }}>
@@ -119,18 +285,12 @@ In this role, you'll collaborate with designers, backend developers, and product
     </Dialog>
   );
 
-  // api calling 
-
-
   useEffect(() => {
     const fetchSingleJob = async () => {
       try {
-
-
         const res = await axiosInstance.get(`${endpoints.jobs.single_admin_job}/${id}`);
         setJobData(res?.data);
         console.log(res?.data, "all_job_data_detail");
-
       } catch (err) {
         console.error(err);
       }
@@ -139,28 +299,22 @@ In this role, you'll collaborate with designers, backend developers, and product
     fetchSingleJob();
   }, [id]);
 
-
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'grey.100', pb: isMobile ? 10 : 0 }}>
-      {/* Header */}
+      <AppBar position="sticky" color="default" elevation={1}>
+        <Toolbar>
+          <Typography variant="h5" fontWeight="bold" color="primary" sx={{ flexGrow: 1 }}>
+            JobBoard
+          </Typography>
+          <IconButton>
+            <MoreVert />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
 
-
-      {/* Main Content */}
       <Container maxWidth="lg" sx={{ mt: 3, mb: 3 }}>
-        <AppBar position="sticky" color="default" elevation={1}>
-          <Toolbar>
-            <Typography variant="h5" fontWeight="bold" color="primary" sx={{ flexGrow: 1 }}>
-              JobBoard
-            </Typography>
-            <IconButton>
-              <MoreVert />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
         <Grid container spacing={3}>
-          {/* Left Column - Job Details */}
           <Grid item xs={12} lg={8}>
-            {/* Job Header Card */}
             <Card sx={{ mb: 3 }}>
               <CardContent sx={{ p: 3 }}>
                 <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }}>
@@ -180,8 +334,7 @@ In this role, you'll collaborate with designers, backend developers, and product
                     </Typography>
 
                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 2 }}>
-                      <Chip icon={<LocationOn />} label={job?.candidate_required_location
-                      } size="small" />
+                      <Chip icon={<LocationOn />} label={job?.candidate_required_location} size="small" />
                       <Chip icon={<Work />} label={job?.job_type} size="small" />
                       <Chip icon={<People />} label={jobData.level} size="small" />
                     </Box>
@@ -197,23 +350,34 @@ In this role, you'll collaborate with designers, backend developers, and product
                   </Box>
                 </Box>
 
-                {/* Action Buttons */}
+                {/* Action Buttons - UPDATED */}
                 <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2, mt: 3 }}>
                   <Button
                     variant="contained"
                     size="large"
-                    onClick={() => setShowApplyModal(true)}
-                    sx={{ flex: 1, borderRadius: 28, py: 1.5, fontWeight: 'bold' }}
+                    onClick={() => setShowApplyFormModal(true)}
+                    disabled={isApplied}
+                    sx={{ 
+                      flex: 1, 
+                      borderRadius: 28, 
+                      py: 1.5, 
+                      fontWeight: 'bold',
+                      bgcolor: isApplied ? '#22c55e' : 'primary.main',
+                      '&:hover': {
+                        bgcolor: isApplied ? '#16a34a' : 'primary.dark'
+                      }
+                    }}
                   >
-                    AI Apply
+                    {isApplied ? "Applied" : "AI Apply"}
                   </Button>
                   <Button
                     variant={isSaved ? "contained" : "outlined"}
                     size="large"
-                    onClick={() => setIsSaved(!isSaved)}
+                    onClick={handleSaveJob}
+                    disabled={isSaved || isSaving}
                     sx={{ borderRadius: 28, px: 3 }}
                   >
-                    {isSaved ? <Bookmark /> : <BookmarkBorder />}
+                    {isSaving ? "Saving..." : (isSaved ? <Bookmark /> : <BookmarkBorder />)}
                   </Button>
                   <Button
                     variant="outlined"
@@ -226,7 +390,6 @@ In this role, you'll collaborate with designers, backend developers, and product
               </CardContent>
             </Card>
 
-            {/* Job Description Card */}
             <Card>
               <CardContent sx={{ p: 3 }}>
                 <Typography variant="h5" fontWeight="bold" gutterBottom>
@@ -234,11 +397,7 @@ In this role, you'll collaborate with designers, backend developers, and product
                 </Typography>
                 <Typography variant="body1" color="text.secondary" paragraph sx={{ whiteSpace: 'pre-line' }} dangerouslySetInnerHTML={{
                   __html: job?.job_desc
-
-
-                }}>
-
-                </Typography>
+                }} />
 
                 <Divider sx={{ my: 3 }} />
 
@@ -291,10 +450,8 @@ In this role, you'll collaborate with designers, backend developers, and product
             </Card>
           </Grid>
 
-          {/* Right Column - Sidebar */}
           <Grid item xs={12} lg={4}>
             <Box sx={{ position: { lg: 'sticky' }, top: { lg: 90 } }}>
-              {/* Company Info Card */}
               <Card sx={{ mb: 3 }}>
                 <CardContent sx={{ p: 3 }}>
                   <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, mb: 3 }}>
@@ -349,7 +506,6 @@ In this role, you'll collaborate with designers, backend developers, and product
                 </CardContent>
               </Card>
 
-              {/* Job Insights Card */}
               {!isMobile && (
                 <Card>
                   <CardContent sx={{ p: 3 }}>
@@ -389,10 +545,7 @@ In this role, you'll collaborate with designers, backend developers, and product
         </Grid>
       </Container>
 
-      {/* Apply Modal */}
-      <ApplyModal />
-
-      {/* Mobile Bottom Bar */}
+      {/* Mobile Bottom Bar - UPDATED */}
       {isMobile && (
         <Paper
           elevation={8}
@@ -411,13 +564,23 @@ In this role, you'll collaborate with designers, backend developers, and product
             <Button
               variant="contained"
               size="large"
-              onClick={() => setShowApplyModal(true)}
-              sx={{ flex: 1, borderRadius: 28, fontWeight: 'bold' }}
+              onClick={() => setShowApplyFormModal(true)}
+              disabled={isApplied}
+              sx={{ 
+                flex: 1, 
+                borderRadius: 28, 
+                fontWeight: 'bold',
+                bgcolor: isApplied ? '#22c55e' : 'primary.main',
+                '&:hover': {
+                  bgcolor: isApplied ? '#16a34a' : 'primary.dark'
+                }
+              }}
             >
-              Apply Now
+              {isApplied ? "Applied" : "Apply Now"}
             </Button>
             <IconButton
-              onClick={() => setIsSaved(!isSaved)}
+              onClick={handleSaveJob}
+              disabled={isSaved || isSaving}
               sx={{
                 bgcolor: isSaved ? 'primary.main' : 'grey.200',
                 color: isSaved ? 'white' : 'text.primary',
@@ -426,11 +589,15 @@ In this role, you'll collaborate with designers, backend developers, and product
                 }
               }}
             >
-              {isSaved ? <Bookmark /> : <BookmarkBorder />}
+              {isSaving ? "..." : (isSaved ? <Bookmark /> : <BookmarkBorder />)}
             </IconButton>
           </Box>
         </Paper>
       )}
+
+      {/* Modals */}
+      <ApplyFormModal />
+      <ApplyModal />
     </Box>
   );
 }

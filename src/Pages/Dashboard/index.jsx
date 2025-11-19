@@ -35,15 +35,25 @@ import { useSelector } from "react-redux";
 import { endpoints } from "../../api/endpoints/endpoints";
 import { axiosInstance } from "../../api/axios/axios";
 import { toast } from "react-toastify";
+import StatsModal from "./statsModal";
 
 const MotionBox = motion(Box);
 
 const Dashboard = () => {
   const userr = useSelector((state) => state.user.userData);
+  // Stats modals state - simplified
+  const [openStatsModal, setOpenStatsModal] = useState({
+    applied: false,
+    saved: false,
+    shortlisted: false
+  });
+
+
 
   // Initialize profile from Redux or localStorage
   const [profile, setProfile] = useState(() => {
     const stored = localStorage.getItem("userData");
+
     const reduxUser = userr || (stored ? JSON.parse(stored) : null);
     return {
       name: reduxUser?.name || "Faizan Mohammed",
@@ -73,23 +83,80 @@ const Dashboard = () => {
     },
   ]);
 
+  const [oldPass, setOldPass] = useState("");
+  const [newPass, setNewPass] = useState("");
+  const [confirmPass, setConfirmPass] = useState("");
+  const [userId, setUserId] = useState("");
+  const [save,setSave] = useState(false);
+
+  useEffect(() => {
+    // ✅ Retrieve data from localStorage
+    const storedData = localStorage.getItem("userData");
+    if (storedData) {
+      try {
+        const parsed = JSON.parse(storedData);
+
+        setUserId(parsed.user_id || "");
+      } catch (err) {
+        console.error("Error parsing localStorage data:", err);
+      }
+    }
+  }, []);
+
+
+
+
+  const [statsCount, setStatsCount] = useState({
+    applied: 0,
+    saved: 0,
+    shortlisted: 0
+  });
+
   const statCards = [
     {
       title: "Total Applied Jobs",
-      value: 25,
+      value: statsCount.applied, // Use actual count instead of static 25
       icon: <Work sx={{ color: "#64b5f6" }} />,
+      key: "applied",
     },
     {
       title: "Saved Jobs",
-      value: 10,
+      value: statsCount.saved, // Use actual count instead of static 10
       icon: <Bookmark sx={{ color: "#ffca28" }} />,
+      key: "saved",
     },
     {
       title: "Shortlisted / Interviewed",
-      value: 5,
+      value: statsCount.shortlisted, // Use actual count instead of static 5
       icon: <Star sx={{ color: "#66bb6a" }} />,
+      key: "shortlisted",
     },
   ];
+
+  // fetch counting
+
+  // If you only have applied_jobs endpoint for now, you can do:
+
+
+  // You can also add a refresh interval or refresh when certain actions happen
+  // For example, refresh counts every 30 seconds
+  useEffect(() => {
+    if (userId) {
+      const interval = setInterval(fetchStatsCounts, 30000); // Refresh every 30 seconds
+      return () => clearInterval(interval);
+    }
+  }, [userId]);
+
+  // Simple click handler
+  const handleStatsCardClick = (cardKey) => {
+    setOpenStatsModal(prev => ({ ...prev, [cardKey]: true }));
+  };
+
+
+  const handleCloseStatsModal = (cardKey) => {
+    setOpenStatsModal(prev => ({ ...prev, [cardKey]: false }));
+  };
+
 
   // Update profile if Redux changes
   useEffect(() => {
@@ -205,24 +272,7 @@ const Dashboard = () => {
     (profile.name ? profile.name.charAt(0).toUpperCase() : "U");
   const displayName = userr?.name || profile.name || "Candidate";
 
-  const [oldPass, setOldPass] = useState("");
-  const [newPass, setNewPass] = useState("");
-  const [confirmPass, setConfirmPass] = useState("");
-  const [userId, setUserId] = useState("");
 
-  useEffect(() => {
-    // ✅ Retrieve data from localStorage
-    const storedData = localStorage.getItem("userData");
-    if (storedData) {
-      try {
-        const parsed = JSON.parse(storedData);
-
-        setUserId(parsed.user_id || "");
-      } catch (err) {
-        console.error("Error parsing localStorage data:", err);
-      }
-    }
-  }, []);
 
   const handlePasswordUpdate = async () => {
     if (!oldPass || !newPass || !confirmPass) {
@@ -274,6 +324,7 @@ const Dashboard = () => {
       formData.append("city", draftProfile.city || "");
       formData.append("gender", draftProfile.gender || "");
       formData.append("address", draftProfile.address || "");
+      formData.append("country", draftProfile.country || "");
       formData.append("preferred_location", draftProfile.preferredLocation || "");
 
       // Avatar file (only if a NEW image is uploaded)
@@ -286,11 +337,16 @@ const Dashboard = () => {
         formData.append("resume", draftProfile.resumeFile);
       }
 
+
+      setSave(true)
+
       const res = await axiosInstance.post(
         `${endpoints.auth.update_profile}/${userId}`,
         formData,
 
       );
+
+      setSave(false)
 
       if (res?.data?.status === true) {
         toast.success("Profile updated successfully!");
@@ -306,35 +362,86 @@ const Dashboard = () => {
     } catch (error) {
       console.error(error);
       toast.error("Something went wrong");
+      setSave(false)
     }
   };
 
   const [openCVModal, setOpenCVModal] = useState(false);
   const [cvUrl, setCvUrl] = useState("");
- const handleViewCV = async () => {
-  try {
-    setOpenCVModal(true);
+  const handleViewCV = async () => {
+    try {
+      setOpenCVModal(true);
 
-    const res = await axiosInstance.get(
-      `${endpoints.cvi_wallet.single_user}/${userId}`
-    );
+      const res = await axiosInstance.get(
+        `${endpoints.cvi_wallet.single_user}/${userId}`
+      );
 
-    console.log(res?.data,'resumee')
+      console.log(res?.data, 'resumee')
 
-    if (res?.data?.data?.resume) {
-      setCvUrl(res?.data?.data?.resume); // API returns CV URL
-    } else {
-      toast.error("No CV found!");
+      if (res?.data?.data?.resume) {
+        setCvUrl(res?.data?.data?.resume); // API returns CV URL
+      } else {
+        toast.error("No CV found!");
+        setOpenCVModal(false);
+      }
+
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to load CV");
       setOpenCVModal(false);
     }
+  };
 
-  } catch (error) {
-    console.error(error);
-    toast.error("Failed to load CV");
-    setOpenCVModal(false);
-  }
-};
 
+  // If you want to keep the interval, move it AFTER fetchStatsCounts is defined
+  const fetchStatsCounts = async () => {
+    if (!userId) return;
+
+    try {
+      // Fetch applied jobs count
+      const appliedRes = await axiosInstance.get(`${endpoints.jobs.applied_job}/${userId}`);
+      const appliedCount = appliedRes.data?.data?.length || 0;
+
+      // Fetch saved jobs count
+      const savedRes = await axiosInstance.get(`${endpoints.jobs.saved_jobs}/${userId}`);
+      const savedCount = savedRes.data?.data?.length || 0;
+
+      // Fetch shortlisted jobs count
+      const shortlistedRes = await axiosInstance.get(`${endpoints.jobs.shortlisted_jobs}/${userId}`);
+      const shortlistedCount = shortlistedRes.data?.data?.length || 0;
+
+      setStatsCount({
+        applied: appliedCount,
+        saved: savedCount,
+        shortlisted: shortlistedCount
+      });
+
+    } catch (error) {
+      console.error("Error fetching stats counts:", error);
+    }
+  };
+
+  // Fetch counts when component mounts and userId is available
+  useEffect(() => {
+    if (userId) {
+      fetchStatsCounts();
+    }
+  }, [userId]);
+
+  // Interval refresh - NOW this works because fetchStatsCounts is defined above
+  useEffect(() => {
+    if (userId) {
+      const interval = setInterval(fetchStatsCounts, 30000); // Refresh every 30 seconds
+      return () => clearInterval(interval);
+    }
+  }, [userId]);
+
+  // Fetch counts when component mounts and userId is available
+  useEffect(() => {
+    if (userId) {
+      fetchStatsCounts();
+    }
+  }, [userId]);
 
 
 
@@ -344,7 +451,7 @@ const Dashboard = () => {
     <Box
       sx={{
         minHeight: "100vh",
-        background: "linear-gradient(135deg, #0f2027, #203a43, #2c5364)",
+        background: "linear-gradient(135deg, #2e6479, #2d7c98, #2d89ac)",
         color: "#fff",
         py: { xs: 1, sm: 2, md: 4 },
         px: { xs: 0, sm: 0 },
@@ -494,28 +601,27 @@ const Dashboard = () => {
                 transition={{ duration: 0.45, delay: index * 0.04 }}
               >
                 <Card
+                  onClick={() => handleStatsCardClick(card.key)}
                   sx={{
                     background: "rgba(255,255,255,0.06)",
                     border: "1px solid rgba(255,255,255,0.08)",
                     p: { xs: 1, sm: 2 },
                     textAlign: "center",
                     minWidth: 0,
+                    cursor: "pointer",
+                    transition: "all 0.3s ease",
+                    "&:hover": {
+                      background: "rgba(255,255,255,0.09)",
+                      border: "1px solid rgba(100,181,246,0.3)",
+                      transform: "translateY(-2px)",
+                    },
                   }}
                 >
                   <CardContent>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                        mb: 0.5,
-                      }}
-                    >
+                    <Box sx={{ display: "flex", justifyContent: "center", mb: 0.5 }}>
                       {card.icon}
                     </Box>
-                    <Typography
-                      variant="subtitle2"
-                      sx={{ fontWeight: 600, fontSize: { xs: 13, sm: 16 } }}
-                    >
+                    <Typography variant="subtitle2" sx={{ fontWeight: 600, fontSize: { xs: 13, sm: 16 } }}>
                       {card.title}
                     </Typography>
                     <Typography
@@ -952,12 +1058,11 @@ const Dashboard = () => {
 
               {[
                 "name",
-
                 "phone",
-
                 "city",
-                "gender",
+                // Remove "gender" from this array since we'll handle it separately
                 "address",
+                'country',
                 "preferredLocation",
               ].map((field) => (
                 <TextField
@@ -973,6 +1078,29 @@ const Dashboard = () => {
                   }
                 />
               ))}
+
+              {/* Add Gender Dropdown separately */}
+              <Box>
+                <Typography variant="body2" sx={{ mb: 1, color: 'text.secondary' }}>
+                  Gender
+                </Typography>
+                <TextField
+                  select
+                  fullWidth
+                  value={draftProfile.gender || ''}
+                  onChange={(e) =>
+                    setDraftProfile((p) => ({ ...p, gender: e.target.value }))
+                  }
+                  SelectProps={{
+                    native: true,
+                  }}
+                >
+                  
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  
+                </TextField>
+              </Box>
 
               <Box
                 sx={{
@@ -1015,13 +1143,11 @@ const Dashboard = () => {
               pb: 2,
             }}
           >
-            <Button fullWidth={true} onClick={() => setOpenSettings(false)}>
-              Cancel
-            </Button>
+
             <DialogActions>
               <Button onClick={() => setOpenSettings(false)}>Cancel</Button>
-              <Button variant="contained" onClick={handleSubmitChanges}>
-                Save Changes
+              <Button variant="contained" onClick={handleSubmitChanges} disabled={save} >
+                {save? "Saving...": 'Save Change'}
               </Button>
             </DialogActions>
 
@@ -1074,6 +1200,33 @@ const Dashboard = () => {
             )}
           </Box>
         </Modal>
+
+        {/* stats modal */}
+
+        {/* Add modals at the bottom of your JSX */}
+        <StatsModal
+          open={openStatsModal.applied}
+          onClose={() => handleCloseStatsModal('applied')}
+          title="Applied Jobs"
+          type="applied"
+
+        />
+
+        <StatsModal
+          open={openStatsModal.saved}
+          onClose={() => handleCloseStatsModal('saved')}
+          title="Saved Jobs"
+          type="saved"
+
+        />
+
+        <StatsModal
+          open={openStatsModal.shortlisted}
+          onClose={() => handleCloseStatsModal('shortlisted')}
+          title="Shortlisted Jobs"
+          type="shortlisted"
+
+        />
 
       </Container>
     </Box>

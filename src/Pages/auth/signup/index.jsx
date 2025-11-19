@@ -9,6 +9,7 @@ import {
   IconButton,
   Divider,
   CircularProgress,
+  MenuItem,
 } from "@mui/material";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import GoogleIcon from "@mui/icons-material/Google";
@@ -31,10 +32,11 @@ const SignUp = () => {
     city: "",
     address: "",
     preferred_location: "",
+    country: "",
     profile_pic: null, // FIXED → file allowed
   });
 
-  console.log(form,'genderForm')
+  console.log(form, 'genderForm')
 
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -46,8 +48,16 @@ const SignUp = () => {
 
   // FILE UPLOAD HANDLER (FIXED)
   const handleFileUpload = (e) => {
-    setForm((f) => ({ ...f, profile_pic: e.target.files[0] }));
+    const file = e.target.files[0];
+    if (file) {
+      setForm((f) => ({
+        ...f,
+        profile_pic: file,
+        preview: URL.createObjectURL(file),  // ← THIS SHOWS IMAGE INSTANTLY
+      }));
+    }
   };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -81,6 +91,7 @@ const SignUp = () => {
           city: "",
           address: "",
           preferred_location: "",
+          country: "",
           profile_pic: null,
         });
 
@@ -132,6 +143,8 @@ const SignUp = () => {
             Create Account
           </Typography>
 
+
+
           <form onSubmit={handleSubmit}>
             <Stack spacing={2}>
               {/* NORMAL TEXT INPUTS */}
@@ -140,34 +153,78 @@ const SignUp = () => {
                 { label: "Email", name: "email", type: "email" },
                 { label: "Phone", name: "phone", type: "text" },
                 { label: "Password", name: "password", type: "password" },
-                { label: "Gender", name: "gender", type: "text" },
+                { label: "Gender", name: "gender", type: "select", options: ["Male", "Female"] },
                 { label: "City", name: "city", type: "text" },
                 { label: "Address", name: "address", type: "text" },
-                {
-                  label: "Preferred Location",
-                  name: "preferred_location",
-                  type: "text",
-                },
-              ].map(({ label, name, type }) => (
-                <TextField
-                  key={name}
-                  label={label}
-                  name={name}
-                  type={type}
-                  value={form[name]}
-                  onChange={handleChange}
-                  fullWidth
-                  required
-                  InputLabelProps={{ sx: { color: "#d1c4e9" } }}
-                  sx={{
-                    input: { color: "#fff" },
-                    background: "rgba(255,255,255,0.15)",
-                    borderRadius: 2,
-                  }}
-                />
-              ))}
+                { label: "Preferred Location", name: "preferred_location", type: "text" },
+                { label: "Country", name: "country", type: "text" },
+              ].map(({ label, name, type, options }) =>
+                type === "select" ? (
+                  <TextField
+                    key={name}
+                    select
+                    label={label}
+                    name={name}
+                    value={form[name]}
+                    onChange={handleChange}
+                    fullWidth
+                    required
+                    InputLabelProps={{ sx: { color: "#d1c4e9" } }}
+                    SelectProps={{
+                      displayEmpty: true,
+                      renderValue: (selected) => {
+                        if (!selected) {
+                          return <span style={{ color: "#bdbdbd" }}>Select Gender</span>;
+                        }
+                        return selected;
+                      },
+                    }}
+                    sx={{
+                      "& .MuiSelect-select": {
+                        color: form[name] ? "#fff" : "#bdbdbd", // visible text + placeholder
+                      },
+                      "& .MuiSvgIcon-root": { color: "#fff" }, // dropdown icon
+                      background: "rgba(255,255,255,0.15)",
+                      borderRadius: 2,
+                    }}
+                  >
+                    <MenuItem value="" disabled>
+                      Select Gender
+                    </MenuItem>
 
-              {/* FILE INPUT FIXED */}
+                    {options.map((option) => (
+                      <MenuItem key={option} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                ) : (
+                  // your normal input field stays the same
+                  <TextField
+                    key={name}
+                    label={label}
+                    name={name}
+                    type={type}
+                    value={form[name]}
+                    onChange={handleChange}
+                    fullWidth
+                    required
+                    InputLabelProps={{ sx: { color: "#d1c4e9" } }}
+                    sx={{
+                      input: { color: "#fff" },
+                      background: "rgba(255,255,255,0.15)",
+                      borderRadius: 2,
+                    }}
+                  />
+                )
+
+              )
+              }
+
+
+
+
+              {/* FILE INPUT */}
               <Button
                 variant="contained"
                 component="label"
@@ -180,6 +237,28 @@ const SignUp = () => {
                 Upload Profile Picture
                 <input hidden type="file" name="profile_pic" onChange={handleFileUpload} />
               </Button>
+
+              {/* preview picture */}
+              {form.preview && (
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <img
+                    src={form.preview}
+                    alt="Profile Preview"
+                    style={{
+                      width: 120,
+                      height: 120,
+                      borderRadius: "50%",
+                      objectFit: "cover",
+                      border: "3px solid #bb86fc",
+                    }}
+                  />
+                </Box>
+              )}
 
               {/* SUBMIT BUTTON */}
               <Button
@@ -198,14 +277,11 @@ const SignUp = () => {
                   mt: 2,
                 }}
               >
-                {loading ? (
-                  <CircularProgress size={24} sx={{ color: "white" }} />
-                ) : (
-                  "Sign Up"
-                )}
+                {loading ? <CircularProgress size={24} sx={{ color: "white" }} /> : "Sign Up"}
               </Button>
             </Stack>
           </form>
+
 
           <Divider sx={{ my: 3, bgcolor: "rgba(255,255,255,0.25)" }} />
 

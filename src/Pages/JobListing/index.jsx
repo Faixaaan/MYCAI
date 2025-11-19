@@ -46,7 +46,7 @@ const JobCard = ({ job, onClose, isExpanded, onClick, onTitleClick }) => (
   >
     <CardContent sx={{ p: 2 }}>
       <Box sx={{ display: "flex", alignItems: "flex-start", gap: 2 }}>
-        <img src={job?.company_logo  || 'https://icons.veryicon.com/png/o/miscellaneous/fill/part-time-job.png'} alt="" style={{ width: "68px", height: "68px" }} />
+        <img src={job?.company_logo || 'https://icons.veryicon.com/png/o/miscellaneous/fill/part-time-job.png'} alt="" style={{ width: "68px", height: "68px" }} />
         <Box sx={{ flex: 1, minWidth: 0 }}>
           <Typography
             variant="subtitle1"
@@ -57,11 +57,7 @@ const JobCard = ({ job, onClose, isExpanded, onClick, onTitleClick }) => (
               cursor: "pointer",
               "&:hover": { textDecoration: "underline" },
             }}
-            onClick={(e) => {
-              e.stopPropagation();
-              // guard in case job is not yet defined
-              if (job?.id) onTitleClick(job.id);
-            }}
+            
           >
             {job?.job_title}
 
@@ -105,9 +101,10 @@ const JobCard = ({ job, onClose, isExpanded, onClick, onTitleClick }) => (
   </Card>
 );
 
-const JobDetail = ({ job, onClick, onTitleClick, handleModalOpen, appliedJobs }) => {
+const JobDetail = ({ job, onClick, onTitleClick, handleModalOpen, appliedJobs, savedJobs, handleSaveJob, isSaving }) => {
 
   const isApplied = appliedJobs?.includes(job?.id || job?.job_id);
+  const isSaved = savedJobs?.includes(job?.job_id);
   return (
     <Box>
       <Box sx={{ mb: 4 }}>
@@ -194,12 +191,17 @@ const JobDetail = ({ job, onClick, onTitleClick, handleModalOpen, appliedJobs })
             sx={{
               textTransform: "none",
               fontWeight: 600,
-              borderColor: "#0a66c2",
-              color: "#0a66c2",
+              borderColor: isSaved ? "#22c55e" : "#0a66c2",
+              color: isSaved ? "#22c55e" : "#0a66c2",
+              "&:hover": {
+                borderColor: isSaved ? "#16a34a" : "#004182",
+                backgroundColor: isSaved ? "#f0fdf4" : "#f0f9ff",
+              },
             }}
-            onClick={() => handleModalOpen("save")}
+            disabled={isSaved || isSaving}
+            onClick={handleSaveJob}
           >
-            Save
+            {isSaving ? "Saving..." : (isSaved ? "Saved" : "Save")}
           </Button>
 
         </Box>
@@ -248,6 +250,8 @@ const JobListing = () => {
   const [namee, setNamee] = useState('')
   const [isApplying, setIsApplying] = useState(false);
   const [appliedJobs, setAppliedJobs] = useState([]);
+  const [savedJobs, setSavedJobs] = useState([]);
+  const [isSaving, setIsSaving] = useState(false);
 
 
   const [userId, setUserId] = useState("");
@@ -272,6 +276,7 @@ const JobListing = () => {
     name: "",
     job_position: "",
     resume: null,
+    job_title: ""
   });
 
   const stored = localStorage.getItem("userData");
@@ -309,6 +314,7 @@ const JobListing = () => {
     navigate(`/job-detail/${job_id}`);
   };
 
+  // In your handleModalOpen function, update it to include job_title:
   const handleModalOpen = (type) => {
     setModalType(type);
 
@@ -316,7 +322,8 @@ const JobListing = () => {
       setApplyData((prev) => ({
         ...prev,
         name: namee || "",
-        job_position: job[selectedJob]?.title || "",
+        job_position: job[selectedJob]?.job_title || "",
+        job_title: job[selectedJob]?.job_title || "", // Add this line
       }));
     }
 
@@ -341,6 +348,7 @@ const JobListing = () => {
       formData.append("user_id", userId);
       formData.append("job_id", job[selectedJob]?.job_id || job[selectedJob]?.job_id);
       formData.append("cv", applyData.resume);
+      formData.append("job_title", applyData.job_title);
 
       const res = await axiosInstance.post(endpoints.jobs.aplly, formData);
 
@@ -363,6 +371,42 @@ const JobListing = () => {
       toast.error("Failed to apply");
     } finally {
       setIsApplying(false);
+    }
+  };
+
+  // handle save 
+  const handleSaveJob = async () => {
+    if (!userId) {
+      toast.error("User ID not found");
+      return;
+    }
+
+    const currentJob = job[selectedJob];
+    if (!currentJob?.job_id) {
+      toast.error("Job ID not found");
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      const payload = {
+        user_id: userId,
+        job_id: currentJob.job_id
+      };
+
+      const res = await axiosInstance.post(endpoints.jobs.save_job, payload);
+
+      if (res?.data?.status === true) {
+        toast.success("Job saved successfully!");
+        setSavedJobs(prev => [...prev, currentJob.job_id]);
+      } else {
+        toast.error(res?.data?.message || "Failed to save job");
+      }
+    } catch (error) {
+      console.error("Save job error:", error);
+      toast.error(error?.response?.data?.message);
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -440,6 +484,9 @@ const JobListing = () => {
                         onTitleClick={handleTitleClick}
                         handleModalOpen={handleModalOpen}
                         appliedJobs={appliedJobs}
+                        savedJobs={savedJobs}
+                        handleSaveJob={handleSaveJob}
+                        isSaving={isSaving}
                       />
 
                     </CardContent>
@@ -482,12 +529,10 @@ const JobListing = () => {
             >
               Apply for Job
             </Typography>
-
-            {/* Name */}
             <TextField
               fullWidth
-              label="Full Name"
-              value={applyData.name || namee}
+              label="Job Title"
+              value={applyData.job_title || job[selectedJob]?.job_title || ""}
               onChange={(e) =>
                 setApplyData({ ...applyData, name: e.target.value })
               }
@@ -499,21 +544,6 @@ const JobListing = () => {
               }}
             />
 
-            {/* Job Position */}
-            <TextField
-              fullWidth
-              label="Job Position"
-              value={applyData.job_position}
-              onChange={(e) =>
-                setApplyData({ ...applyData, job_position: e.target.value })
-              }
-              sx={{
-                mb: 2,
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: 3,
-                },
-              }}
-            />
 
             {/* Upload Resume */}
             <Button
