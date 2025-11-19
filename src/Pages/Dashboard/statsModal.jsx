@@ -67,7 +67,7 @@ const StatsModal = ({
           endpoint = `${endpoints.jobs.applied_job}/${userId}`;
           break;
         case "saved":
-          endpoint = `${endpoints.jobs.saved_jobs}/${userId}`;
+          endpoint = `${endpoints.jobs.get_save_job}/${userId}`;
           break;
         case "shortlisted":
           endpoint = `${endpoints.jobs.shortlisted_jobs}/${userId}`;

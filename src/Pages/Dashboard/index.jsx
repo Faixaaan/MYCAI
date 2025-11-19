@@ -48,7 +48,8 @@ const Dashboard = () => {
     shortlisted: false
   });
 
-
+  // Add this state for recent applied jobs
+  const [recentAppliedJobs, setRecentAppliedJobs] = useState([]);
 
   // Initialize profile from Redux or localStorage
   const [profile, setProfile] = useState(() => {
@@ -87,7 +88,8 @@ const Dashboard = () => {
   const [newPass, setNewPass] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
   const [userId, setUserId] = useState("");
-  const [save,setSave] = useState(false);
+  const [save, setSave] = useState(false);
+  const [savedJobs, setSavedJobs] = useState([]);
 
   useEffect(() => {
     // ✅ Retrieve data from localStorage
@@ -102,9 +104,6 @@ const Dashboard = () => {
       }
     }
   }, []);
-
-
-
 
   const [statsCount, setStatsCount] = useState({
     applied: 0,
@@ -133,30 +132,33 @@ const Dashboard = () => {
     },
   ];
 
-  // fetch counting
+  // Add this function to fetch recent applied jobs
+  const fetchRecentAppliedJobs = async () => {
+    if (!userId) return;
 
-  // If you only have applied_jobs endpoint for now, you can do:
+    try {
+      const res = await axiosInstance.get(`${endpoints.jobs.applied_job}/${userId}`);
+      const jobs = res.data?.data || [];
 
+      // Get latest 5 jobs (assuming they have date field, adjust as needed)
+      const latestJobs = jobs
+        .sort((a, b) => new Date(b.created_at || b.applied_date) - new Date(a.created_at || a.applied_date))
+        .slice(0, 5);
 
-  // You can also add a refresh interval or refresh when certain actions happen
-  // For example, refresh counts every 30 seconds
-  useEffect(() => {
-    if (userId) {
-      const interval = setInterval(fetchStatsCounts, 30000); // Refresh every 30 seconds
-      return () => clearInterval(interval);
+      setRecentAppliedJobs(latestJobs);
+    } catch (error) {
+      console.error("Error fetching recent applied jobs:", error);
     }
-  }, [userId]);
+  };
 
   // Simple click handler
   const handleStatsCardClick = (cardKey) => {
     setOpenStatsModal(prev => ({ ...prev, [cardKey]: true }));
   };
 
-
   const handleCloseStatsModal = (cardKey) => {
     setOpenStatsModal(prev => ({ ...prev, [cardKey]: false }));
   };
-
 
   // Update profile if Redux changes
   useEffect(() => {
@@ -272,8 +274,6 @@ const Dashboard = () => {
     (profile.name ? profile.name.charAt(0).toUpperCase() : "U");
   const displayName = userr?.name || profile.name || "Candidate";
 
-
-
   const handlePasswordUpdate = async () => {
     if (!oldPass || !newPass || !confirmPass) {
       alert("All fields are required");
@@ -296,9 +296,6 @@ const Dashboard = () => {
         `${endpoints.auth.change_password}/${userId}`,
         payload
       );
-
-
-
 
       if (res?.data?.status === true) {
         toast.success(res?.data?.message);
@@ -336,7 +333,6 @@ const Dashboard = () => {
       if (draftProfile.resumeFile instanceof File) {
         formData.append("resume", draftProfile.resumeFile);
       }
-
 
       setSave(true)
 
@@ -392,7 +388,6 @@ const Dashboard = () => {
     }
   };
 
-
   // If you want to keep the interval, move it AFTER fetchStatsCounts is defined
   const fetchStatsCounts = async () => {
     if (!userId) return;
@@ -403,7 +398,7 @@ const Dashboard = () => {
       const appliedCount = appliedRes.data?.data?.length || 0;
 
       // Fetch saved jobs count
-      const savedRes = await axiosInstance.get(`${endpoints.jobs.saved_jobs}/${userId}`);
+      const savedRes = await axiosInstance.get(`${endpoints.jobs.get_save_job}/${userId}`);
       const savedCount = savedRes.data?.data?.length || 0;
 
       // Fetch shortlisted jobs count
@@ -421,12 +416,7 @@ const Dashboard = () => {
     }
   };
 
-  // Fetch counts when component mounts and userId is available
-  useEffect(() => {
-    if (userId) {
-      fetchStatsCounts();
-    }
-  }, [userId]);
+  
 
   // Interval refresh - NOW this works because fetchStatsCounts is defined above
   useEffect(() => {
@@ -436,23 +426,33 @@ const Dashboard = () => {
     }
   }, [userId]);
 
-  // Fetch counts when component mounts and userId is available
+  // fetch saved job length 
+
+  const fetchSavedJobs = async () => {
+  if (!userId) return;
+  try {
+    const res = await axiosInstance.get(`${endpoints.jobs.get_save_job}/${userId}`);
+    const savedJobsData = res.data?.data || [];
+    setSavedJobs(savedJobsData);
+  } catch (error) {
+    console.error("Error fetching saved jobs:", error);
+  }
+};
+// Fetch counts when component mounts and userId is available
   useEffect(() => {
     if (userId) {
       fetchStatsCounts();
+      fetchRecentAppliedJobs(); // Also fetch recent jobs
+       fetchSavedJobs();
     }
   }, [userId]);
-
-
-
-
 
   return (
     <Box
       sx={{
         minHeight: "100vh",
-        background: "linear-gradient(135deg, #2e6479, #2d7c98, #2d89ac)",
-        color: "#fff",
+        background: "linear-gradient(135deg, #827970ff, #827970ff, #827970ff)",
+        color: "#431407",
         py: { xs: 1, sm: 2, md: 4 },
         px: { xs: 0, sm: 0 },
         overflowX: "hidden",
@@ -514,9 +514,14 @@ const Dashboard = () => {
                 Welcome, {displayName}
               </Typography>
               <Typography
-                variant="body2"
-                color="gray"
-                sx={{ textAlign: { xs: "center", sm: "left" } }}
+                
+                sx={{
+                  textAlign: {
+                    xs: "center", sm: "left", background: "linear-gradient(90deg,#64b5f6,#82b1ff)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",fontWeight:"4000"
+                  }
+                }}
               >
                 Profile Completion
               </Typography>
@@ -641,6 +646,132 @@ const Dashboard = () => {
             </Grid>
           ))}
         </Grid>
+
+        {/* RECENT APPLIED JOBS */}
+        <MotionBox
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          sx={{ mb: 3 }}
+        >
+          <Card
+            sx={{
+              background: "rgba(255,255,255,0.05)",
+              border: "1px solid rgba(255,255,255,0.08)",
+              p: { xs: 2, sm: 3 },
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                mb: 2,
+              }}
+            >
+              <Typography
+                variant="h6"
+                sx={{ fontWeight: 700, fontSize: { xs: 15, sm: 18 } }}
+              >
+                Recent Applied Jobs
+              </Typography>
+              <Typography
+                variant="body2"
+                sx={{ color: "#64b5f6", cursor: "pointer" }}
+                onClick={() => handleStatsCardClick('applied')}
+              >
+                View All
+              </Typography>
+            </Box>
+
+            {recentAppliedJobs.length === 0 ? (
+              <Typography
+                variant="body2"
+                sx={{
+                  color: "rgba(255,255,255,0.6)",
+                  textAlign: "center",
+                  py: 3
+                }}
+              >
+                No jobs applied yet
+              </Typography>
+            ) : (
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                {recentAppliedJobs.map((job, index) => (
+                  <Box
+                    key={job.id || index}
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      p: 2,
+                      background: "rgba(255,255,255,0.03)",
+                      borderRadius: 1,
+                      border: "1px solid rgba(255,255,255,0.05)",
+                      transition: "all 0.3s ease",
+                      "&:hover": {
+                        background: "rgba(255,255,255,0.06)",
+                        border: "1px solid rgba(100,181,246,0.2)",
+                      },
+                    }}
+                  >
+                    <Box sx={{ flex: 1 }}>
+                      <Typography
+                        variant="subtitle1"
+                        sx={{
+                          fontWeight: 600,
+                          color: "#fff",
+                          fontSize: { xs: 14, sm: 16 }
+                        }}
+                      >
+                        {job.job_title || job.title || "No Title"}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          color: "rgba(255,255,255,0.7)",
+                          fontSize: { xs: 12, sm: 14 }
+                        }}
+                      >
+                        {job.company_name || job.company || "Unknown Company"}
+                      </Typography>
+                      {job.applied_date && (
+                        <Typography
+                          variant="caption"
+                          sx={{
+                            color: "rgba(255,255,255,0.5)",
+                            fontSize: { xs: 11, sm: 12 }
+                          }}
+                        >
+                          Applied on {new Date(job.applied_date).toLocaleDateString()}
+                        </Typography>
+                      )}
+                    </Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 1
+                      }}
+                    >
+                      <Typography
+                        variant="caption"
+                        sx={{
+                          color: job.status === "shortlisted" ? "#66bb6a" :
+                            job.status === "rejected" ? "#ff8a80" : "#ffca28",
+                          fontWeight: 600,
+                          fontSize: { xs: 11, sm: 12 }
+                        }}
+                      >
+                        {job.status || "Applied"}
+                      </Typography>
+                    </Box>
+                  </Box>
+                ))}
+              </Box>
+            )}
+          </Card>
+        </MotionBox>
 
         {/* EXPERIENCE SECTION (responsive) */}
         <MotionBox
@@ -869,7 +1000,6 @@ const Dashboard = () => {
         </MotionBox>
 
         {/* RESUME & ACTIONS (responsive) */}
-        {/* RESUME & ACTIONS (responsive) */}
         <Box
           sx={{
             display: "grid",
@@ -998,12 +1128,8 @@ const Dashboard = () => {
             <Button fullWidth variant="contained" onClick={handlePasswordUpdate} sx={{ mt: 3 }}>
               Update Password
             </Button>
-
-
-
           </Card>
         </Box>
-
 
         {/* ACCOUNT SETTINGS MODAL */}
         <Dialog
@@ -1095,10 +1221,10 @@ const Dashboard = () => {
                     native: true,
                   }}
                 >
-                  
+
                   <option value="male">Male</option>
                   <option value="female">Female</option>
-                  
+
                 </TextField>
               </Box>
 
@@ -1147,7 +1273,7 @@ const Dashboard = () => {
             <DialogActions>
               <Button onClick={() => setOpenSettings(false)}>Cancel</Button>
               <Button variant="contained" onClick={handleSubmitChanges} disabled={save} >
-                {save? "Saving...": 'Save Change'}
+                {save ? "Saving..." : 'Save Change'}
               </Button>
             </DialogActions>
 

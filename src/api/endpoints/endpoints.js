@@ -21,7 +21,8 @@ export const endpoints ={
         aplly:"/apply-job",
         single_admin_job:"/single-admin-jobs",
         applied_job:"single-apply-job",
-        save_job:"/save-job"
+        save_job:"/save-job",
+        get_save_job:"/fetch-save-job"
     },
     cvi_wallet:{
         request_transaction:"/add-fund",
