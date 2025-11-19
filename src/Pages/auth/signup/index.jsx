@@ -6,21 +6,67 @@ import {
   TextField,
   Button,
   Stack,
-  IconButton,
   Divider,
   CircularProgress,
   MenuItem,
+  Chip,
+  Autocomplete,
 } from "@mui/material";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import GoogleIcon from "@mui/icons-material/Google";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import InstagramIcon from "@mui/icons-material/Instagram";
 import { motion } from "framer-motion";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const MotionCard = motion(Card);
+
+// List of Indian cities for autocomplete
+const INDIAN_CITIES = [
+    "London",
+  "Birmingham",
+  "Manchester",
+  "Liverpool",
+  "Leeds",
+  "Sheffield",
+  "Newcastle upon Tyne",
+  "Bristol",
+  "Nottingham",
+  "Leicester",
+  "Coventry",
+  "Southampton",
+  "Portsmouth",
+  "Wolverhampton",
+  "Bradford",
+  "Derby",
+  "Stoke-on-Trent",
+  "Sunderland",
+  "York",
+  "Peterborough",
+  "Brighton & Hove",
+  "Plymouth",
+  "Oxford",
+  "Cambridge",
+  "Milton Keynes",
+  "Reading",
+  "Luton",
+  "Swindon",
+  "Northampton",
+  "Kingston upon Hull",
+  "Edinburgh",
+  "Glasgow",
+  "Aberdeen",
+  "Dundee",
+  "Inverness",
+  "Stirling",
+  "Perth",
+  "Cardiff",
+  "Swansea",
+  "Newport",
+  "Wrexham",
+  "Belfast",
+  "Derry",
+  "Lisburn",
+  "Newry"
+];
 
 const SignUp = () => {
   const [form, setForm] = useState({
@@ -31,45 +77,89 @@ const SignUp = () => {
     gender: "",
     city: "",
     address: "",
-    preferred_location: "",
+    preferred_location: "", // Store as string
     country: "",
-    profile_pic: null, // FIXED → file allowed
+    profile_pic: null,
   });
 
-  console.log(form, 'genderForm')
-
+  const [preferredLocationError, setPreferredLocationError] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   // NORMAL INPUT HANDLER
   const handleChange = (e) => {
-    setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    console.log(`TextField changed - ${name}:`, value);
+    setForm((f) => ({ ...f, [name]: value }));
   };
 
-  // FILE UPLOAD HANDLER (FIXED)
+  // MULTI-SELECT HANDLER FOR PREFERRED LOCATION
+  const handlePreferredLocationChange = (event, newValue) => {
+    console.log("Preferred Location selected (array):", newValue);
+    
+    // Convert array to comma-separated string
+    const locationString = newValue.join(',');
+    console.log("Preferred Location (string):", locationString);
+    
+    setForm((f) => ({ ...f, preferred_location: locationString }));
+    setPreferredLocationError(newValue.length === 0);
+  };
+
+  // Convert string back to array for Autocomplete value
+  const getPreferredLocationArray = () => {
+    return form.preferred_location ? form.preferred_location.split(',') : [];
+  };
+
+  // FILE UPLOAD HANDLER
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
+    console.log("File selected:", file);
+    
     if (file) {
       setForm((f) => ({
         ...f,
         profile_pic: file,
-        preview: URL.createObjectURL(file),  // ← THIS SHOWS IMAGE INSTANTLY
+        preview: URL.createObjectURL(file),
       }));
     }
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    console.log("=== FORM SUBMISSION STARTED ===");
+    console.log("Current form state:", form);
+    console.log("Preferred location (string):", form.preferred_location);
+    
+    // IMPORTANT: KEEP THE VALIDATION - Don't remove this!
+    if (!form.preferred_location || form.preferred_location.trim() === '') {
+      console.log("VALIDATION FAILED: No preferred location selected");
+      setPreferredLocationError(true);
+      toast.error("Please select at least one preferred location");
+      return;
+    }
+
+    console.log("VALIDATION PASSED: Proceeding with API call");
     setLoading(true);
 
     try {
       // Use FormData for file upload
       const formData = new FormData();
+      console.log("Creating FormData...");
+      
       Object.keys(form).forEach((key) => {
+        console.log(`Appending ${key}:`, form[key]);
         formData.append(key, form[key]);
       });
 
+      // Log FormData contents
+      console.log("FormData contents:");
+      for (let pair of formData.entries()) {
+        console.log(pair[0] + ': ', pair[1]);
+      }
+
+      console.log("Making API call to:", "https://mycvi.ai/admin/api/submit-user");
+      
       const res = await axios.post(
         "https://mycvi.ai/admin/api/submit-user",
         formData,
@@ -78,7 +168,10 @@ const SignUp = () => {
         }
       );
 
+      console.log("API Response:", res);
+      
       if (res.status === 201) {
+        console.log("REGISTRATION SUCCESSFUL");
         toast.success(res?.data?.message || "Registration successful!");
 
         // Reset form
@@ -94,16 +187,20 @@ const SignUp = () => {
           country: "",
           profile_pic: null,
         });
+        setPreferredLocationError(false);
 
         navigate("/signin");
       }
     } catch (err) {
-      console.error(err);
+      console.error("API ERROR:", err);
+      console.error("Error response:", err.response);
+      console.error("Error data:", err.response?.data);
       toast.error(
         err?.response?.data?.message || "Registration failed! Please try again."
       );
     } finally {
       setLoading(false);
+      console.log("=== FORM SUBMISSION COMPLETED ===");
     }
   };
 
@@ -143,9 +240,8 @@ const SignUp = () => {
             Create Account
           </Typography>
 
-
-
-          <form onSubmit={handleSubmit}>
+          {/* REMOVE THE FORM TAG AND USE DIV INSTEAD */}
+          <div>
             <Stack spacing={2}>
               {/* NORMAL TEXT INPUTS */}
               {[
@@ -153,10 +249,9 @@ const SignUp = () => {
                 { label: "Email", name: "email", type: "email" },
                 { label: "Phone", name: "phone", type: "text" },
                 { label: "Password", name: "password", type: "password" },
-                { label: "Gender", name: "gender", type: "select", options: ["Male", "Female"] },
+                { label: "", name: "gender", type: "select", options: ["Male", "Female"] },
                 { label: "City", name: "city", type: "text" },
                 { label: "Address", name: "address", type: "text" },
-                { label: "Preferred Location", name: "preferred_location", type: "text" },
                 { label: "Country", name: "country", type: "text" },
               ].map(({ label, name, type, options }) =>
                 type === "select" ? (
@@ -181,9 +276,9 @@ const SignUp = () => {
                     }}
                     sx={{
                       "& .MuiSelect-select": {
-                        color: form[name] ? "#fff" : "#bdbdbd", // visible text + placeholder
+                        color: form[name] ? "#fff" : "#bdbdbd",
                       },
-                      "& .MuiSvgIcon-root": { color: "#fff" }, // dropdown icon
+                      "& .MuiSvgIcon-root": { color: "#fff" },
                       background: "rgba(255,255,255,0.15)",
                       borderRadius: 2,
                     }}
@@ -191,7 +286,6 @@ const SignUp = () => {
                     <MenuItem value="" disabled>
                       Select Gender
                     </MenuItem>
-
                     {options.map((option) => (
                       <MenuItem key={option} value={option}>
                         {option}
@@ -199,7 +293,6 @@ const SignUp = () => {
                     ))}
                   </TextField>
                 ) : (
-                  // your normal input field stays the same
                   <TextField
                     key={name}
                     label={label}
@@ -217,12 +310,69 @@ const SignUp = () => {
                     }}
                   />
                 )
+              )}
 
-              )
-              }
+              {/* MULTI-SELECT AUTOCOMPLETE FOR PREFERRED LOCATION */}
+              <Autocomplete
+                multiple
+                options={INDIAN_CITIES}
+                value={getPreferredLocationArray()} // Convert string back to array for display
+                onChange={handlePreferredLocationChange}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Preferred Location"
+                    error={preferredLocationError}
+                    helperText={preferredLocationError ? "Please select at least one preferred location" : ""}
+                    InputLabelProps={{ sx: { color: "#d1c4e9" } }}
+                    sx={{
+                      background: "rgba(255,255,255,0.15)",
+                      borderRadius: 2,
+                      "& .MuiInputBase-input": {
+                        color: "#fff",
+                      },
+                      "& .MuiFormHelperText-root": {
+                        color: "#f44336",
+                      },
+                    }}
+                  />
+                )}
+                renderTags={(value, getTagProps) =>
+                  value.map((option, index) => (
+                    <Chip
+                      label={option}
+                      {...getTagProps({ index })}
+                      sx={{
+                        background: "rgba(187, 134, 252, 0.3)",
+                        color: "#fff",
+                        border: "1px solid #bb86fc",
+                      }}
+                    />
+                  ))
+                }
+                sx={{
+                  "& .MuiAutocomplete-popupIndicator": { color: "#fff" },
+                  "& .MuiAutocomplete-clearIndicator": { color: "#fff" },
+                }}
+              />
 
+              {/* HIDDEN INPUT FOR BROWSER VALIDATION - THIS IS THE FIX! */}
+              <input
+                type="text"
+                required
+                value={form.preferred_location}
+                onChange={() => {}} // Empty handler
+                style={{ 
+                  display: 'none',
+                  position: 'absolute',
+                  left: '-9999px'
+                }}
+              />
 
-
+              {/* Display the actual string value for debugging */}
+              <Typography variant="body2" sx={{ color: "#d1c4e9", fontSize: 12 }}>
+                Debug - Preferred Location String: "{form.preferred_location}"
+              </Typography>
 
               {/* FILE INPUT */}
               <Button
@@ -267,6 +417,7 @@ const SignUp = () => {
                 variant="contained"
                 size="large"
                 disabled={loading}
+                onClick={handleSubmit} // Use onClick instead of form onSubmit
                 sx={{
                   background: "linear-gradient(90deg, #764ba2 30%, #667eea 90%)",
                   fontWeight: 700,
@@ -280,8 +431,7 @@ const SignUp = () => {
                 {loading ? <CircularProgress size={24} sx={{ color: "white" }} /> : "Sign Up"}
               </Button>
             </Stack>
-          </form>
-
+          </div>
 
           <Divider sx={{ my: 3, bgcolor: "rgba(255,255,255,0.25)" }} />
 

@@ -19,6 +19,8 @@ import {
   DialogActions,
   Stack,
   Modal,
+  Chip,
+  Autocomplete,
 } from "@mui/material";
 import { motion } from "framer-motion";
 import {
@@ -36,8 +38,58 @@ import { endpoints } from "../../api/endpoints/endpoints";
 import { axiosInstance } from "../../api/axios/axios";
 import { toast } from "react-toastify";
 import StatsModal from "./statsModal";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const MotionBox = motion(Box);
+
+// List of Indian cities for autocomplete
+const INDIAN_CITIES = [
+    "London",
+  "Birmingham",
+  "Manchester",
+  "Liverpool",
+  "Leeds",
+  "Sheffield",
+  "Newcastle upon Tyne",
+  "Bristol",
+  "Nottingham",
+  "Leicester",
+  "Coventry",
+  "Southampton",
+  "Portsmouth",
+  "Wolverhampton",
+  "Bradford",
+  "Derby",
+  "Stoke-on-Trent",
+  "Sunderland",
+  "York",
+  "Peterborough",
+  "Brighton & Hove",
+  "Plymouth",
+  "Oxford",
+  "Cambridge",
+  "Milton Keynes",
+  "Reading",
+  "Luton",
+  "Swindon",
+  "Northampton",
+  "Kingston upon Hull",
+  "Edinburgh",
+  "Glasgow",
+  "Aberdeen",
+  "Dundee",
+  "Inverness",
+  "Stirling",
+  "Perth",
+  "Cardiff",
+  "Swansea",
+  "Newport",
+  "Wrexham",
+  "Belfast",
+  "Derry",
+  "Lisburn",
+  "Newry"
+];
 
 const Dashboard = () => {
   const userr = useSelector((state) => state.user.userData);
@@ -54,8 +106,13 @@ const Dashboard = () => {
   // Initialize profile from Redux or localStorage
   const [profile, setProfile] = useState(() => {
     const stored = localStorage.getItem("userData");
-
     const reduxUser = userr || (stored ? JSON.parse(stored) : null);
+    
+    // Convert preferred_location string to array for display
+    const preferredLocationArray = reduxUser?.preferred_location 
+      ? reduxUser.preferred_location.split(',') 
+      : [];
+    
     return {
       name: reduxUser?.name || "Faizan Mohammed",
       email: reduxUser?.email || "faizan@example.com",
@@ -63,9 +120,11 @@ const Dashboard = () => {
       state: reduxUser?.state || "West Bengal",
       city: reduxUser?.city || "Kolkata",
       address: reduxUser?.address || "Park Street",
-      preferredLocation: reduxUser?.preferredLocation || "Kolkata",
-      avatarUrl: reduxUser?.profile_pic
-        || null,
+      preferredLocation: reduxUser?.preferred_location || "Kolkata",
+      preferredLocationArray: preferredLocationArray,
+      gender: reduxUser?.gender || "",
+      country: reduxUser?.country || "",
+      avatarUrl: reduxUser?.profile_pic || null,
       resumeFile: null,
     };
   });
@@ -90,14 +149,17 @@ const Dashboard = () => {
   const [userId, setUserId] = useState("");
   const [save, setSave] = useState(false);
   const [savedJobs, setSavedJobs] = useState([]);
+  const navigate  = useNavigate()
 
+     const handleOwnCv = ()=>{
+        navigate('/create-cv')
+     }
   useEffect(() => {
     // ✅ Retrieve data from localStorage
     const storedData = localStorage.getItem("userData");
     if (storedData) {
       try {
         const parsed = JSON.parse(storedData);
-
         setUserId(parsed.user_id || "");
       } catch (err) {
         console.error("Error parsing localStorage data:", err);
@@ -114,19 +176,19 @@ const Dashboard = () => {
   const statCards = [
     {
       title: "Total Applied Jobs",
-      value: statsCount.applied, // Use actual count instead of static 25
+      value: statsCount.applied,
       icon: <Work sx={{ color: "#64b5f6" }} />,
       key: "applied",
     },
     {
       title: "Saved Jobs",
-      value: statsCount.saved, // Use actual count instead of static 10
+      value: statsCount.saved,
       icon: <Bookmark sx={{ color: "#ffca28" }} />,
       key: "saved",
     },
     {
       title: "Shortlisted / Interviewed",
-      value: statsCount.shortlisted, // Use actual count instead of static 5
+      value: statsCount.shortlisted,
       icon: <Star sx={{ color: "#66bb6a" }} />,
       key: "shortlisted",
     },
@@ -163,8 +225,20 @@ const Dashboard = () => {
   // Update profile if Redux changes
   useEffect(() => {
     if (userr) {
-      setProfile((p) => ({ ...p, ...userr }));
-      setDraftProfile((p) => ({ ...p, ...userr }));
+      const preferredLocationArray = userr?.preferred_location 
+        ? userr.preferred_location.split(',') 
+        : [];
+      
+      setProfile((p) => ({ 
+        ...p, 
+        ...userr,
+        preferredLocationArray: preferredLocationArray 
+      }));
+      setDraftProfile((p) => ({ 
+        ...p, 
+        ...userr,
+        preferredLocationArray: preferredLocationArray 
+      }));
     }
   }, [userr]);
 
@@ -212,6 +286,21 @@ const Dashboard = () => {
     setDraftProfile((p) => ({ ...p, resumeFile: file }));
   };
 
+  // MULTI-SELECT HANDLER FOR PREFERRED LOCATION IN SETTINGS
+  const handlePreferredLocationChange = (event, newValue) => {
+    console.log("Preferred Location selected (array):", newValue);
+    
+    // Convert array to comma-separated string for backend
+    const locationString = newValue.join(',');
+    console.log("Preferred Location (string):", locationString);
+    
+    setDraftProfile((p) => ({ 
+      ...p, 
+      preferredLocation: locationString,
+      preferredLocationArray: newValue 
+    }));
+  };
+
   const openAccountSettings = () => {
     setDraftProfile(profile);
     setOpenSettings(true);
@@ -243,6 +332,7 @@ const Dashboard = () => {
       },
     ]);
   };
+
 
   const handleExperienceChange = (id, key, value) => {
     setExperienceList((prev) =>
@@ -339,7 +429,6 @@ const Dashboard = () => {
       const res = await axiosInstance.post(
         `${endpoints.auth.update_profile}/${userId}`,
         formData,
-
       );
 
       setSave(false)
@@ -347,8 +436,15 @@ const Dashboard = () => {
       if (res?.data?.status === true) {
         toast.success("Profile updated successfully!");
 
-        // Update UI
-        setProfile(draftProfile);
+        // Update UI with proper preferredLocationArray
+        const updatedProfile = {
+          ...draftProfile,
+          preferredLocationArray: draftProfile.preferredLocation 
+            ? draftProfile.preferredLocation.split(',') 
+            : []
+        };
+        
+        setProfile(updatedProfile);
         localStorage.setItem("userData", JSON.stringify(res.data.data));
 
         setOpenSettings(false);
@@ -416,8 +512,6 @@ const Dashboard = () => {
     }
   };
 
-  
-
   // Interval refresh - NOW this works because fetchStatsCounts is defined above
   useEffect(() => {
     if (userId) {
@@ -427,23 +521,23 @@ const Dashboard = () => {
   }, [userId]);
 
   // fetch saved job length 
-
   const fetchSavedJobs = async () => {
-  if (!userId) return;
-  try {
-    const res = await axiosInstance.get(`${endpoints.jobs.get_save_job}/${userId}`);
-    const savedJobsData = res.data?.data || [];
-    setSavedJobs(savedJobsData);
-  } catch (error) {
-    console.error("Error fetching saved jobs:", error);
-  }
-};
-// Fetch counts when component mounts and userId is available
+    if (!userId) return;
+    try {
+      const res = await axiosInstance.get(`${endpoints.jobs.get_save_job}/${userId}`);
+      const savedJobsData = res.data?.data || [];
+      setSavedJobs(savedJobsData);
+    } catch (error) {
+      console.error("Error fetching saved jobs:", error);
+    }
+  };
+
+  // Fetch counts when component mounts and userId is available
   useEffect(() => {
     if (userId) {
       fetchStatsCounts();
       fetchRecentAppliedJobs(); // Also fetch recent jobs
-       fetchSavedJobs();
+      fetchSavedJobs();
     }
   }, [userId]);
 
@@ -451,7 +545,7 @@ const Dashboard = () => {
     <Box
       sx={{
         minHeight: "100vh",
-        background: "linear-gradient(135deg, #827970ff, #827970ff, #827970ff)",
+        background: "#175463ff",
         color: "#431407",
         py: { xs: 1, sm: 2, md: 4 },
         px: { xs: 0, sm: 0 },
@@ -585,7 +679,19 @@ const Dashboard = () => {
               variant="outlined"
               sx={{
                 color: "#cfefff",
-                borderColor: "rgba(255,255,255,0.08)",
+                borderColor: "rgba(32, 26, 26, 0.6)",
+                width: { xs: "100%", sm: "auto" },
+                fontSize: { xs: 13, sm: 15 },
+              }}
+              onClick={handleOwnCv}
+            >
+              Create Your Own CV
+            </Button>
+            <Button
+              variant="outlined"
+              sx={{
+                color: "#cfefff",
+                borderColor: "rgba(32, 26, 26, 0.6)",
                 width: { xs: "100%", sm: "auto" },
                 fontSize: { xs: 13, sm: 15 },
               }}
@@ -1186,10 +1292,8 @@ const Dashboard = () => {
                 "name",
                 "phone",
                 "city",
-                // Remove "gender" from this array since we'll handle it separately
                 "address",
                 'country',
-                "preferredLocation",
               ].map((field) => (
                 <TextField
                   key={field}
@@ -1197,13 +1301,50 @@ const Dashboard = () => {
                     field.charAt(0).toUpperCase() +
                     field.slice(1).replace(/([A-Z])/g, " $1")
                   }
-                  value={draftProfile[field]}
+                  value={draftProfile[field] || ''}
                   fullWidth
                   onChange={(e) =>
                     setDraftProfile((p) => ({ ...p, [field]: e.target.value }))
                   }
                 />
               ))}
+
+              {/* PREFERRED LOCATION AUTOCOMPLETE */}
+              <Autocomplete
+                multiple
+                options={INDIAN_CITIES}
+                value={draftProfile.preferredLocationArray || []}
+                onChange={handlePreferredLocationChange}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Preferred Location"
+                    InputLabelProps={{ sx: { color: "text.primary" } }}
+                    sx={{
+                      "& .MuiInputBase-input": {
+                        color: "text.primary",
+                      },
+                    }}
+                  />
+                )}
+                renderTags={(value, getTagProps) =>
+                  value.map((option, index) => (
+                    <Chip
+                      label={option}
+                      {...getTagProps({ index })}
+                      sx={{
+                        background: "rgba(187, 134, 252, 0.3)",
+                        color: "text.primary",
+                        border: "1px solid #bb86fc",
+                      }}
+                    />
+                  ))
+                }
+                sx={{
+                  "& .MuiAutocomplete-popupIndicator": { color: "text.primary" },
+                  "& .MuiAutocomplete-clearIndicator": { color: "text.primary" },
+                }}
+              />
 
               {/* Add Gender Dropdown separately */}
               <Box>
@@ -1221,10 +1362,9 @@ const Dashboard = () => {
                     native: true,
                   }}
                 >
-
+                  <option value="">Select Gender</option>
                   <option value="male">Male</option>
                   <option value="female">Female</option>
-
                 </TextField>
               </Box>
 
@@ -1328,14 +1468,11 @@ const Dashboard = () => {
         </Modal>
 
         {/* stats modal */}
-
-        {/* Add modals at the bottom of your JSX */}
         <StatsModal
           open={openStatsModal.applied}
           onClose={() => handleCloseStatsModal('applied')}
           title="Applied Jobs"
           type="applied"
-
         />
 
         <StatsModal
@@ -1343,7 +1480,6 @@ const Dashboard = () => {
           onClose={() => handleCloseStatsModal('saved')}
           title="Saved Jobs"
           type="saved"
-
         />
 
         <StatsModal
@@ -1351,7 +1487,6 @@ const Dashboard = () => {
           onClose={() => handleCloseStatsModal('shortlisted')}
           title="Shortlisted Jobs"
           type="shortlisted"
-
         />
 
       </Container>
