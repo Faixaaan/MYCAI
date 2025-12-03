@@ -341,7 +341,7 @@ const UseTemplate = () => {
       certificates
     };
     console.log('CV Data:', cvData);
-    alert('CV Created Successfully! Check console for data.');
+      
   };
 
   return (
@@ -493,12 +493,13 @@ const UseTemplate = () => {
                       onChange={handleInputChange('fullName')}
                       variant="outlined"
                       size="small"
+                      type='text'
                     />
                   </Box>
 
                   <Box>
                     <Typography variant="body2" sx={{ mb: 1, fontWeight: 500 }}>
-                      Job Title:
+                     Position:
                     </Typography>
                     <TextField
                       fullWidth
@@ -507,6 +508,7 @@ const UseTemplate = () => {
                       onChange={handleInputChange('jobTitle')}
                       variant="outlined"
                       size="small"
+                       type='text'
                     />
                   </Box>
 
@@ -521,6 +523,7 @@ const UseTemplate = () => {
                       onChange={handleInputChange('address')}
                       variant="outlined"
                       size="small"
+                       type='text'
                     />
                   </Box>
 
@@ -564,6 +567,7 @@ const UseTemplate = () => {
                       onChange={handleInputChange('phoneNo')}
                       variant="outlined"
                       size="small"
+                       type='number'
                     />
                   </Box>
 
@@ -577,6 +581,7 @@ const UseTemplate = () => {
                       value={formData.bio}
                       onChange={handleInputChange('bio')}
                       variant="outlined"
+                       type='text'
                       multiline
                       rows={6}
                     />
@@ -637,6 +642,7 @@ const UseTemplate = () => {
                         onChange={handleEducationChange(education.id, 'fieldOfStudy')}
                         variant="outlined"
                         size="small"
+                         type='text'
                       />
                     </Box>
 
@@ -651,6 +657,7 @@ const UseTemplate = () => {
                         onChange={handleEducationChange(education.id, 'degree')}
                         variant="outlined"
                         size="small"
+                         type='text'
                       />
                     </Box>
 
@@ -665,6 +672,7 @@ const UseTemplate = () => {
                         onChange={handleEducationChange(education.id, 'school')}
                         variant="outlined"
                         size="small"
+                         type='text'
                       />
                     </Box>
 
@@ -771,6 +779,7 @@ const UseTemplate = () => {
                         onChange={handleExperienceChange(experience.id, 'title')}
                         variant="outlined"
                         size="small"
+                         type='text'
                       />
                     </Box>
 
@@ -785,6 +794,7 @@ const UseTemplate = () => {
                         onChange={handleExperienceChange(experience.id, 'company')}
                         variant="outlined"
                         size="small"
+                         type='text'
                       />
                     </Box>
 

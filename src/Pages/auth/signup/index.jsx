@@ -369,10 +369,7 @@ const SignUp = () => {
                 }}
               />
 
-              {/* Display the actual string value for debugging */}
-              <Typography variant="body2" sx={{ color: "#d1c4e9", fontSize: 12 }}>
-                Debug - Preferred Location String: "{form.preferred_location}"
-              </Typography>
+              
 
               {/* FILE INPUT */}
               <Button
